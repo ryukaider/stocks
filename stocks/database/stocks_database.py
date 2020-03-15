@@ -1,5 +1,5 @@
 import sys
-sys.path.append('E:/Google Drive/Computers/Dev/Stocks/scott_stocks')
+sys.path.append('E:/Google Drive/Tech/Dev/Projects/stocks/stocks')
 
 import psycopg2.extras
 from database import postgres
