@@ -1,0 +1,11 @@
+{
+    "server":
+    {
+        "username": "postgres",
+        "password": "see keys.json",
+        "host": "localhost",
+        "port": "5432"
+    },
+    "primary database": "stocks",
+    "test database": "test"
+}
