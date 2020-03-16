@@ -4,8 +4,8 @@
         "username": "postgres",
         "password": "see keys.json",
         "host": "localhost",
-        "port": "5432"
+        "port": "5433"
     },
     "primary database": "stocks",
-    "test database": "test"
+    "test database": "stocks_test"
 }
