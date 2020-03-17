@@ -1,7 +1,7 @@
 import psycopg2
 
 
-def connect(username, password, host, port, database):
+def connect(username, password, host, port, database=None):
     try:
         connection = psycopg2.connect(user=username,
                                       password=password,
@@ -26,14 +26,27 @@ def close_connection(connection, cursor=None):
 
 
 def get_version(cursor):
-    query = "SELECT version();"
+    query = 'SELECT version();'
     run_query(cursor, query)
     record = cursor.fetchone()
-    print("You are connected to - ", record, "\n")
+    print('You are connected to - ', record, '\n')
+    return record
 
 
-def create_database():
-    raise NotImplementedError
+def create_database(cursor, name):
+    query = f'CREATE DATABASE {name}'
+    result = run_query(cursor, query)
+    if result:
+        print(f'Created database: {name}')
+    else:
+        print(f'Failed to create database {name}')
+    return result
+
+
+def delete_database(cursor, name):
+    query = f'DROP DATABASE IF EXISTS {name}'
+    run_query(cursor, query)
+    print(f'Deleted database: {name}')
 
 
 def create_table():
