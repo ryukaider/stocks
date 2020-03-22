@@ -49,12 +49,22 @@ def delete_database(cursor, name):
     print(f'Deleted database: {name}')
 
 
-def create_table():
-    raise NotImplementedError
+def create_table(cursor, table_name, columns):
+    query = f'CREATE TABLE {table_name} ('
+    for column_name, column_type in columns.items():
+        query += f'{column_name} {column_type},'
+    query = query.strip(',')
+    query += ');'
+    return run_query(cursor, query)
 
 
-def add_column(cursor, table, column, typeName):
-    query = f'ALTER TABLE {table} ADD COLUMN "{column}" {typeName};'
+def delete_table(cursor, table_name):
+    query = f'DROP TABLE IF EXISTS {table_name}'
+    return run_query(cursor, query)
+
+
+def add_column(cursor, table, column_name, column_type='varchar'):
+    query = f'ALTER TABLE {table} ADD COLUMN "{column_name}" {column_type};'
     return run_query(cursor, query)
 
 
@@ -63,27 +73,25 @@ def delete_column(cursor, table, column):
     return run_query(cursor, query)
 
 
+def insert_row(cursor, table, columns, values):
+    query = f'INSERT INTO {table} {columns} VALUES {values};'
+    return run_query(cursor, query)
+
+
 def insert_row_dict(cursor, table, dictionary):
     columns = '('
     values = '('
     for key, value in dictionary.items():
         columns += str(key) + ','
-        values += '"' + str(value) + '",'
+        values += "'" + str(value) + "',"
     columns = columns.strip(',') + ')'
     values = values.strip(',') + ')'
     query = f'INSERT INTO {table} {columns} VALUES {values};'
-    success = run_query(cursor, query)
-    return success
+    return run_query(cursor, query)
 
 
-def insert_row(cursor, table, columns, values):
-    query = f'INSERT INTO {table} {columns} VALUES {values};'
-    success = run_query(cursor, query)
-    return success
-
-
-def update_row(cursor, table, searchColumn, searchValue, setColumn, setValue):
-    query = f'UPDATE {table} SET {setColumn} = {setValue} WHERE {searchColumn} = {searchValue}'
+def update_row(cursor, table, search_column, search_value, set_column, set_value):
+    query = f'UPDATE {table} SET {set_column} = {set_value} WHERE {search_column} = {search_value}'
     success = run_query(cursor, query)
     if success:
         print(f'Successfully updated row into table {table}')

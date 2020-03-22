@@ -3,14 +3,8 @@ import sys
 sys.path.append(os.path.join(sys.path[0], '..', '..'))
 import pytest
 from database import postgres
-from utilities import utilities
 from utilities import json_utilities
 from utilities import random_utilities
-
-test_database = 'test'
-test_table = 'sandbox'
-test_column = 'test'
-test_column_type = 'text'
 
 database_config_path = os.path.join(sys.path[0], '..', '..', '..', 'config', 'database.json')
 keys_config_path = os.path.join(sys.path[0], '..', '..', '..', 'config', 'keys.json')
@@ -48,6 +42,14 @@ def cursor():
     cursor = connection.cursor()
     yield cursor
     postgres.close_connection(connection, cursor)
+
+
+@pytest.fixture
+def table_name(cursor):
+    table_name = 'test'
+    columns = {'id': 'varchar(10) PRIMARY KEY'}
+    postgres.create_table(cursor, table_name, columns)
+    return table_name
 
 
 def _get_connection_to_server():
@@ -119,63 +121,84 @@ def test_create_database_invalid_name():
     postgres.delete_database(cursor, name)
 
 
-@pytest.mark.skip
-def test_create_table():
-    with pytest.raises(NotImplementedError):
-        postgres.create_table()
-
-
-@pytest.mark.skip
-def test_add_column(cursor):
-    column = utilities.random_string()
-    assert postgres.add_column(cursor, test_table, column, test_column_type)
-    postgres.delete_column(cursor, test_table, column)
-
-
-@pytest.mark.skip
-def test_add_column_invalid(cursor):
-    assert postgres.add_column(cursor, test_table, None, None) == False
-
-
-@pytest.mark.skip
-def test_delete_column(cursor):
-    column = utilities.random_string()
-    postgres.add_column(cursor, test_table, column, test_column_type)
-    assert postgres.delete_column(cursor, test_table, column)
-
-
-@pytest.mark.skip
-def test_delete_column_invalid(cursor):
-    assert postgres.delete_column(cursor, test_table, None) == False
-
-
-@pytest.mark.skip
-def test_insert_row(cursor):
-    columns = f'({test_column})'
-    values = f"('{utilities.random_string}')"
-    assert postgres.insert_row(cursor, test_table, columns, values)
-
-
-@pytest.mark.skip
-def test_insert_row_invalid(cursor):
-    columns = f'(invalid)'
-    values = f"('{utilities.random_string}')"
-    assert postgres.insert_row(cursor, test_table, columns, values) == False
-
-
-@pytest.mark.skip
-def test_insert_row_dict(cursor):
-    values = {
-        'a': 'test',
-        'b': 1
-    }
-    assert postgres.insert_row_dict(cursor, test_table, values)
-
-
-"""
-def test_update_row(cursor):
-    column = utilities.random_string
-    postgres.insert_row(cursor, test_table, )
-    postgres.update_row(cursor, test_table, test_column, )
+@pytest.mark.skip('tested in create database case')
+def delete_database():
     pass
-"""
+
+
+def test_create_table_no_columns(cursor):
+    with pytest.raises(Exception):
+        postgres.create_table(cursor, 'test', None)
+
+
+def test_create_table_one_column(cursor):
+    table_name = random_utilities.random_letters()
+    columns = {'id': 'varchar(10) PRIMARY KEY'}
+    assert postgres.create_table(cursor, table_name, columns) is True
+    postgres.delete_table(cursor, table_name)
+
+
+@pytest.mark.skip('tested in create table case')
+def delete_database():
+    pass
+
+
+def test_add_column(cursor, table_name):
+    column_name = random_utilities.random_letters()
+    assert postgres.add_column(cursor, table_name, column_name) is True
+    postgres.delete_column(cursor, table_name, column_name)
+
+
+def test_add_column_invalid(cursor, table_name):
+    assert postgres.add_column(cursor, table_name, None, None) == False
+
+
+def test_delete_column(cursor, table_name):
+    column_name = random_utilities.random_letters()
+    postgres.add_column(cursor, table_name, column_name)
+    assert postgres.delete_column(cursor, table_name, column_name) is True
+
+
+def test_delete_column_invalid(cursor, table_name):
+    assert postgres.delete_column(cursor, table_name, None) is False
+
+
+def test_insert_row(cursor, table_name):
+    columns = '(id)'
+    values = f"('{random_utilities.random_letters()}')"
+    assert postgres.insert_row(cursor, table_name, columns, values) is True
+
+
+def test_insert_row_invalid(cursor, table_name):
+    columns = f'(invalid)'
+    values = f"('{random_utilities.random_letters()}')"
+    assert postgres.insert_row(cursor, table_name, columns, values) is False
+
+
+def test_insert_row_dict(cursor, table_name):
+    values = {
+        'id': random_utilities.random_letters(10)
+    }
+    assert postgres.insert_row_dict(cursor, table_name, values) is True
+
+
+def test_insert_row_dict_invalid(cursor, table_name):
+    values = {
+        'invalid': random_utilities.random_letters(10)
+    }
+    assert postgres.insert_row_dict(cursor, table_name, values) is False
+
+
+def test_update_row(cursor, table_name):
+    column = 'id'
+    columns = f'({column})'
+    value = random_utilities.random_letters()
+    values = f"('{value}')"
+    postgres.insert_row(cursor, table_name, columns, values)
+    new_value = f"('{random_utilities.random_letters()}')"
+    assert postgres.update_row(cursor, table_name, column, values, column, new_value) is True
+
+
+def test_update_row_invalid(cursor, table_name):
+    assert postgres.update_row(cursor, table_name, None, None, None, None) is False
+
