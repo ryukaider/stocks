@@ -19,17 +19,6 @@ def setup_once_per_class():
     postgres.create_database(cursor, database)
 
 
-# Maybe not needed?
-@pytest.fixture(autouse=False, scope="module")
-def setup_teardown():
-    connection = _get_connection_to_database()
-    cursor = connection.cursor()
-    postgres.add_column(cursor, test_table, 'a', 'text')
-    postgres.add_column(cursor, test_table, 'b', 'numeric')
-    yield
-    postgres.close_connection(connection, cursor)
-
-
 @pytest.fixture
 def connection():
     connection = _get_connection_to_database()
