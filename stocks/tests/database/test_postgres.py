@@ -1,13 +1,14 @@
-import os
-import sys
-sys.path.append(os.path.join(sys.path[0], '..', '..'))
+import os, sys
+root_path = os.path.join(os.path.dirname(__file__), '..', '..')
+sys.path.append(root_path)
 import pytest
 from database import postgres
 from utilities import json_utilities
 from utilities import random_utilities
 
-database_config_path = os.path.join(sys.path[0], '..', '..', '..', 'config', 'database.json')
-keys_config_path = os.path.join(sys.path[0], '..', '..', '..', 'config', 'keys.json')
+config_path = os.path.join(root_path, '..', 'config')
+database_config_path = os.path.join(config_path, 'database.json')
+keys_config_path = os.path.join(config_path, 'keys.json')
 
 
 @pytest.fixture(autouse=True, scope="class")
