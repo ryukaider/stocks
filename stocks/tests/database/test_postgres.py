@@ -19,6 +19,7 @@ def setup_once_per_class():
     postgres.create_database(cursor, database)
 
 
+# Maybe not needed?
 @pytest.fixture(autouse=False, scope="module")
 def setup_teardown():
     connection = _get_connection_to_database()
@@ -202,3 +203,37 @@ def test_update_row(cursor, table_name):
 def test_update_row_invalid(cursor, table_name):
     assert postgres.update_row(cursor, table_name, None, None, None, None) is False
 
+
+def test_remove_row(cursor, table_name):
+    column = 'id'
+    columns = f'({column})'
+    value = random_utilities.random_letters()
+    values = f"('{value}')"
+    postgres.insert_row(cursor, table_name, columns, values)
+    assert postgres.remove_row(cursor, table_name, column, value) is True
+
+
+def test_remove_row_invalid(cursor, table_name):
+    assert postgres.remove_row(cursor, table_name, None, None) is False
+
+
+def test_run_query(cursor, table_name):
+    query = f'SELECT * FROM {table_name}'
+    assert postgres.run_query(cursor, query) is True
+
+
+def test_run_query_invalid(cursor):
+    query = 'SELECT *'
+    assert postgres.run_query(cursor, query) is False
+
+
+def test_get_list_results(cursor, table_name):
+    query = f'SELECT * from {table_name}'
+    postgres.run_query(cursor, query)
+    results = postgres.get_list_results(cursor)
+    assert len(results) > 0
+
+
+def test_get_list_results_invalid():
+    with pytest.raises(Exception):
+        postgres.get_list_results(None)

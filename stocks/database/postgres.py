@@ -98,22 +98,12 @@ def update_row(cursor, table, search_column, search_value, set_column, set_value
     return success
 
 
-"""
-def upsert(cursor, table, columnList, valueList):
-    columns = '('
-    for column in columnList:
-        columns += column
-    query = f'INSERT INTO {table} {columns} VALUES {values} ON CONFLICT DO UPDATE SET '
-    success = run_query(cursor, query)
-    return success
-"""
-
-
 def remove_row(cursor, table, column, value):
     query = f"DELETE FROM {table} WHERE {column} = '{value}';"
     success = run_query(cursor, query)
     if success:
         print(f'Successfully removed {cursor.rowcount} row(s) from table {table}')
+    return success
 
 
 def run_query(cursor, query):
