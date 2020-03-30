@@ -33,6 +33,12 @@ def get_version(cursor):
     return record
 
 
+def database_exists(cursor, database_name):
+    query = f"SELECT datname FROM pg_catalog.pg_database WHERE datname = '{database_name}';"
+    run_query(cursor, query)
+    return bool(cursor.rowcount)
+
+
 def create_database(cursor, name):
     query = f'CREATE DATABASE {name}'
     result = run_query(cursor, query)

@@ -1,21 +1,22 @@
 import os, sys
-root_path = os.path.join(os.path.dirname(__file__), '..')
-sys.path.append(root_path)
+_root_path = os.path.join(os.path.dirname(__file__), '..')
+sys.path.append(_root_path)
+
 import psycopg2.extras
 from database import postgres
-from utilities import json_utilities
+from config import database_config
+from config import keys_config
 
-database_config_path = os.path.join(sys.path[0], '..', '..', '..', 'config', 'database.json')
-keys_config_path = os.path.join(sys.path[0], '..', '..', '..', 'config', 'keys.json')
+username = database_config.username
+host = database_config.host
+port = database_config.port
+database = database_config.database
+password = keys_config.database_password
 
-username = json_utilities.read_json_file(database_config_path)['server']['username']
-password = json_utilities.read_json_file(keys_config_path)['database_password']
-host = json_utilities.read_json_file(database_config_path)['server']['host']
-port = json_utilities.read_json_file(database_config_path)['server']['port']
-database = json_utilities.read_json_file(database_config_path)['primary database']
 
-connection = postgres.connect(username, password, host, port, database)
-cursor = connection.cursor(cursor_factory = psycopg2.extras.DictCursor)
-
-if __name__ == "__main__":
-    pass
+def get_cursor():
+    connection = postgres.connect(username, password, host, port)
+    cursor = connection.cursor(cursor_factory = psycopg2.extras.DictCursor)
+    if not postgres.database_exists(cursor, database):
+        postgres.create_database(cursor, database)
+    return connection

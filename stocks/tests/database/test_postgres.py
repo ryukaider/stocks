@@ -1,14 +1,12 @@
 import os, sys
 root_path = os.path.join(os.path.dirname(__file__), '..', '..')
 sys.path.append(root_path)
+
 import pytest
 from database import postgres
-from utilities import json_utilities
 from utilities import random_utilities
-
-config_path = os.path.join(root_path, '..', 'config')
-database_config_path = os.path.join(config_path, 'database.json')
-keys_config_path = os.path.join(config_path, 'keys.json')
+from config import database_config
+from config import keys_config
 
 
 @pytest.fixture(autouse=True, scope="class")
@@ -16,7 +14,7 @@ def setup_once_per_class():
     print('Setup: Once per class')
     connection = _get_connection_to_server()
     cursor = connection.cursor()
-    database = json_utilities.read_json_file(database_config_path)['test database']
+    database = database_config.database
     postgres.create_database(cursor, database)
 
 
@@ -45,20 +43,20 @@ def table_name(cursor):
 
 def _get_connection_to_server():
     return postgres.connect(
-        username=json_utilities.read_json_file(database_config_path)['server']['username'],
-        password=json_utilities.read_json_file(keys_config_path)['database_password'],
-        host=json_utilities.read_json_file(database_config_path)['server']['host'],
-        port=json_utilities.read_json_file(database_config_path)['server']['port']
+        username=database_config.username,
+        password=keys_config.database_password,
+        host=database_config.host,
+        port=database_config.port
     )
 
 
 def _get_connection_to_database():
     return postgres.connect(
-        username=json_utilities.read_json_file(database_config_path)['server']['username'],
-        password=json_utilities.read_json_file(keys_config_path)['database_password'],
-        host=json_utilities.read_json_file(database_config_path)['server']['host'],
-        port=json_utilities.read_json_file(database_config_path)['server']['port'],
-        database=json_utilities.read_json_file(database_config_path)['test database']
+        username=database_config.username,
+        password=keys_config.database_password,
+        host=database_config.host,
+        port=database_config.port,
+        database=database_config.database
     )
 
 
@@ -93,6 +91,15 @@ def test_close_connection_invalid_connection():
 def test_get_version(cursor):
     version = postgres.get_version(cursor)
     assert version is not None
+
+
+def test_database_exists(cursor):
+    assert postgres.database_exists(cursor, 'postgres') is True
+
+
+def test_database_doesnt_exist(cursor):
+    database_name = random_utilities.random_letters()
+    assert postgres.database_exists(cursor, database_name) is False
 
 
 @pytest.mark.skip('slow test')
