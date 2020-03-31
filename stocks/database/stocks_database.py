@@ -18,4 +18,4 @@ def get_cursor():
     cursor = connection.cursor(cursor_factory = psycopg2.extras.DictCursor)
     if not postgres.database_exists(cursor, database):
         postgres.create_database(cursor, database)
-    return connection
+    return cursor
