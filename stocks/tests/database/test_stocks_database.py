@@ -7,6 +7,10 @@ import psycopg2.extras
 from database import stocks_database
 
 
+def database_name_exists():
+    assert stocks_database.database is not None
+    
+
 def test_exists():
     assert stocks_database.exists() is True
 
