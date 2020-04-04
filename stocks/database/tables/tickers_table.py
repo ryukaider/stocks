@@ -1,14 +1,16 @@
 import os, sys
-_root_path = os.path.join(os.path.dirname(__file__), '..')
+_root_path = os.path.join(os.path.dirname(__file__), '..', '..')
 sys.path.append(_root_path)
 
 from database import postgres
 from database import stocks_database
 
+table_name = 'tickers'
+columns = {'ticker': 'varchar'}
 
 def create():
-    
-    postgres.create_table()
+    cursor = stocks_database.get_cursor()
+    return postgres.create_table(cursor, table_name, columns)
 
 
 def get_tickers():

@@ -48,7 +48,6 @@ def create_database(cursor, name):
         print(f'Failed to create database {name}')
     return result
 
-
 def delete_database(cursor, name):
     query = f'DROP DATABASE IF EXISTS {name}'
     run_query(cursor, query)
