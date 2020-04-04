@@ -8,15 +8,26 @@ from database import stocks_database
 table_name = 'tickers'
 columns = {'ticker': 'varchar'}
 
+cursor = stocks_database.get_cursor()
+
+
+def exists():
+    return postgres.table_exists(cursor, table_name)
+
+
 def create():
-    cursor = stocks_database.get_cursor()
-    return postgres.create_table(cursor, table_name, columns)
+    if not exists():
+        return postgres.create_table(cursor, table_name, columns)
+    return exists()
 
 
 def get_tickers():
-    query = 'SELECT ticker FROM current_data ORDER BY ticker ASC'
-    postgres.run_query(stocks_database.cursor, query)
-    return postgres.get_list_results(stocks_database.cursor)
+    query = f'SELECT ticker FROM {table_name} ORDER BY ticker ASC'
+    postgres.run_query(cursor, query)
+    return postgres.get_list_results(cursor)
+
+
+create()
 
 
 if __name__ == "__main__":
