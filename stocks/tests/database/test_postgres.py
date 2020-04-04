@@ -124,6 +124,15 @@ def delete_database():
     pass
 
 
+def test_table_doesnt_exist(cursor):
+    table_name = "doesntexist"
+    assert postgres.table_exists(cursor, table_name) is False
+
+
+def test_table_exists(cursor, table_name):
+    assert postgres.table_exists(cursor, table_name) is True
+
+
 def test_create_table_no_columns(cursor):
     with pytest.raises(Exception):
         postgres.create_table(cursor, 'test', None)

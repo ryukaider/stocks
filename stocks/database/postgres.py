@@ -54,6 +54,13 @@ def delete_database(cursor, name):
     print(f'Deleted database: {name}')
 
 
+def table_exists(cursor, table_name):
+    query = f"SELECT to_regclass('{table_name}');"
+    run_query(cursor, query)
+    result = cursor.fetchone()[0]
+    return result == table_name
+
+
 def create_table(cursor, table_name, columns):
     query = f'CREATE TABLE {table_name} ('
     for column_name, column_type in columns.items():
