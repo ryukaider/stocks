@@ -35,38 +35,38 @@ def add_monthly_data(monthly_data):
 
 
 def add_monthly_row(monthly_row):
-    if not postgres.insert_row(stocks_database.cursor, table_name, '(ticker, date, price, dividend)',
+    if not postgres.insert_row(cursor, table_name, '(ticker, date, price, dividend)',
         f"('{monthly_row['ticker']}','{monthly_row['date']}','{monthly_row['price']}','{monthly_row['dividend']}')"):
         update_query = f"UPDATE {table_name} SET price = '{monthly_row['price']}' WHERE ticker = '{monthly_row['ticker']}' AND date = '{monthly_row['date']}'"
-        postgres.run_query(stocks_database.cursor, update_query)
+        postgres.run_query(cursor, update_query)
 
 
 def get_history(ticker):
     query = f"SELECT * FROM {table_name} WHERE ticker = '{ticker}' ORDER BY date DESC"
-    postgres.run_query(stocks_database.cursor, query)
-    data = stocks_database.cursor.fetchall()
+    postgres.run_query(cursor, query)
+    data = cursor.fetchall()
     return data
 
 
 def get_date_dividend(ticker):
     query = f"SELECT date,dividend FROM {table_name} WHERE ticker = '{ticker}' ORDER BY date DESC"
-    postgres.run_query(stocks_database.cursor, query)
-    data = stocks_database.cursor.fetchall()
+    postgres.run_query(cursor, query)
+    data = cursor.fetchall()
     return data
 
 
 def get_dividend_ttm(ticker):
     query = f"SELECT dividend FROM {table_name} WHERE ticker = '{ticker}' ORDER BY date DESC LIMIT 12"
-    postgres.run_query(stocks_database.cursor, query)
-    dividends = postgres.get_list_results(stocks_database.cursor)
+    postgres.run_query(cursor, query)
+    dividends = postgres.get_list_results(cursor)
     return dividends
 
 
 def get_latest_price(ticker):
     query = f"SELECT price FROM {table_name} WHERE ticker = '{ticker}' ORDER BY date DESC LIMIT 1"
-    postgres.run_query(stocks_database.cursor, query)
+    postgres.run_query(cursor, query)
     try:
-        price = postgres.get_list_results(stocks_database.cursor)[0]
+        price = postgres.get_list_results(cursor)[0]
         return price
     except:
         return None
