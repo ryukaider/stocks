@@ -183,10 +183,22 @@ def test_insert_row_invalid(cursor, table_name):
 
 
 def test_insert_row_dict(cursor, table_name):
-    values = {
-        'id': random_utilities.random_letters(10)
-    }
+    values = {'id': random_utilities.random_letters(10)}
     assert postgres.insert_row_dict(cursor, table_name, values) is True
+
+
+def test_insert_row_dict_apostrophe(cursor, table_name):
+    value = "test'apo"
+    values = {'id': value}
+    assert postgres.insert_row_dict(cursor, table_name, values) is True
+    postgres.remove_row(cursor, table_name, 'id', value)
+
+
+def test_insert_row_dict_numbers(cursor, table_name):
+    value = '101'
+    values = {'id': value}
+    assert postgres.insert_row_dict(cursor, table_name, values) is True
+    postgres.remove_row(cursor, table_name, 'id', value)
 
 
 def test_insert_row_dict_invalid(cursor, table_name):

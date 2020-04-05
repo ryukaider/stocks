@@ -95,6 +95,7 @@ def insert_row_dict(cursor, table, dictionary):
     values = '('
     for key, value in dictionary.items():
         columns += str(key) + ','
+        value = value.replace("'", "''")
         values += "'" + str(value) + "',"
     columns = columns.strip(',') + ')'
     values = values.strip(',') + ')'
