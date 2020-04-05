@@ -24,6 +24,6 @@ def test_get_all_stocks():
 def assert_stocks(stocks):
     assert len(stocks) > 0
     for stock in stocks:
-        assert stock['ticker'] is not None
-        assert stock['exchange'] is not None
-        assert stock['name'] is not None
+        assert stock.ticker is not None
+        assert stock.exchange is not None
+        assert stock.name is not None
