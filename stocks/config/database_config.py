@@ -11,3 +11,4 @@ username = json_utilities.read_json_file(_database_config_path)['server']['usern
 host = json_utilities.read_json_file(_database_config_path)['server']['host']
 port = json_utilities.read_json_file(_database_config_path)['server']['port']
 database = json_utilities.read_json_file(_database_config_path)['primary database']
+test_database = json_utilities.read_json_file(_database_config_path)['test database']

@@ -56,7 +56,7 @@ def _get_connection_to_database():
         password=keys_config.database_password,
         host=database_config.host,
         port=database_config.port,
-        database=database_config.database
+        database=database_config.test_database
     )
 
 
