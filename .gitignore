@@ -7,4 +7,4 @@ __pycache__/
 
 .coverage
 
-keys.json
+keys_config.json
