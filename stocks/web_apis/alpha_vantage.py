@@ -1,8 +1,13 @@
+import os, sys
+root_path = os.path.join(os.path.dirname(__file__), '..')
+sys.path.append(root_path)
+
 import requests
-import json
+from config import keys_config
 
 base_url = 'https://www.alphavantage.co/query?'
-api_key = ''
+api_key = keys_config.alpha_vantage_api_key
+
 
 def get_monthly_data(ticker):
     print(f'Getting Alpha Vantage monthly data for {ticker}')
@@ -17,6 +22,7 @@ def get_monthly_data(ticker):
         print(error)
         return None
 
+
 def get_dividend(response):
     dividends = {}
     monthly_data = response['Monthly Adjusted Time Series']
@@ -26,10 +32,6 @@ def get_dividend(response):
         dividends[month] = dividend
     return dividends
 
+
 def get_query(function, ticker):
     return f'{base_url}function={function}&symbol={ticker}&apikey={api_key}'
-
-def read_json_file():
-    with open("stock_data/web_apis/example.json", "r") as json_file:
-        data = json.load(json_file)
-    return data
