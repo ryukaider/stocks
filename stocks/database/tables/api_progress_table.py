@@ -73,4 +73,3 @@ def get_incomplete_stocks(column):
 
 
 create()
-reset_all()
