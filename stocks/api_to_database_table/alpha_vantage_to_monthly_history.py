@@ -1,5 +1,6 @@
-import sys
-sys.path.append('E:/Google Drive/Computers/Dev/Stocks/scott_stocks')
+import os, sys
+_root_path = os.path.join(os.path.dirname(__file__), '..')
+sys.path.append(_root_path)
 
 import time
 from enum import Enum
@@ -7,11 +8,13 @@ from web_apis import alpha_vantage
 from database.tables import monthly_history_table
 from database.tables import api_progress_table
 
+
 class Status(Enum):
     Success = 0
     Failed = 1
     Invalid = 2
     API_Limit = 3
+
 
 def update():
     tickers = api_progress_table.get_incomplete_stocks('monthly')
@@ -27,6 +30,7 @@ def update():
         if status == Status.API_Limit:
             print('Stopping due to reaching APi limit')
             break
+
 
 def add_monthly_data_to_database(ticker):
     raw_data = alpha_vantage.get_monthly_data(ticker)
@@ -59,6 +63,7 @@ def add_monthly_data_to_database(ticker):
         print(row)
     monthly_history_table.add_monthly_data(converted_data)
     return Status.Success
+
 
 if __name__ == "__main__":
     update()
