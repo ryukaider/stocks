@@ -129,13 +129,19 @@ def test_table_doesnt_exist(cursor):
     assert postgres.table_exists(cursor, table_name) is False
 
 
+def test_table_exists_none(cursor):
+    table_name = None
+    assert postgres.table_exists(cursor, table_name) is False
+
+
 def test_table_exists(cursor, table_name):
     assert postgres.table_exists(cursor, table_name) is True
 
 
 def test_create_table_no_columns(cursor):
-    with pytest.raises(Exception):
-        postgres.create_table(cursor, 'test', None)
+    table_name = random_utilities.random_letters_lowercase()
+    assert postgres.create_table(cursor, table_name, None)
+    postgres.delete_table(cursor, table_name)
 
 
 def test_create_table_one_column(cursor):

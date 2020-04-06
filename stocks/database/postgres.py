@@ -58,14 +58,15 @@ def table_exists(cursor, table_name):
     query = f"SELECT to_regclass('{table_name}');"
     run_query(cursor, query)
     result = cursor.fetchone()[0]
-    return result == table_name
+    return result == table_name and result is not None
 
 
-def create_table(cursor, table_name, columns):
+def create_table(cursor, table_name, columns=None):
     query = f'CREATE TABLE {table_name} ('
-    for column_name, column_type in columns.items():
-        query += f'{column_name} {column_type},'
-    query = query.strip(',')
+    if columns is not None:
+        for column_name, column_type in columns.items():
+            query += f'{column_name} {column_type},'
+        query = query.strip(',')
     query += ');'
     return run_query(cursor, query)
 
