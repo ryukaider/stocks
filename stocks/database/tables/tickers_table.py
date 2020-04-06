@@ -6,7 +6,11 @@ from database import postgres
 from database import stocks_database
 
 table_name = 'tickers'
-columns = {'ticker': 'varchar PRIMARY KEY', 'exchange': 'varchar', 'name': 'varchar'}
+columns = {
+    'ticker': 'varchar PRIMARY KEY',
+    'exchange': 'varchar',
+    'name': 'varchar'
+}
 
 cursor = stocks_database.get_cursor()
 
