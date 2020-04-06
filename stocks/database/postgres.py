@@ -95,7 +95,7 @@ def insert_row_dict(cursor, table, dictionary):
     values = '('
     for key, value in dictionary.items():
         columns += str(key) + ','
-        value = value.replace("'", "''")
+        value = _escape_apostrophes(value)
         values += "'" + str(value) + "',"
     columns = columns.strip(',') + ')'
     values = values.strip(',') + ')'
@@ -112,6 +112,7 @@ def update_row(cursor, table, search_column, search_value, set_column, set_value
 
 
 def remove_row(cursor, table, column, value):
+    value = _escape_apostrophes(value)
     query = f"DELETE FROM {table} WHERE {column} = '{value}';"
     success = run_query(cursor, query)
     if success:
@@ -135,3 +136,9 @@ def get_list_results(cursor):
     for row in rows:
         items.append(row[0])
     return items
+
+
+def _escape_apostrophes(text):
+    if text is not None:
+        text = text.replace("'", "''")
+    return text
