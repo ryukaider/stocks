@@ -3,7 +3,7 @@ _root_path = os.path.join(os.path.dirname(__file__), '..', '..', '..')
 sys.path.append(_root_path)
 
 import pytest
-from database.tables.tickers_table_class import TickersTable
+from database.tables.tickers_table import TickersTable
 from stock import Stock
 from utilities import random_utilities
 
