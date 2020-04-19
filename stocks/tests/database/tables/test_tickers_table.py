@@ -8,33 +8,33 @@ from stock import Stock
 from utilities import random_utilities
 
 table_name = 'test_tickers'
-table = TickersTable(table_name)
+tickers_table = TickersTable(table_name)
 
 
 def test_exists():
-    assert table.exists() is True
+    assert tickers_table.exists() is True
 
 
 def test_create():
-    assert table.create() is True
+    assert tickers_table.create() is True
 
 
 def test_add_remove_stock():
     stock = create_random_stock()
-    assert table.add_stock(stock) is True
-    assert table.remove_stock(stock) is True
+    assert tickers_table.add_stock(stock) is True
+    assert tickers_table.remove_stock(stock) is True
 
 
 def test_add_remove_stocks():
     stocks = []
     stocks.append(create_random_stock())
     stocks.append(create_random_stock())
-    assert table.add_stocks(stocks) is True
-    assert table.remove_stocks(stocks) is True
+    assert tickers_table.add_stocks(stocks) is True
+    assert tickers_table.remove_stocks(stocks) is True
 
 
 def test_get_tickers():
-    assert table.get_tickers() is not None
+    assert tickers_table.get_tickers() is not None
 
 
 def create_random_stock():
