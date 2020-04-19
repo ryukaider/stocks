@@ -7,7 +7,7 @@ from database.tables.tickers_table import TickersTable
 from stock import Stock
 from utilities import random_utilities
 
-table_name = 'testtickerstable'
+table_name = 'test_tickers'
 table = TickersTable(table_name)
 
 
