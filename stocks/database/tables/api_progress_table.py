@@ -1,10 +1,7 @@
-import os, sys
-_root_path = os.path.join(os.path.dirname(__file__), '..', '..')
-sys.path.append(_root_path)
-
 from database import postgres
 from database.tables.table import Table
 from database.tables.tickers_table import TickersTable
+
 
 class ApiProgressTable(Table):
 
