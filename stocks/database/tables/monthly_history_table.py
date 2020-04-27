@@ -11,6 +11,7 @@ class MonthlyHistoryTable(Table):
         'UNIQUE': '(ticker, date)'
     }
 
+
     def __init__(self, table_name='monthly_history'):
         Table.__init__(self, table_name)
 

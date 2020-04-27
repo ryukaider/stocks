@@ -1,36 +1,49 @@
-import sys
-sys.path.append('E:/Google Drive/Computers/Dev/Stocks/scott_stocks')
-
 from database import postgres
-from database import stocks_database
+from database.tables.table import Table
 
-table = 'yearly_history'
+class YearlyHistoryTable(Table):
 
-def update_end_price(ticker, year, price):
-    if not postgres.insert_row(stocks_database.cursor, table, '(ticker,year,end_price)', f"('{ticker}',{year},{price})"):
-        update_query = f"UPDATE {table} SET end_price = {price} WHERE ticker = '{ticker}' AND year = {year}"
-        postgres.run_query(stocks_database.cursor, update_query)
+    columns = {
+        'ticker': 'text NOT NULL',
+        'year': 'numeric NOT NULL',
+        'end_price': 'double precision',
+        'average_price': 'double precision',
+        'dividend': 'double precision',
+        'dividend_yield': 'double precision',
+        'UNIQUE': '(ticker, year)'
+    }
 
-def update_average_price(ticker, year, price):
-    if not postgres.insert_row(stocks_database.cursor, table, '(ticker,year,average_price)', f"('{ticker}',{year},{price})"):
-        update_query = f"UPDATE {table} SET average_price = {price} WHERE ticker = '{ticker}' AND year = {year}"
-        postgres.run_query(stocks_database.cursor, update_query)
 
-def update_dividend(ticker, year, dividend):
-    if not postgres.insert_row(stocks_database.cursor, table, '(ticker,year,dividend)', f"('{ticker}',{year},{dividend})"):
-        update_query = f"UPDATE {table} SET dividend = {dividend} WHERE ticker = '{ticker}' AND year = {year}"
-        postgres.run_query(stocks_database.cursor, update_query)
+    def __init__(self, table_name='yearly_history'):
+        Table.__init__(self, table_name)
 
-def update_dividend_yield(ticker, year, dividend_yield):
-    if not postgres.insert_row(stocks_database.cursor, table, '(ticker,year,dividend_yield)', f"('{ticker}',{year},{dividend_yield})"):
-        update_query = f"UPDATE {table} SET dividend_yield = {dividend_yield} WHERE ticker = '{ticker}' AND year = {year}"
-        postgres.run_query(stocks_database.cursor, update_query)
 
-def get_data(ticker):
-    query = f"SELECT * FROM {table} WHERE ticker = '{ticker}' ORDER BY year DESC"
-    postgres.run_query(stocks_database.cursor, query)
-    data = stocks_database.cursor.fetchall()
-    return data
+    def update_end_price(self, ticker, year, price):
+        if not postgres.insert_row(self.cursor, self.table_name, '(ticker,year,end_price)', f"('{ticker}',{year},{price})"):
+            update_query = f"UPDATE {self.table_name} SET end_price = {price} WHERE ticker = '{ticker}' AND year = {year}"
+            postgres.run_query(self.cursor, update_query)
 
-if __name__ == "__main__":
-    update_dividend('MSFT', 2019, 0)
+
+    def update_average_price(self, ticker, year, price):
+        if not postgres.insert_row(self.cursor, self.table_name, '(ticker,year,average_price)', f"('{ticker}',{year},{price})"):
+            update_query = f"UPDATE {self.table_name} SET average_price = {price} WHERE ticker = '{ticker}' AND year = {year}"
+            postgres.run_query(self.cursor, update_query)
+
+
+    def update_dividend(self, ticker, year, dividend):
+        if not postgres.insert_row(self.cursor, self.table_name, '(ticker,year,dividend)', f"('{ticker}',{year},{dividend})"):
+            update_query = f"UPDATE {self.table_name} SET dividend = {dividend} WHERE ticker = '{ticker}' AND year = {year}"
+            postgres.run_query(self.cursor, update_query)
+
+
+    def update_dividend_yield(self, ticker, year, dividend_yield):
+        if not postgres.insert_row(self.cursor, self.table_name, '(ticker,year,dividend_yield)', f"('{ticker}',{year},{dividend_yield})"):
+            update_query = f"UPDATE {self.table_name} SET dividend_yield = {dividend_yield} WHERE ticker = '{ticker}' AND year = {year}"
+            postgres.run_query(self.cursor, update_query)
+
+
+    def get_data(self, ticker):
+        query = f"SELECT * FROM {self.table_name} WHERE ticker = '{ticker}' ORDER BY year DESC"
+        postgres.run_query(self.cursor, query)
+        data = self.cursor.fetchall()
+        return data
