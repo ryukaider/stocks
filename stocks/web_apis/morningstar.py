@@ -1,15 +1,18 @@
-import sys
-sys.path.append('E:/Google Drive/Computers/Dev/Stocks/scott_stocks')
+import os, sys
+root_path = os.path.join(os.path.dirname(__file__), '..')
+sys.path.append(root_path)
 
 import requests
 import json
-from database.tables import current_data
+from database.tables.current_data_table import CurrentDataTable
 
 base_url = 'https://www.morningstar.com/stocks/'
+current_data_table = CurrentDataTable()
+
 
 def get_financial_data(ticker):
     function = 'financials'
-    exchange = current_data.get_exchange(ticker)
+    exchange = current_data_table.get_exchange(ticker)
     exchange = _convert_exchange(exchange)
     ticker = ticker.lower()
     query = _get_query(exchange, ticker, function)
@@ -23,9 +26,11 @@ def get_financial_data(ticker):
         print(error)
         return None
 
+
 def _get_query(exchange, ticker, function):
     query = f'{base_url}{exchange}/{ticker}/{function}'
     return query
+
 
 def _convert_exchange(exchange):
     if exchange.lower() == 'nyse':
@@ -33,6 +38,7 @@ def _convert_exchange(exchange):
     if exchange.lower() == 'nasdaq':
         return 'xnas'
     return exchange
+
 
 if __name__ == "__main__":
     get_financial_data('MMM')

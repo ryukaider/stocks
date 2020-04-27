@@ -7,7 +7,7 @@ from database.tables.current_data_table import CurrentDataTable
 from utilities import random_utilities
 
 table_name = 'test_current_data'
-test_ticker = 'test'
+test_ticker = 'TEST'
 current_data_table = CurrentDataTable(table_name)
 
 
