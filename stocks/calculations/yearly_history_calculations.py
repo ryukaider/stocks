@@ -1,12 +1,14 @@
-import sys
-sys.path.append('E:/Google Drive/Computers/Dev/Stocks/scott_stocks')
+import os, sys
+root_path = os.path.join(os.path.dirname(__file__), '..', '..')
+sys.path.append(root_path)
 
 import datetime
-from database.tables import monthly_history
-from database.tables import yearly_history
+from database.tables import monthly_history_table
+from database.tables import yearly_history_table
+
 
 def calculate_end_of_year_price(ticker):
-    data = monthly_history.get_history(ticker)
+    data = monthly_history_table.get_history(ticker)
     prices = {}
     current_year = datetime.datetime.now().year
     index_year = current_year
@@ -20,8 +22,9 @@ def calculate_end_of_year_price(ticker):
             continue
     return prices
 
+
 def calculate_average_price(ticker):
-    data = monthly_history.get_history(ticker)
+    data = monthly_history_table.get_history(ticker)
     average_prices = {}
     current_year = datetime.datetime.now().year
     index_year = current_year
@@ -41,8 +44,9 @@ def calculate_average_price(ticker):
         index_year = row_year
     return average_prices
 
+
 def calculate_dividend(ticker):
-    data = monthly_history.get_date_dividend(ticker)
+    data = monthly_history_table.get_date_dividend(ticker)
     dividends = {}
     current_year = datetime.datetime.now().year
     index_year = 0
@@ -61,8 +65,9 @@ def calculate_dividend(ticker):
         dividend = 0
     return dividends
 
+
 def calculate_dividend_yield(ticker):
-    data = yearly_history.get_data(ticker)
+    data = yearly_history_table.get_data(ticker)
     dividend_yields = {}
     for row in data:
         try:
@@ -73,6 +78,7 @@ def calculate_dividend_yield(ticker):
         except:
             continue
     return dividend_yields
+
 
 if __name__ == "__main__":
     average_prices = calculate_dividend_yield('A')
