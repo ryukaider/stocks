@@ -1,10 +1,13 @@
 import os, sys
-root_path = os.path.join(os.path.dirname(__file__), '..', '..')
+root_path = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(root_path)
 
-from database.tables import tickers_table as tickers_table
-from database.tables import yearly_history_table
+from database.tables.tickers_table import TickersTable
+from database.tables.yearly_history_table import YearlyHistoryTable
 from calculations import yearly_history_calculations
+
+tickers_table = TickersTable()
+yearly_history_table = YearlyHistoryTable()
 
 
 def update_all():

@@ -5,8 +5,11 @@ sys.path.append(_root_path)
 import time
 from enum import Enum
 from web_apis import alpha_vantage
-from database.tables import monthly_history_table
-from database.tables import api_progress_table
+from database.tables.monthly_history_table import MonthlyHistoryTable
+from database.tables.api_progress_table import ApiProgressTable
+
+monthly_history_table = MonthlyHistoryTable()
+api_progress_table = ApiProgressTable()
 
 
 class Status(Enum):

@@ -43,11 +43,99 @@ def test_exchange():
     assert retrieved_exchange == exchange
 
 
+def test_sector():
+    sector = random_utilities.random_letters(8)
+    assert current_data_table.update_sector(test_ticker, sector)
+    retrieved_sector = current_data_table.get_sector(test_ticker)
+    assert retrieved_sector == sector
+
+
+def test_industry():
+    industry = random_utilities.random_letters(8)
+    assert current_data_table.update_industry(test_ticker, industry)
+    retrieved_industry = current_data_table.get_industry(test_ticker)
+    assert retrieved_industry == industry
+
+
+def test_ceo():
+    ceo = random_utilities.random_letters(8)
+    assert current_data_table.update_ceo(test_ticker, ceo)
+    retrieved_ceo = current_data_table.get_ceo(test_ticker)
+    assert retrieved_ceo == ceo
+
+
+def test_website():
+    website = random_utilities.random_letters(8)
+    assert current_data_table.update_website(test_ticker, website)
+    retrieved_website = current_data_table.get_website(test_ticker)
+    assert retrieved_website == website
+
+
+def test_description():
+    description = random_utilities.random_letters(8)
+    assert current_data_table.update_description(test_ticker, description)
+    retrieved_description = current_data_table.get_description(test_ticker)
+    assert retrieved_description == description
+
+
 def test_price():
     price = random_utilities.random_double()
     assert current_data_table.update_price(test_ticker, price)
     retrieved_price = current_data_table.get_price(test_ticker)
     assert retrieved_price == price
+
+
+def test_update_price_none():
+    assert current_data_table.update_price(test_ticker, price=None) is False
+
+
+def test_change():
+    change = random_utilities.random_double()
+    assert current_data_table.update_change(test_ticker, change)
+    retrieved_change = current_data_table.get_change(test_ticker)
+    assert retrieved_change == change
+
+
+def test_change_percent():
+    change_percent = random_utilities.random_double()
+    assert current_data_table.update_change_percent(test_ticker, change_percent)
+    retrieved_change_percent = current_data_table.get_change_percent(test_ticker)
+    assert retrieved_change_percent == change_percent
+
+
+def test_beta():
+    beta = random_utilities.random_double()
+    assert current_data_table.update_beta(test_ticker, beta)
+    retrieved_beta = current_data_table.get_beta(test_ticker)
+    assert retrieved_beta == beta
+
+
+def test_range():
+    price_range = random_utilities.random_letters()
+    assert current_data_table.update_range(test_ticker, price_range)
+    retrieved_price_range = current_data_table.get_range(test_ticker)
+    assert retrieved_price_range == price_range
+
+
+def test_volume():
+    volume = random_utilities.random_double()
+    assert current_data_table.update_volume(test_ticker, volume)
+    retrieved_volume = current_data_table.get_volume(test_ticker)
+    assert retrieved_volume == volume
+
+
+def test_market_cap():
+    market_cap = random_utilities.random_double()
+    assert current_data_table.update_market_cap(test_ticker, market_cap)
+    retrieved_market_cap = current_data_table.get_market_cap(test_ticker)
+    assert retrieved_market_cap == market_cap
+
+
+def test_last_dividend():
+    last_dividend = random_utilities.random_double()
+    assert current_data_table.update_last_dividend(test_ticker, last_dividend)
+    retrieved_last_dividend = current_data_table.get_last_dividend(test_ticker)
+    assert retrieved_last_dividend == last_dividend
 
 
 def test_dividend_ttm():

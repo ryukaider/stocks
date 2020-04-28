@@ -25,3 +25,8 @@ def test_get_company_profile():
     assert response['ceo'] is not None
     assert response['sector'] == 'Technology'
     assert response['image'] is not None
+
+
+def test_get_company_profile_invalid():
+    response = financial_modeling_prep.get_company_profile('invalid')
+    assert response is None

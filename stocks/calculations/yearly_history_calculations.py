@@ -1,10 +1,13 @@
 import os, sys
-root_path = os.path.join(os.path.dirname(__file__), '..', '..')
+root_path = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(root_path)
 
 import datetime
-from database.tables import monthly_history_table
-from database.tables import yearly_history_table
+from database.tables.monthly_history_table import MonthlyHistoryTable
+from database.tables.yearly_history_table import YearlyHistoryTable
+
+monthly_history_table = MonthlyHistoryTable()
+yearly_history_table = YearlyHistoryTable()
 
 
 def calculate_end_of_year_price(ticker):

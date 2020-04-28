@@ -23,12 +23,12 @@ def test_update_latest_price():
 
 @pytest.mark.skip()
 def test_update_all_rolling_annual_dividend():
-    calculations_to_current_data.update_all_rolling_annual_dividend()
+    calculations_to_current_data.update_all_dividend_ttm()
 
 
 @pytest.mark.skip()
 def test_update_rolling_annual_dividend():
-    calculations_to_current_data.update_rolling_annual_dividend()
+    calculations_to_current_data.update_dividend_ttm()
 
 
 @pytest.mark.skip()

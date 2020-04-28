@@ -7,7 +7,19 @@ class CurrentDataTable(Table):
         'ticker': 'text PRIMARY KEY NOT NULL',
         'name': 'text',
         'exchange': 'text',
-        'price': 'numeric',
+        'sector': 'text',
+        'industry': 'text',
+        'ceo': 'text',
+        'website': 'text',
+        'description': 'text',
+        'price': 'numeric(10,2)',
+        'change': 'numeric',
+        'change_percent': 'numeric',
+        'beta': 'numeric',
+        'range': 'text',
+        'volume': 'numeric',
+        'market_cap': 'numeric',
+        'last_dividend': 'numeric(5,2)',
         'dividend_ttm': 'numeric(5,2)',
         'dividend_yield': 'numeric(5,2)',
         'dividend_years': 'numeric',
@@ -34,8 +46,56 @@ class CurrentDataTable(Table):
         return self._update_row(ticker, 'exchange', f"'{exchange}'")
 
 
+    def update_sector(self, ticker, sector):
+        return self._update_row(ticker, 'sector', f"'{sector}'")
+
+
+    def update_industry(self, ticker, industry):
+        return self._update_row(ticker, 'industry', f"'{industry}'")
+
+
+    def update_ceo(self, ticker, ceo):
+        return self._update_row(ticker, 'ceo', f"'{ceo}'")
+
+
+    def update_website(self, ticker, website):
+        return self._update_row(ticker, 'website', f"'{website}'")
+
+
+    def update_description(self, ticker, description):
+        return self._update_row(ticker, 'description', f"'{description}'")
+
+
     def update_price(self, ticker, price):
         return self._update_row(ticker, 'price', price)
+
+
+    def update_change(self, ticker, change):
+        return self._update_row(ticker, 'change', change)
+
+
+    def update_change_percent(self, ticker, change_percent):
+        return self._update_row(ticker, 'change_percent', change_percent)
+
+
+    def update_beta(self, ticker, beta):
+        return self._update_row(ticker, 'beta', beta)
+
+
+    def update_range(self, ticker, price_range):
+        return self._update_row(ticker, 'range', f"'{price_range}'")
+
+
+    def update_volume(self, ticker, volume):
+        return self._update_row(ticker, 'volume', volume)
+
+
+    def update_market_cap(self, ticker, market_cap):
+        return self._update_row(ticker, 'market_cap', market_cap)
+
+
+    def update_last_dividend(self, ticker, last_dividend):
+        return self._update_row(ticker, 'last_dividend', last_dividend)
 
 
     def update_dividend_ttm(self, ticker, dividend_ttm):
@@ -77,32 +137,87 @@ class CurrentDataTable(Table):
         return self._get_value(ticker, 'exchange')
 
 
+    def get_sector(self, ticker):
+        return self._get_value(ticker, 'sector')
+
+
+    def get_industry(self, ticker):
+        return self._get_value(ticker, 'industry')
+
+
+    def get_ceo(self, ticker):
+        return self._get_value(ticker, 'ceo')
+
+
+    def get_website(self, ticker):
+        return self._get_value(ticker, 'website')
+
+
+    def get_description(self, ticker):
+        return self._get_value(ticker, 'description')
+
+
     def get_price(self, ticker):
-        return float(self._get_value(ticker, 'price'))
+        return self._get_float_Value(ticker, 'price')
+
+
+    def get_change(self, ticker):
+        return self._get_float_Value(ticker, 'change')
+
+
+    def get_change_percent(self, ticker):
+        return self._get_float_Value(ticker, 'change_percent')
+
+
+    def get_beta(self, ticker):
+        return self._get_float_Value(ticker, 'beta')
+
+
+    def get_range(self, ticker):
+        return self._get_value(ticker, 'range')
+
+
+    def get_volume(self, ticker):
+        return self._get_float_Value(ticker, 'volume')
+
+
+    def get_market_cap(self, ticker):
+        return self._get_float_Value(ticker, 'market_cap')
+
+
+    def get_last_dividend(self, ticker):
+        return self._get_float_Value(ticker, 'last_dividend')
 
 
     def get_dividend_ttm(self, ticker):
-        return float(self._get_value(ticker, 'dividend_ttm'))
+        return self._get_float_Value(ticker, 'dividend_ttm')
 
 
     def get_dividend_yield(self, ticker):
-        return float(self._get_value(ticker, 'dividend_yield'))
+        return self._get_float_Value(ticker, 'dividend_yield')
 
 
     def get_dividend_years(self, ticker):
-        return float(self._get_value(ticker, 'dividend_years'))
+        return self._get_float_Value(ticker, 'dividend_years')
 
 
     def get_dividend_years_increasing(self, ticker):
-        return float(self._get_value(ticker, 'dividend_years_increasing'))
+        return self._get_float_Value(ticker, 'dividend_years_increasing')
 
 
     def get_payout_ratio_ttm(self, ticker):
-        return float(self._get_value(ticker, 'payout_ratio_ttm'))
+        return self._get_float_Value(ticker, 'payout_ratio_ttm')
 
 
     def get_eps_ttm(self, ticker):
-        return float(self._get_value(ticker, 'eps_ttm'))
+        return self._get_float_Value(ticker, 'eps_ttm')
+
+
+    def _get_float_Value(self, ticker, column):
+        try:
+            return float(self._get_value(ticker, column))
+        except TypeError:
+            return None
 
 
     def _get_value(self, ticker, column):

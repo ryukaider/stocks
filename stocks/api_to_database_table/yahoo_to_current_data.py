@@ -3,8 +3,11 @@ _root_path = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(_root_path)
 
 from web_apis import yahoo
-from database.tables import api_progress_table
-from database.tables import current_data_table
+from database.tables.api_progress_table import ApiProgressTable
+from database.tables.current_data_table import CurrentDataTable
+
+api_progress_table = ApiProgressTable()
+current_data_table = CurrentDataTable()
 
 
 def add_all_eps_ttm():

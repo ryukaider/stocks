@@ -1,16 +1,20 @@
 import os, sys
-root_path = os.path.join(os.path.dirname(__file__), '..', '..')
+root_path = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(root_path)
 
-from database.tables import tickers_table
-from database.tables import current_data_table
-from database.tables import monthly_history_table
+from database.tables.tickers_table import TickersTable
+from database.tables.current_data_table import CurrentDataTable
+from database.tables.monthly_history_table import MonthlyHistoryTable
 from calculations import current_data_calculations
+
+tickers_table = TickersTable()
+current_data_table = CurrentDataTable()
+monthly_history_table = MonthlyHistoryTable()
 
 
 def update_all():
     update_all_latest_price()
-    update_all_rolling_annual_dividend()
+    update_all_dividend_ttm()
     update_all_dividend_yield()
     update_all_dividend_years()
     update_all_dividend_years_increasing()
@@ -28,16 +32,16 @@ def update_latest_price(ticker):
     current_data_table.update_price(ticker, price)
 
 
-def update_all_rolling_annual_dividend():
+def update_all_dividend_ttm():
     tickers = tickers_table.get_tickers()
     for ticker in tickers:
-        update_rolling_annual_dividend(ticker)
+        update_dividend_ttm(ticker)
 
 
-def update_rolling_annual_dividend(ticker):
+def update_dividend_ttm(ticker):
     dividend = current_data_calculations.calculate_dividend_ttm(ticker)
     dividend = round(dividend, 2)
-    current_data_table.update_annual_dividend(ticker, dividend)
+    current_data_table.update_dividend_ttm(ticker, dividend)
 
 
 def update_all_dividend_yield():
@@ -85,5 +89,4 @@ def update_payout_ratio_ttm(ticker):
 
 
 if __name__ == "__main__":
-    #update_all()
-    update_all_payout_ratio_ttm()
+    update_all()

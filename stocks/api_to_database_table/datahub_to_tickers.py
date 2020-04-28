@@ -3,7 +3,9 @@ _root_path = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(_root_path)
 
 from web_apis import datahub
-from database.tables import tickers_table
+from database.tables.tickers_table import TickersTable
+
+tickers_table = TickersTable()
 
 
 def add_tickers():
