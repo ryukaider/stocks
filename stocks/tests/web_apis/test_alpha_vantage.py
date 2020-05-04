@@ -1,7 +1,3 @@
-import os, sys
-root_path = os.path.join(os.path.dirname(__file__), '..', '..')
-sys.path.append(root_path)
-
 import json
 import pytest
 from web_apis import alpha_vantage

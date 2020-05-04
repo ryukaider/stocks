@@ -1,7 +1,3 @@
-import os, sys
-root_path = os.path.join(os.path.dirname(__file__), '..', '..')
-sys.path.append(root_path)
-
 import pytest
 from calculation_to_database import calculations_to_yearly_history
 

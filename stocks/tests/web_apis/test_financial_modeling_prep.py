@@ -1,8 +1,3 @@
-import os, sys
-root_path = os.path.join(os.path.dirname(__file__), '..', '..')
-sys.path.append(root_path)
-
-import pytest
 from web_apis import financial_modeling_prep
 
 

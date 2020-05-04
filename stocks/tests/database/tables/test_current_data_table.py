@@ -1,7 +1,3 @@
-import os, sys
-_root_path = os.path.join(os.path.dirname(__file__), '..', '..', '..')
-sys.path.append(_root_path)
-
 import pytest
 from database.tables.current_data_table import CurrentDataTable
 from utilities import random_utilities

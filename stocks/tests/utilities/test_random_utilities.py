@@ -1,10 +1,8 @@
-import os, sys
-root_path = os.path.join(os.path.dirname(__file__), '..', '..')
-sys.path.append(root_path)
-
-import pytest
+import os
 import string
 from utilities import random_utilities
+
+root_path = os.path.join(os.path.dirname(__file__), '..', '..')
 
 
 def test_random_string():

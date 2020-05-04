@@ -1,5 +1,4 @@
 import requests
-import json
 
 base_url = 'https://finance.yahoo.com/quote/'
 
@@ -20,7 +19,7 @@ def get_summary_data(ticker):
 
 def get_eps_ttm(ticker):
     data = get_summary_data(ticker)
-    if data == None:
+    if data is None:
         return None
     eps = _get_eps_ttm_from_response(data)
     return eps
@@ -29,9 +28,9 @@ def get_eps_ttm(ticker):
 def _get_eps_ttm_from_response(response):
     key = 'EPS (TTM)'
     end_text = '</span></td></tr>'
-    splitText = response.split(key)[1]
-    splitText = splitText.split(end_text)[0]
-    eps = splitText.split('">')[-1]
+    split_text = response.split(key)[1]
+    split_text = split_text.split(end_text)[0]
+    eps = split_text.split('">')[-1]
     if _is_number(eps):
         return eps
     else:

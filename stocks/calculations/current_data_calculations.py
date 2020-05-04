@@ -1,8 +1,3 @@
-import os, sys
-root_path = os.path.join(os.path.dirname(__file__), '..')
-sys.path.append(root_path)
-
-import datetime
 from database.tables.yearly_history_table import YearlyHistoryTable
 from database.tables.monthly_history_table import MonthlyHistoryTable
 from database.tables.current_data_table import CurrentDataTable
@@ -27,7 +22,7 @@ def calculate_dividend_yield(ticker):
     try:
         dividend_yield = (dividend / price) * 100
         return dividend_yield
-    except:
+    except Exception:
         return None
 
 
@@ -35,9 +30,9 @@ def calculate_years_of_dividends(ticker):
     data = yearly_history_table.get_data(ticker)
     years = 0
     for row in data:
-        if row['dividend'] == None and years == 0:
+        if row['dividend'] is None and years == 0:
             continue
-        if row['dividend'] == None:
+        if row['dividend'] is None:
             break
         if row['dividend'] > 0:
             years += 1
@@ -51,11 +46,11 @@ def calculate_years_of_dividends_increasing(ticker):
     years = 0
     previous_year_dividend = None
     for row in data:
-        if row['dividend'] == None and years == 0:
+        if row['dividend'] is None and years == 0:
             continue
-        if row['dividend'] == None:
+        if row['dividend'] is None:
             break
-        if row['dividend'] > 0 and (previous_year_dividend == None or previous_year_dividend > row['dividend']):
+        if row['dividend'] > 0 and (previous_year_dividend is None or previous_year_dividend > row['dividend']):
             years += 1
             previous_year_dividend = row['dividend']
         else:
@@ -66,14 +61,9 @@ def calculate_years_of_dividends_increasing(ticker):
 def calculate_payout_ratio_ttm(ticker):
     dividend_ttm = current_data_table.get_dividend_ttm(ticker)
     eps_ttm = current_data_table.get_eps_ttm(ticker)
-    if dividend_ttm == None or eps_ttm == None or eps_ttm == 0:
+    if dividend_ttm is None or eps_ttm is None or eps_ttm == 0:
         return None
     payout_ratio_ttm = (dividend_ttm / eps_ttm)
     payout_ratio_ttm_percent = payout_ratio_ttm * 100
-    payout_ratio_ttm_percent_rounded = round( payout_ratio_ttm_percent, 2)
+    payout_ratio_ttm_percent_rounded = round(payout_ratio_ttm_percent, 2)
     return payout_ratio_ttm_percent_rounded
-
-
-if __name__ == "__main__":
-    years = calculate_years_of_dividends_increasing('MSFT')
-    print(years)

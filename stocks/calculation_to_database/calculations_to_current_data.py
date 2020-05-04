@@ -1,7 +1,3 @@
-import os, sys
-root_path = os.path.join(os.path.dirname(__file__), '..')
-sys.path.append(root_path)
-
 from database.tables.tickers_table import TickersTable
 from database.tables.current_data_table import CurrentDataTable
 from database.tables.monthly_history_table import MonthlyHistoryTable

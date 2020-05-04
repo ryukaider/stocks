@@ -1,9 +1,7 @@
-import os, sys
-_root_path = os.path.join(os.path.dirname(__file__), '..', '..')
-sys.path.append(_root_path)
-
-import pytest
+import os
 from utilities import json_utilities
+
+_root_path = os.path.join(os.path.dirname(__file__), '..', '..')
 
 
 def test_read_json():

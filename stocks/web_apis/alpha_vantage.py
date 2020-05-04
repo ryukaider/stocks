@@ -1,7 +1,3 @@
-import os, sys
-root_path = os.path.join(os.path.dirname(__file__), '..')
-sys.path.append(root_path)
-
 import requests
 from config import keys_config
 

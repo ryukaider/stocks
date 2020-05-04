@@ -1,7 +1,3 @@
-import os, sys
-_root_path = os.path.join(os.path.dirname(__file__), '..')
-sys.path.append(_root_path)
-
 from web_apis import financial_modeling_prep as fmp
 from database.tables.tickers_table import TickersTable
 from database.tables.current_data_table import CurrentDataTable

@@ -1,11 +1,7 @@
-import os, sys
-_root_path = os.path.join(os.path.dirname(__file__), '..')
-sys.path.append(_root_path)
-
 import psycopg2.extras
-from database import postgres
 from config import database_config
 from config import keys_config
+from database import postgres
 
 database = database_config.database
 
@@ -24,7 +20,7 @@ def create():
 
 def get_cursor(with_database=True):
     connection = get_connection(with_database)
-    cursor = connection.cursor(cursor_factory = psycopg2.extras.DictCursor)
+    cursor = connection.cursor(cursor_factory=psycopg2.extras.DictCursor)
     return cursor
 
 

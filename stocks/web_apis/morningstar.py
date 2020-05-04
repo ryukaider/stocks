@@ -1,9 +1,4 @@
-import os, sys
-root_path = os.path.join(os.path.dirname(__file__), '..')
-sys.path.append(root_path)
-
 import requests
-import json
 from database.tables.current_data_table import CurrentDataTable
 
 base_url = 'https://www.morningstar.com/stocks/'

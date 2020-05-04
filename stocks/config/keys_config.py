@@ -1,9 +1,7 @@
-import os, sys
-_root_path = os.path.join(os.path.dirname(__file__), '..')
-sys.path.append(_root_path)
-
+import os
 from utilities import json_utilities
 
+_root_path = os.path.join(os.path.dirname(__file__), '..')
 _config_path = os.path.join(_root_path, 'config')
 _keys_config_path = os.path.join(_config_path, 'keys_config.json')
 

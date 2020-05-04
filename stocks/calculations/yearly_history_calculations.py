@@ -1,7 +1,3 @@
-import os, sys
-root_path = os.path.join(os.path.dirname(__file__), '..')
-sys.path.append(root_path)
-
 import datetime
 from database.tables.monthly_history_table import MonthlyHistoryTable
 from database.tables.yearly_history_table import YearlyHistoryTable
@@ -78,12 +74,6 @@ def calculate_dividend_yield(ticker):
             dividend = row['dividend']
             dividend_yield = round((dividend / average_share_price) * 100, 2)
             dividend_yields[row['year']] = dividend_yield
-        except:
+        except Exception:
             continue
     return dividend_yields
-
-
-if __name__ == "__main__":
-    average_prices = calculate_dividend_yield('A')
-    for price in average_prices.items():
-        print(price)

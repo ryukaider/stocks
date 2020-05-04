@@ -1,7 +1,3 @@
-import os, sys
-root_path = os.path.join(os.path.dirname(__file__), '..', '..')
-sys.path.append(root_path)
-
 import pytest
 from database import postgres
 from utilities import random_utilities
@@ -163,7 +159,7 @@ def test_add_column(cursor, table_name):
 
 
 def test_add_column_invalid(cursor, table_name):
-    assert postgres.add_column(cursor, table_name, None, None) == False
+    assert postgres.add_column(cursor, table_name, None, None) is False
 
 
 def test_delete_column(cursor, table_name):

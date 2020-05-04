@@ -1,7 +1,3 @@
-import os, sys
-_root_path = os.path.join(os.path.dirname(__file__), '..', '..', '..')
-sys.path.append(_root_path)
-
 import pytest
 from utilities import random_utilities
 from database.tables.monthly_history_table import MonthlyHistoryTable

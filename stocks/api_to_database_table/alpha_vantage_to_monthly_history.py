@@ -1,12 +1,8 @@
-import os, sys
-_root_path = os.path.join(os.path.dirname(__file__), '..')
-sys.path.append(_root_path)
-
 import time
 from enum import Enum
-from web_apis import alpha_vantage
-from database.tables.monthly_history_table import MonthlyHistoryTable
 from database.tables.api_progress_table import ApiProgressTable
+from database.tables.monthly_history_table import MonthlyHistoryTable
+from web_apis import alpha_vantage
 
 monthly_history_table = MonthlyHistoryTable()
 api_progress_table = ApiProgressTable()
@@ -26,7 +22,7 @@ def update():
         print(status)
         if status == Status.Success or status == Status.Invalid:
             api_progress_table.set_monthly_done(ticker)
-            time.sleep(15) # API limits 5 calls per minute
+            time.sleep(15)  # API limits 5 calls per minute
             continue
         if status == Status.Failed:
             continue
@@ -52,7 +48,7 @@ def add_monthly_data_to_database(ticker):
     first_entry = True
     converted_data = []
     for month in monthly_data:
-        if first_entry: # Skip the current month
+        if first_entry:  # Skip the current month
             first_entry = False
             continue
         month_data = monthly_data[month]
