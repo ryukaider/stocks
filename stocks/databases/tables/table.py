@@ -1,11 +1,13 @@
-from database import postgres
-from database import stocks_database
+from databases import postgres
+from databases.database import Database
+from config import database_config
 
 
 class Table:
 
-    def __init__(self, table_name):
-        self.cursor = stocks_database.get_cursor()
+    def __init__(self, table_name, database_name=database_config.database):
+        self.database = Database(database_name)
+        self.cursor = self.database.get_cursor()
         self.table_name = table_name
         self.columns = None
         self.create()

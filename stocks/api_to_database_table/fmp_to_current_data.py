@@ -1,6 +1,6 @@
 from web_apis import financial_modeling_prep as fmp
-from database.tables.tickers_table import TickersTable
-from database.tables.current_data_table import CurrentDataTable
+from databases.tables.tickers_table import TickersTable
+from databases.tables.current_data_table import CurrentDataTable
 
 tickers_table = TickersTable()
 current_data_table = CurrentDataTable()

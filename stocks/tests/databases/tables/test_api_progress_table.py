@@ -1,5 +1,5 @@
 import pytest
-from database.tables.api_progress_table import ApiProgressTable
+from databases.tables.api_progress_table import ApiProgressTable
 from utilities import random_utilities
 
 table_name = 'test_api_progress'

@@ -1,5 +1,5 @@
-from database import postgres
-from database.tables.table import Table
+from databases import postgres
+from databases.tables.table import Table
 
 
 class YearlyHistoryTable(Table):

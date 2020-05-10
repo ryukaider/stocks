@@ -1,6 +1,6 @@
-from database.tables.tickers_table import TickersTable
-from database.tables.current_data_table import CurrentDataTable
-from database.tables.monthly_history_table import MonthlyHistoryTable
+from databases.tables.tickers_table import TickersTable
+from databases.tables.current_data_table import CurrentDataTable
+from databases.tables.monthly_history_table import MonthlyHistoryTable
 from calculations import current_data_calculations
 
 tickers_table = TickersTable()

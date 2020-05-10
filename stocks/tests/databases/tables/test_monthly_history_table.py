@@ -1,6 +1,6 @@
 import pytest
 from utilities import random_utilities
-from database.tables.monthly_history_table import MonthlyHistoryTable
+from databases.tables.monthly_history_table import MonthlyHistoryTable
 
 table_name = 'test_monthly_history'
 test_ticker = 'TEST'

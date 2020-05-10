@@ -1,5 +1,5 @@
 import pytest
-from database import postgres
+from databases import postgres
 from utilities import random_utilities
 from config import database_config
 from config import keys_config
@@ -115,7 +115,7 @@ def test_create_database_invalid_name():
     postgres.delete_database(cursor, name)
 
 
-@pytest.mark.skip('tested in create database case')
+@pytest.mark.skip('tested in create databases case')
 def delete_database():
     pass
 

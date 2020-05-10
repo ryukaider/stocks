@@ -1,6 +1,6 @@
-from database.tables.yearly_history_table import YearlyHistoryTable
-from database.tables.monthly_history_table import MonthlyHistoryTable
-from database.tables.current_data_table import CurrentDataTable
+from databases.tables.yearly_history_table import YearlyHistoryTable
+from databases.tables.monthly_history_table import MonthlyHistoryTable
+from databases.tables.current_data_table import CurrentDataTable
 
 yearly_history_table = YearlyHistoryTable()
 monthly_history_table = MonthlyHistoryTable()

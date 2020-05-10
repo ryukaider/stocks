@@ -1,6 +1,6 @@
-from database import postgres
-from database.tables.table import Table
-from database.tables.tickers_table import TickersTable
+from databases import postgres
+from databases.tables.table import Table
+from databases.tables.tickers_table import TickersTable
 
 
 class ApiProgressTable(Table):

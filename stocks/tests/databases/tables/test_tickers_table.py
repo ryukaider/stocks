@@ -1,4 +1,4 @@
-from database.tables.tickers_table import TickersTable
+from databases.tables.tickers_table import TickersTable
 from stock import Stock
 from utilities import random_utilities
 

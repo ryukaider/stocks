@@ -1,5 +1,5 @@
 import pytest
-from database.tables.current_data_table import CurrentDataTable
+from databases.tables.current_data_table import CurrentDataTable
 from utilities import random_utilities
 
 table_name = 'test_current_data'

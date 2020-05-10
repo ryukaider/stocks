@@ -1,4 +1,4 @@
-from database.tables.table import Table
+from databases.tables.table import Table
 
 table_name = 'test'
 

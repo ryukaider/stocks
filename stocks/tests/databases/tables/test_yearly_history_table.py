@@ -1,5 +1,5 @@
 from utilities import random_utilities
-from database.tables.yearly_history_table import YearlyHistoryTable
+from databases.tables.yearly_history_table import YearlyHistoryTable
 
 table_name = 'test_yearly_history'
 test_ticker = 'TEST'

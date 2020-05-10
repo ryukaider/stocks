@@ -1,7 +1,7 @@
 import time
 from enum import Enum
-from database.tables.api_progress_table import ApiProgressTable
-from database.tables.monthly_history_table import MonthlyHistoryTable
+from databases.tables.api_progress_table import ApiProgressTable
+from databases.tables.monthly_history_table import MonthlyHistoryTable
 from web_apis import alpha_vantage
 
 monthly_history_table = MonthlyHistoryTable()

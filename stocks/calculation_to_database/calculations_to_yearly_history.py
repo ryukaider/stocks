@@ -1,5 +1,5 @@
-from database.tables.tickers_table import TickersTable
-from database.tables.yearly_history_table import YearlyHistoryTable
+from databases.tables.tickers_table import TickersTable
+from databases.tables.yearly_history_table import YearlyHistoryTable
 from calculations import yearly_history_calculations
 
 tickers_table = TickersTable()

@@ -1,5 +1,5 @@
-from database.tables.api_progress_table import ApiProgressTable
-from database.tables.current_data_table import CurrentDataTable
+from databases.tables.api_progress_table import ApiProgressTable
+from databases.tables.current_data_table import CurrentDataTable
 from web_apis import yahoo
 
 api_progress_table = ApiProgressTable()

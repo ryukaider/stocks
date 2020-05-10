@@ -1,4 +1,4 @@
-from database.tables.tickers_table import TickersTable
+from databases.tables.tickers_table import TickersTable
 from web_apis import datahub
 
 tickers_table = TickersTable()

@@ -1,6 +1,6 @@
 import datetime
-from database.tables.monthly_history_table import MonthlyHistoryTable
-from database.tables.yearly_history_table import YearlyHistoryTable
+from databases.tables.monthly_history_table import MonthlyHistoryTable
+from databases.tables.yearly_history_table import YearlyHistoryTable
 
 monthly_history_table = MonthlyHistoryTable()
 yearly_history_table = YearlyHistoryTable()

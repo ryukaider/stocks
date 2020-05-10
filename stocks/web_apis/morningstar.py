@@ -1,5 +1,5 @@
 import requests
-from database.tables.current_data_table import CurrentDataTable
+from databases.tables.current_data_table import CurrentDataTable
 
 base_url = 'https://www.morningstar.com/stocks/'
 current_data_table = CurrentDataTable()
