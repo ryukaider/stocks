@@ -1,9 +1,11 @@
+from config import database_config
 from databases.tables.tickers_table import TickersTable
 from stock import Stock
 from utilities import random_utilities
 
+database_name = database_config.test_database
 table_name = 'test_tickers'
-tickers_table = TickersTable(table_name)
+tickers_table = TickersTable(table_name, database_name)
 
 
 def test_exists():

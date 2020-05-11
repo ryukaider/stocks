@@ -1,10 +1,12 @@
 import pytest
-from utilities import random_utilities
+from config import database_config
 from databases.tables.monthly_history_table import MonthlyHistoryTable
+from utilities import random_utilities
 
+database_name = database_config.test_database
 table_name = 'test_monthly_history'
 test_ticker = 'TEST'
-monthly_history_table = MonthlyHistoryTable(table_name)
+monthly_history_table = MonthlyHistoryTable(table_name, database_name)
 
 monthly_history_table.add_monthly_row({
         'ticker': test_ticker,

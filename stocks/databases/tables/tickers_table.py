@@ -1,3 +1,4 @@
+from config import database_config
 from databases import postgres
 from databases.tables.table import Table
 
@@ -9,8 +10,10 @@ class TickersTable(Table):
         'name': 'varchar'
     }
 
-    def __init__(self, table_name='tickers'):
-        Table.__init__(self, table_name)
+    def __init__(self,
+                 table_name='tickers',
+                 database_name=database_config.database):
+        Table.__init__(self, table_name, database_name, self.columns)
 
     def add_stocks(self, stocks):
         for stock in stocks:

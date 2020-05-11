@@ -1,11 +1,13 @@
-from utilities import random_utilities
+from config import database_config
 from databases.tables.yearly_history_table import YearlyHistoryTable
+from utilities import random_utilities
 
+database_name = database_config.test_database
 table_name = 'test_yearly_history'
 test_ticker = 'TEST'
 test_year = 2020
 
-yearly_history_table = YearlyHistoryTable(table_name)
+yearly_history_table = YearlyHistoryTable(table_name, database_name)
 
 
 def test_exists():

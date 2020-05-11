@@ -1,3 +1,4 @@
+from config import database_config
 from databases import postgres
 from databases.tables.table import Table
 
@@ -13,8 +14,10 @@ class YearlyHistoryTable(Table):
         'UNIQUE': '(ticker, year)'
     }
 
-    def __init__(self, table_name='yearly_history'):
-        Table.__init__(self, table_name)
+    def __init__(self,
+                 table_name='yearly_history',
+                 database_name=database_config.database):
+        Table.__init__(self, table_name, database_name, self.columns)
 
     def update_end_price(self, ticker, year, price):
         if not postgres.insert_row(self.cursor, self.table_name, '(ticker,year,end_price)',

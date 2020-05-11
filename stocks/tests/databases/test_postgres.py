@@ -10,7 +10,7 @@ def setup_once_per_class():
     print('Setup: Once per class')
     connection = _get_connection_to_server()
     cursor = connection.cursor()
-    database = database_config.database
+    database = database_config.test_database
     postgres.create_database(cursor, database)
 
 

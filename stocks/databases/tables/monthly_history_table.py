@@ -1,3 +1,4 @@
+from config import database_config
 from databases import postgres
 from databases.tables.table import Table
 
@@ -11,8 +12,10 @@ class MonthlyHistoryTable(Table):
         'UNIQUE': '(ticker, date)'
     }
 
-    def __init__(self, table_name='monthly_history'):
-        Table.__init__(self, table_name)
+    def __init__(self,
+                 table_name='monthly_history',
+                 database_name=database_config.database):
+        Table.__init__(self, table_name, database_name, self.columns)
 
     def add_monthly_data(self, monthly_data):
         for row in monthly_data:

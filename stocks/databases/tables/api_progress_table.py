@@ -1,17 +1,21 @@
+from config import database_config
 from databases import postgres
 from databases.tables.table import Table
 from databases.tables.tickers_table import TickersTable
 
 
 class ApiProgressTable(Table):
+
     columns = {
         'ticker': 'text PRIMARY KEY NOT NULL',
         'monthly': 'boolean',
         'eps': 'boolean'
     }
 
-    def __init__(self, table_name='api_progress'):
-        Table.__init__(self, table_name)
+    def __init__(self,
+                 table_name='api_progress',
+                 database_name=database_config.database):
+        Table.__init__(self, table_name, database_name, self.columns)
 
     def reset_all(self):
         ticker_list = TickersTable().get_tickers()

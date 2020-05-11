@@ -1,10 +1,12 @@
 import pytest
+from config import database_config
 from databases.tables.api_progress_table import ApiProgressTable
 from utilities import random_utilities
 
+database_name = database_config.test_database
 table_name = 'test_api_progress'
-test_ticker = 'test'
-api_progress_table = ApiProgressTable(table_name)
+test_ticker = 'TEST'
+api_progress_table = ApiProgressTable(table_name, database_name)
 
 
 def test_exists():

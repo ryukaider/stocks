@@ -1,3 +1,4 @@
+from config import database_config
 from databases import postgres
 from databases.tables.table import Table
 
@@ -28,8 +29,10 @@ class CurrentDataTable(Table):
         'eps_ttm': 'numeric'
     }
 
-    def __init__(self, table_name='current_data'):
-        Table.__init__(self, table_name)
+    def __init__(self,
+                 table_name='current_data',
+                 database_name=database_config.database):
+        Table.__init__(self, table_name, database_name, self.columns)
 
     def add_stock(self, ticker):
         structured_ticker = f"('{ticker}')"
