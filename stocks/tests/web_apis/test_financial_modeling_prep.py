@@ -25,3 +25,15 @@ def test_get_company_profile():
 def test_get_company_profile_invalid():
     response = financial_modeling_prep.get_company_profile('invalid')
     assert response is None
+
+
+def test_get_daily_price():
+    historica_data = financial_modeling_prep.get_daily_price('MSFT')
+    assert len(historica_data) > 0
+    assert historica_data[0]['date'] is not None
+    assert historica_data[0]['close'] > 0
+
+
+def test_get_daily_price_invalid():
+    historica_data = financial_modeling_prep.get_daily_price('invalid')
+    assert historica_data is None

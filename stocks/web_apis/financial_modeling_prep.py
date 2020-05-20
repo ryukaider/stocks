@@ -14,3 +14,13 @@ def get_company_profile(ticker):
         return profile
     except KeyError:
         return None
+
+
+def get_daily_price(ticker):
+    url = f'{base_url}/historical-price-full/{ticker}?serietype=line'
+    print(url)
+    try:
+        historical_data = requests.get(url).json()['historical']
+        return historical_data
+    except KeyError:
+        return None
