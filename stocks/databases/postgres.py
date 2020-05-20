@@ -92,7 +92,7 @@ def insert_row(cursor, table, columns, values):
     return run_query(cursor, query)
 
 
-def insert_row_dict(cursor, table, dictionary):
+def insert_row_as_dict(cursor, table, dictionary):
     columns = '('
     values = '('
     for key, value in dictionary.items():
@@ -105,7 +105,11 @@ def insert_row_dict(cursor, table, dictionary):
     return run_query(cursor, query)
 
 
-def update_row(cursor, table, search_column, search_value, set_column, set_value):
+def update_value(cursor, table, search_column, search_value, set_column, set_value):
+    if isinstance(search_value, str):
+        search_value = f"('{search_value}')"
+    if isinstance(set_value, str):
+        set_value = f"('{set_value}')"
     query = f'UPDATE {table} SET {set_column} = {set_value} WHERE {search_column} = {search_value}'
     success = run_query(cursor, query)
     if success:
@@ -141,6 +145,6 @@ def get_list_results(cursor):
 
 
 def _escape_apostrophes(text):
-    if text is not None:
+    if text is not None and isinstance(text, str):
         text = text.replace("'", "''")
     return text

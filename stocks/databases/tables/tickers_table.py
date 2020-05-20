@@ -23,7 +23,7 @@ class TickersTable(Table):
 
     def add_stock(self, stock):
         stock_dict = {'ticker': stock.ticker, 'exchange': stock.exchange, 'name': stock.name}
-        return postgres.insert_row_dict(self.cursor, self.table_name, stock_dict)
+        return postgres.insert_row_as_dict(self.cursor, self.table_name, stock_dict)
 
     def remove_stocks(self, stocks):
         for stock in stocks:

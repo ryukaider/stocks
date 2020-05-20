@@ -10,5 +10,5 @@ def get_company_profile(ticker):
     print(url)
     try:
         return requests.get(url).json()
-    except KeyError:
+    except Exception:
         return None

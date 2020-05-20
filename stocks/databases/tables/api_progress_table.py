@@ -44,8 +44,8 @@ class ApiProgressTable(Table):
         return self._update_progress(ticker, 'eps', True)
 
     def _update_progress(self, ticker, column, value):
-        return postgres.update_row(
-            self.cursor, self.table_name, 'ticker', f"'{ticker}'", column, value)
+        return postgres.update_value(
+            self.cursor, self.table_name, 'ticker', ticker, column, value)
 
     def get_incomplete_stocks(self, column):
         query = f"SELECT ticker FROM {self.table_name} WHERE {column} is not true ORDER BY ticker ASC"

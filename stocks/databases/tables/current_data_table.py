@@ -39,25 +39,25 @@ class CurrentDataTable(Table):
         return postgres.insert_row(self.cursor, self.table_name, '(ticker)', structured_ticker)
 
     def update_name(self, ticker, name):
-        return self._update_row(ticker, 'name', f"'{name}'")
+        return self._update_row(ticker, 'name', name)
 
     def update_exchange(self, ticker, exchange):
-        return self._update_row(ticker, 'exchange', f"'{exchange}'")
+        return self._update_row(ticker, 'exchange', exchange)
 
     def update_sector(self, ticker, sector):
-        return self._update_row(ticker, 'sector', f"'{sector}'")
+        return self._update_row(ticker, 'sector', sector)
 
     def update_industry(self, ticker, industry):
-        return self._update_row(ticker, 'industry', f"'{industry}'")
+        return self._update_row(ticker, 'industry', industry)
 
     def update_ceo(self, ticker, ceo):
-        return self._update_row(ticker, 'ceo', f"'{ceo}'")
+        return self._update_row(ticker, 'ceo', ceo)
 
     def update_website(self, ticker, website):
-        return self._update_row(ticker, 'website', f"'{website}'")
+        return self._update_row(ticker, 'website', website)
 
     def update_description(self, ticker, description):
-        return self._update_row(ticker, 'description', f"'{description}'")
+        return self._update_row(ticker, 'description', description)
 
     def update_price(self, ticker, price):
         return self._update_row(ticker, 'price', price)
@@ -72,7 +72,7 @@ class CurrentDataTable(Table):
         return self._update_row(ticker, 'beta', beta)
 
     def update_range(self, ticker, price_range):
-        return self._update_row(ticker, 'range', f"'{price_range}'")
+        return self._update_row(ticker, 'range', price_range)
 
     def update_volume(self, ticker, volume):
         return self._update_row(ticker, 'volume', volume)
@@ -104,8 +104,8 @@ class CurrentDataTable(Table):
     def _update_row(self, ticker, column, value):
         if value is None:
             return False
-        return postgres.update_row(
-            self.cursor, self.table_name, 'ticker', f"'{ticker}'", column, value)
+        return postgres.update_value(
+            self.cursor, self.table_name, 'ticker', ticker, column, value)
 
     def get_name(self, ticker):
         return self._get_value(ticker, 'name')

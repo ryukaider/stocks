@@ -1,8 +1,12 @@
 import pytest
-from databases import postgres
-from utilities import random_utilities
 from config import database_config
 from config import keys_config
+from databases import postgres
+from utilities import random_utilities
+
+
+test_table_name = 'test_table'
+test_table_row_id = 'test_id'
 
 
 @pytest.fixture(autouse=True, scope="class")
@@ -12,6 +16,10 @@ def setup_once_per_class():
     cursor = connection.cursor()
     database = database_config.test_database
     postgres.create_database(cursor, database)
+    connection = _get_connection_to_database()
+    cursor = connection.cursor()
+    _create_test_table(cursor)
+    _insert_test_table_row(cursor)
 
 
 @pytest.fixture
@@ -27,14 +35,6 @@ def cursor():
     cursor = connection.cursor()
     yield cursor
     postgres.close_connection(connection, cursor)
-
-
-@pytest.fixture
-def table_name(cursor):
-    table_name = 'test'
-    columns = {'id': 'varchar(10) PRIMARY KEY'}
-    postgres.create_table(cursor, table_name, columns)
-    return table_name
 
 
 def _get_connection_to_server():
@@ -54,6 +54,20 @@ def _get_connection_to_database():
         port=database_config.port,
         database=database_config.test_database
     )
+
+
+def _create_test_table(cursor):
+    columns = {
+        'id': 'varchar(10) PRIMARY KEY',
+        'numeric_col': 'numeric'
+    }
+    postgres.create_table(cursor, test_table_name, columns)
+
+
+def _insert_test_table_row(cursor):
+    columns = '(id)'
+    values = f"('{test_table_row_id}')"
+    postgres.insert_row(cursor, test_table_name, columns, values)
 
 
 def test_connect_no_database():
@@ -130,8 +144,8 @@ def test_table_exists_none(cursor):
     assert postgres.table_exists(cursor, table_name) is False
 
 
-def test_table_exists(cursor, table_name):
-    assert postgres.table_exists(cursor, table_name) is True
+def test_table_exists(cursor):
+    assert postgres.table_exists(cursor, test_table_name) is True
 
 
 def test_create_table_no_columns(cursor):
@@ -152,93 +166,94 @@ def delete_database():
     pass
 
 
-def test_add_column(cursor, table_name):
+def test_add_column(cursor):
     column_name = random_utilities.random_letters()
-    assert postgres.add_column(cursor, table_name, column_name) is True
-    postgres.delete_column(cursor, table_name, column_name)
+    assert postgres.add_column(cursor, test_table_name, column_name) is True
+    postgres.delete_column(cursor, test_table_name, column_name)
 
 
-def test_add_column_invalid(cursor, table_name):
-    assert postgres.add_column(cursor, table_name, None, None) is False
+def test_add_column_invalid(cursor):
+    assert postgres.add_column(cursor, test_table_name, None, None) is False
 
 
-def test_delete_column(cursor, table_name):
+def test_delete_column(cursor):
     column_name = random_utilities.random_letters()
-    postgres.add_column(cursor, table_name, column_name)
-    assert postgres.delete_column(cursor, table_name, column_name) is True
+    postgres.add_column(cursor, test_table_name, column_name)
+    assert postgres.delete_column(cursor, test_table_name, column_name) is True
 
 
-def test_delete_column_invalid(cursor, table_name):
-    assert postgres.delete_column(cursor, table_name, None) is False
+def test_delete_column_invalid(cursor):
+    assert postgres.delete_column(cursor, test_table_name, None) is False
 
 
-def test_insert_row(cursor, table_name):
+def test_insert_row(cursor):
     columns = '(id)'
     values = f"('{random_utilities.random_letters()}')"
-    assert postgres.insert_row(cursor, table_name, columns, values) is True
+    assert postgres.insert_row(cursor, test_table_name, columns, values) is True
 
 
-def test_insert_row_invalid(cursor, table_name):
+def test_insert_row_invalid(cursor):
     columns = f'(invalid)'
     values = f"('{random_utilities.random_letters()}')"
-    assert postgres.insert_row(cursor, table_name, columns, values) is False
+    assert postgres.insert_row(cursor, test_table_name, columns, values) is False
 
 
-def test_insert_row_dict(cursor, table_name):
+def test_insert_row_dict(cursor):
     values = {'id': random_utilities.random_letters(10)}
-    assert postgres.insert_row_dict(cursor, table_name, values) is True
+    assert postgres.insert_row_as_dict(cursor, test_table_name, values) is True
 
 
-def test_insert_row_dict_apostrophe(cursor, table_name):
+def test_insert_row_dict_apostrophe(cursor):
     value = "test'apo"
     values = {'id': value}
-    assert postgres.insert_row_dict(cursor, table_name, values) is True
-    postgres.remove_row(cursor, table_name, 'id', value)
+    assert postgres.insert_row_as_dict(cursor, test_table_name, values) is True
+    postgres.remove_row(cursor, test_table_name, 'id', value)
 
 
-def test_insert_row_dict_numbers(cursor, table_name):
-    value = '101'
-    values = {'id': value}
-    assert postgres.insert_row_dict(cursor, table_name, values) is True
-    postgres.remove_row(cursor, table_name, 'id', value)
-
-
-def test_insert_row_dict_invalid(cursor, table_name):
+def test_insert_row_dict_numeric(cursor):
+    value = 101
     values = {
-        'invalid': random_utilities.random_letters(10)
+        'id': random_utilities.random_string(),
+        'numeric_col': value
     }
-    assert postgres.insert_row_dict(cursor, table_name, values) is False
+    assert postgres.insert_row_as_dict(cursor, test_table_name, values) is True
+    postgres.remove_row(cursor, test_table_name, 'numeric_col', value)
 
 
-def test_update_row(cursor, table_name):
+def test_insert_row_dict_invalid(cursor):
+    values = {'invalid': random_utilities.random_letters(10)}
+    assert postgres.insert_row_as_dict(cursor, test_table_name, values) is False
+
+
+def test_update_row_string(cursor):
+    new_value = random_utilities.random_letters()
+    assert postgres.update_value(cursor, test_table_name, 'id', test_table_row_id, 'id', new_value) is True
+
+
+def test_update_row_numeric(cursor):
+    new_value = random_utilities.random_double()
+    assert postgres.update_value(cursor, test_table_name, 'id', test_table_row_id, 'numeric_col', new_value) is True
+
+
+def test_update_row_invalid(cursor):
+    assert postgres.update_value(cursor, test_table_name, None, None, None, None) is False
+
+
+def test_remove_row(cursor):
     column = 'id'
     columns = f'({column})'
     value = random_utilities.random_letters()
     values = f"('{value}')"
-    postgres.insert_row(cursor, table_name, columns, values)
-    new_value = f"('{random_utilities.random_letters()}')"
-    assert postgres.update_row(cursor, table_name, column, values, column, new_value) is True
+    postgres.insert_row(cursor, test_table_name, columns, values)
+    assert postgres.remove_row(cursor, test_table_name, column, value) is True
 
 
-def test_update_row_invalid(cursor, table_name):
-    assert postgres.update_row(cursor, table_name, None, None, None, None) is False
+def test_remove_row_invalid(cursor):
+    assert postgres.remove_row(cursor, test_table_name, None, None) is False
 
 
-def test_remove_row(cursor, table_name):
-    column = 'id'
-    columns = f'({column})'
-    value = random_utilities.random_letters()
-    values = f"('{value}')"
-    postgres.insert_row(cursor, table_name, columns, values)
-    assert postgres.remove_row(cursor, table_name, column, value) is True
-
-
-def test_remove_row_invalid(cursor, table_name):
-    assert postgres.remove_row(cursor, table_name, None, None) is False
-
-
-def test_run_query(cursor, table_name):
-    query = f'SELECT * FROM {table_name}'
+def test_run_query(cursor):
+    query = f'SELECT * FROM {test_table_name}'
     assert postgres.run_query(cursor, query) is True
 
 
@@ -247,8 +262,8 @@ def test_run_query_invalid(cursor):
     assert postgres.run_query(cursor, query) is False
 
 
-def test_get_list_results(cursor, table_name):
-    query = f'SELECT * from {table_name}'
+def test_get_list_results(cursor):
+    query = f'SELECT * from {test_table_name}'
     postgres.run_query(cursor, query)
     results = postgres.get_list_results(cursor)
     assert len(results) > 0
