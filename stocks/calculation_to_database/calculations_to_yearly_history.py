@@ -6,7 +6,7 @@ tickers_table = TickersTable()
 yearly_history_table = YearlyHistoryTable()
 
 
-def update_all():
+def update_all_stocks():
     update_end_of_year_price()
     update_average_price()
     update_annual_dividends()
@@ -46,4 +46,4 @@ def update_dividend_yields():
 
 
 if __name__ == "__main__":
-    update_all()
+    update_all_stocks()

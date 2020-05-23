@@ -4,7 +4,7 @@ from calculation_to_database import calculations_to_yearly_history
 
 @pytest.mark.skip()
 def test_update_all():
-    calculations_to_yearly_history.update_all()
+    calculations_to_yearly_history.update_all_stocks()
 
 
 @pytest.mark.skip()
