@@ -15,7 +15,7 @@ class Status(Enum):
     API_Limit = 3
 
 
-def update():
+def update_all():
     tickers = api_progress_table.get_incomplete_stocks('monthly')
     for ticker in tickers:
         status = add_monthly_data_to_database(ticker)
@@ -65,4 +65,4 @@ def add_monthly_data_to_database(ticker):
 
 
 if __name__ == "__main__":
-    update()
+    update_all()
