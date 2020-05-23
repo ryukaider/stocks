@@ -5,29 +5,28 @@ base_url = 'https://www.alphavantage.co/query?'
 api_key = keys_config.alpha_vantage_api_key
 
 
-def get_monthly_data(ticker):
-    print(f'Getting Alpha Vantage monthly data for {ticker}')
+def get_daily_history(ticker):
+    function = 'TIME_SERIES_DAILY_ADJUSTED'
+    query_filter = '&outputsize=full'
+    return _get_response(function, ticker, query_filter)
+
+
+def get_monthly_history(ticker):
     function = 'TIME_SERIES_MONTHLY_ADJUSTED'
-    query = get_query(function, ticker)
+    return _get_response(function, ticker)
+
+
+def _get_response(function, ticker, query_filter=None):
+    print(f'Getting Alpha Vantage {function} for {ticker}')
+    query = _get_query(function, ticker, query_filter)
     print(query)
     try:
         response = requests.get(query)
-        print(response)
         return response.json()
     except Exception as error:
         print(error)
         return None
 
 
-def get_dividend(response):
-    dividends = {}
-    monthly_data = response['Monthly Adjusted Time Series']
-    for month in monthly_data:
-        month_data = monthly_data[month]
-        dividend = month_data['7. dividend amount']
-        dividends[month] = dividend
-    return dividends
-
-
-def get_query(function, ticker):
-    return f'{base_url}function={function}&symbol={ticker}&apikey={api_key}'
+def _get_query(function, ticker, query_filter=None):
+    return f'{base_url}function={function}&symbol={ticker}&apikey={api_key}{query_filter}'

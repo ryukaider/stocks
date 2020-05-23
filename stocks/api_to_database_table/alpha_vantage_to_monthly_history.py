@@ -1,18 +1,11 @@
 import time
-from enum import Enum
+from api_to_database_table.helpers.status import Status
 from databases.tables.api_progress_table import ApiProgressTable
 from databases.tables.monthly_history_table import MonthlyHistoryTable
 from web_apis import alpha_vantage
 
 monthly_history_table = MonthlyHistoryTable()
 api_progress_table = ApiProgressTable()
-
-
-class Status(Enum):
-    Success = 0
-    Failed = 1
-    Invalid = 2
-    API_Limit = 3
 
 
 def update_all():
@@ -32,7 +25,7 @@ def update_all():
 
 
 def add_monthly_data_to_database(ticker):
-    raw_data = alpha_vantage.get_monthly_data(ticker)
+    raw_data = alpha_vantage.get_monthly_history(ticker)
     try:
         if raw_data is None:
             return Status.Failed

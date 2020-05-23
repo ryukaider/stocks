@@ -4,7 +4,7 @@ from web_apis import alpha_vantage
 
 
 def test_get_query():
-    query = alpha_vantage.get_query('test', 'MSFT')
+    query = alpha_vantage._get_query('test', 'MSFT')
     assert 'test' in query
     assert 'MSFT' in query
     assert alpha_vantage.base_url in query
@@ -13,7 +13,7 @@ def test_get_query():
 
 @pytest.mark.skip('Uses API quota')
 def test_get_monthly_data():
-    alpha_vantage.get_monthly_data('MSFT')
+    alpha_vantage.get_monthly_history('MSFT')
 
 
 def read_json_file():

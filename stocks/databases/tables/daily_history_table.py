@@ -7,8 +7,14 @@ class DailyHistoryTable(Table):
     columns = {
         'ticker': 'text NOT NULL',
         'date': 'date NOT NULL',
-        'price': 'double precision',
-        'dividend': 'double precision',
+        'open': 'numeric (10, 2)',
+        'high': 'numeric (10, 2)',
+        'low': 'numeric (10, 2)',
+        'close': 'numeric (10, 2)',
+        'adjusted_close': 'numeric (10, 2)',
+        'volume': 'integer',
+        'dividend': 'numeric (10, 2)',
+        'split_coefficient': 'numeric (10, 4)',
         'UNIQUE': '(ticker, date)'
     }
 
