@@ -24,7 +24,7 @@ def update_end_price():
 def update_average_price():
     tickers = tickers_table.get_tickers()
     for ticker in tickers:
-        average_prices = yearly_history_calculations.calculate_average_price(ticker)
+        average_prices = yearly_history_calculations.calculate_average_prices(ticker)
         for year, price in average_prices.items():
             yearly_history_table.update_average_price(ticker, year, price)
 

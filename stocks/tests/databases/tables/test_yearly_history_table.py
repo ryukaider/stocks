@@ -1,3 +1,4 @@
+import pytest
 from config import database_config
 from databases.tables.yearly_history_table import YearlyHistoryTable
 from utilities import random_utilities
@@ -26,16 +27,25 @@ def test_update_end_price():
 def test_update_average_price():
     average_price = random_utilities.random_double()
     yearly_history_table.update_average_price(test_ticker, test_year, average_price)
+    retrieved_average_price = yearly_history_table.get_average_price(test_ticker, test_year)
+    assert retrieved_average_price == average_price
 
 
 def test_update_dividend():
     dividend = random_utilities.random_double()
     yearly_history_table.update_dividend(test_ticker, test_year, dividend)
+    retrieved_dividend = yearly_history_table.get_dividend(test_ticker, test_year)
+    assert retrieved_dividend == dividend
 
 
 def test_update_dividend_yield():
     dividend_yield = random_utilities.random_double()
     yearly_history_table.update_dividend_yield(test_ticker, test_year, dividend_yield)
+
+
+@pytest.mark.skip
+def test_get_value():
+    pass
 
 
 def test_get_data():

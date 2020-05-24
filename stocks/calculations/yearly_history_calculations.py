@@ -5,8 +5,10 @@ from databases.tables.yearly_history_table import YearlyHistoryTable
 daily_history_table = DailyHistoryTable()
 yearly_history_table = YearlyHistoryTable()
 
+default_start_year = 2000
 
-def calculate_end_of_year_prices(ticker, start_year=2000):
+
+def calculate_end_of_year_prices(ticker, start_year=default_start_year):
     yearly_prices = {}
     current_year = datetime.datetime.now().year
     for year in range(start_year, current_year):
@@ -27,58 +29,64 @@ def calculate_end_of_year_price(ticker, year):
     return result[0]
 
 
-def calculate_average_price(ticker):
-    data = daily_history_table.get_history(ticker)
+def calculate_average_prices(ticker, start_year=default_start_year):
     average_prices = {}
     current_year = datetime.datetime.now().year
-    index_year = current_year
-    index_price = 0
-    index_count = 0
-    for row in data:
-        row_year = row['date'].year
-        index_count += 1
-        if row_year == index_year:
-            index_price += row['price']
-            if data.index(row) != (len(data) - 1):
-                continue
-        average = round((index_price / index_count), 2)
-        average_prices[index_year] = average
-        index_price = row['price']
-        index_count = 1
-        index_year = row_year
+    for year in range(start_year, current_year):
+        price = calculate_average_price(ticker, year)
+        average_prices[year] = float(price)
     return average_prices
 
 
-def calculate_dividend(ticker):
-    data = daily_history_table.get_history(ticker)
+def calculate_average_price(ticker, year):
+    query = f"SELECT adjusted_close " \
+            f"FROM {daily_history_table.table_name} " \
+            f"WHERE ticker = '{ticker}' " \
+            f"AND date >= '{year}-01-01' " \
+            f"AND date <= '{year}-12-31' " \
+            f"ORDER BY date desc"
+    rows = daily_history_table.run_query(query)
+    row_count = len(rows)
+    sum_price = 0
+    for row in rows:
+        sum_price += row['adjusted_close']
+    average = sum_price / row_count
+    return float(average)
+
+
+def calculate_dividends(ticker, start_year=default_start_year):
     dividends = {}
     current_year = datetime.datetime.now().year
-    index_year = 0
-    dividend = 0
-    for row in data:
-        row_year = row['date'].year
-        if row_year == current_year:
-            continue
-        if index_year == 0:
-            index_year = row_year
-        if row_year == index_year:
-            dividend += row['dividend']
-            continue
-        dividends[index_year] = round(dividend, 2)
-        index_year = row_year
-        dividend = 0
+    for year in range(start_year, current_year):
+        dividend = calculate_dividend(ticker, year)
+        dividends[year] = float(dividend)
     return dividends
 
 
-def calculate_dividend_yield(ticker):
-    data = yearly_history_table.get_data(ticker)
+def calculate_dividend(ticker, year):
+    query = f"SELECT dividend " \
+            f"FROM {daily_history_table.table_name} " \
+            f"WHERE ticker = '{ticker}' " \
+            f"AND date >= '{year}-01-01' " \
+            f"AND date <= '{year}-12-31' " \
+            f"AND dividend > 0 " \
+            f"ORDER BY date desc"
+    rows = daily_history_table.run_query(query)
+    dividend = 0
+    for row in rows:
+        dividend += row['dividend']
+    return float(dividend)
+
+
+def calculate_average_dividend_yields(ticker, start_year=default_start_year):
     dividend_yields = {}
-    for row in data:
+    current_year = datetime.datetime.now().year
+    for year in range(start_year, current_year):
+        dividend = yearly_history_table.get_dividend(ticker, year)
+        average_price = yearly_history_table.get_average_price(ticker, year)
         try:
-            average_share_price = row['average_price']
-            dividend = row['dividend']
-            dividend_yield = round((dividend / average_share_price) * 100, 2)
-            dividend_yields[row['year']] = dividend_yield
+            average_dividend_yield = (dividend / average_price) * 100
         except Exception:
-            continue
+            average_dividend_yield = 0
+        dividend_yields[year] = float(average_dividend_yield)
     return dividend_yields

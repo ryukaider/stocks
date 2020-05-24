@@ -10,7 +10,7 @@ class YearlyHistoryTable(Table):
         'end_price': 'numeric (10, 2)',
         'average_price': 'numeric (10, 2)',
         'dividend': 'numeric (10, 2)',
-        'dividend_yield': 'numeric (10, 2)',
+        'average_dividend_yield': 'numeric (10, 2)',
         'UNIQUE': '(ticker, year)'
     }
 
@@ -31,6 +31,19 @@ class YearlyHistoryTable(Table):
     def update_dividend_yield(self, ticker, year, dividend_yield):
         self.update_value(ticker, year, 'dividend_yield', dividend_yield)
 
+    def get_average_price(self, ticker, year):
+        return self.get_value(ticker, year, 'average_price')
+
+    def get_dividend(self, ticker, year):
+        return self.get_value(ticker, year, 'dividend')
+
+    def get_value(self, ticker, year, column):
+        row = self.get_row(ticker, year)
+        try:
+            return float(row[column])
+        except Exception:
+            return None
+
     def get_data(self, ticker):
         query = f"SELECT * FROM {self.table_name} WHERE ticker = '{ticker}' ORDER BY year DESC"
         postgres.run_query(self.cursor, query)
@@ -41,7 +54,7 @@ class YearlyHistoryTable(Table):
         self.add_row(ticker, year)
         update_query = \
             f"UPDATE {self.table_name} " \
-            f"SET '{column}' = {value} " \
+            f"SET {column} = {value} " \
             f"WHERE ticker = '{ticker}' " \
             f"AND year = {year}"
         return postgres.run_query(self.cursor, update_query)
@@ -56,12 +69,16 @@ class YearlyHistoryTable(Table):
         postgres.insert_row_as_dict(self.cursor, self.table_name, row)
 
     def row_exists(self, ticker, year):
-        rows = len(self.get_row(ticker, year))
-        if rows > 1:
-            raise Exception(f'{self.table_name} contains more than one row for {ticker} - {year}')
-        return rows == 1
+        row = len(self.get_row(ticker, year))
+        return row is not None
 
     def get_row(self, ticker, year):
-        query = f"SELECT * FROM {self.table_name} WHERE ticker = '{ticker}' AND year = '{year}'"
+        query = f"SELECT * FROM {self.table_name} WHERE ticker = '{ticker}' AND year = {year}"
         postgres.run_query(self.cursor, query)
-        return postgres.get_list_results(self.cursor)
+        rows = self.cursor.fetchall()
+        row_count = len(rows)
+        if row_count > 1:
+            raise Exception(f'{self.table_name} contains more than one row for {ticker} - {year}')
+        if row_count == 0:
+            return None
+        return rows[0]

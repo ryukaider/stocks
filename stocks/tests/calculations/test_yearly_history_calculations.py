@@ -15,16 +15,46 @@ def test_calculate_end_of_year_prices():
         assert price > 0
 
 
-@pytest.mark.skip()
 def test_calculate_average_price():
-    yearly_history_calculations.calculate_average_price()
+    average_price = yearly_history_calculations.calculate_average_price('MSFT', 2019)
+    assert average_price > 0
+
+
+def test_calculate_average_prices():
+    average_prices = yearly_history_calculations.calculate_average_prices('MSFT')
+    assert len(average_prices) >= 20
+    for year, price in average_prices.items():
+        assert year >= 2000
+        assert price > 0
+
+
+def test_calculate_dividend():
+    dividend = yearly_history_calculations.calculate_dividend('MSFT', 2019)
+    assert dividend == 1.89
+
+
+def test_calculate_dividends():
+    dividends = yearly_history_calculations.calculate_dividends('MSFT')
+    assert len(dividends) >= 20
+    for year, dividend in dividends.items():
+        assert year >= 2000
+        assert dividend >= 0
 
 
 @pytest.mark.skip()
-def test_calculate_dividend():
+def test_calculate_dividend_decimal():
     yearly_history_calculations.calculate_dividend()
 
 
 @pytest.mark.skip()
-def test_calculate_dividend_yield():
-    yearly_history_calculations.calculate_dividend_yield()
+def test_calculate_dividend_yields():
+    dividend_yields = yearly_history_calculations.calculate_average_dividend_yields('MSFT')
+    assert len(dividend_yields) >= 20
+    for year, dividend_yield in dividend_yields.items():
+        assert year >= 2000
+        assert dividend_yield >= 0
+
+
+@pytest.mark.skip()
+def test_calculate_dividend_yields_zero():
+    pass
