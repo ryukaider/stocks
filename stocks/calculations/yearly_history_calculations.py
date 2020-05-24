@@ -1,29 +1,34 @@
 import datetime
-from databases.tables.monthly_history_table import MonthlyHistoryTable
+from databases.tables.daily_history_table import DailyHistoryTable
 from databases.tables.yearly_history_table import YearlyHistoryTable
 
-monthly_history_table = MonthlyHistoryTable()
+daily_history_table = DailyHistoryTable()
 yearly_history_table = YearlyHistoryTable()
 
 
-def calculate_end_of_year_price(ticker):
-    data = monthly_history_table.get_history(ticker)
-    prices = {}
+def calculate_end_of_year_prices(ticker, start_year=2000):
+    yearly_prices = {}
     current_year = datetime.datetime.now().year
-    index_year = current_year
-    for row in data:
-        row_year = row['date'].year
-        if row_year == current_year:
-            continue
-        if row_year != index_year:
-            prices[row_year] = round(row['price'], 2)
-            index_year = row_year
-            continue
-    return prices
+    for year in range(start_year, current_year):
+        price = calculate_end_of_year_price(ticker, year)
+        yearly_prices[year] = price
+    return yearly_prices
+
+
+def calculate_end_of_year_price(ticker, year):
+    query = f"SELECT adjusted_close " \
+            f"FROM {daily_history_table.table_name} " \
+            f"WHERE ticker = '{ticker}' " \
+            f"AND date >= '{year}-01-01' " \
+            f"AND date <= '{year}-12-31' " \
+            f"ORDER BY date desc " \
+            f"LIMIT 1"
+    result = daily_history_table.run_query(query)
+    return result[0]
 
 
 def calculate_average_price(ticker):
-    data = monthly_history_table.get_history(ticker)
+    data = daily_history_table.get_history(ticker)
     average_prices = {}
     current_year = datetime.datetime.now().year
     index_year = current_year
@@ -45,7 +50,7 @@ def calculate_average_price(ticker):
 
 
 def calculate_dividend(ticker):
-    data = monthly_history_table.get_date_dividend(ticker)
+    data = daily_history_table.get_history(ticker)
     dividends = {}
     current_year = datetime.datetime.now().year
     index_year = 0

@@ -71,3 +71,13 @@ def test_update_value():
     new_val = random_utilities.random_double()
     assert table.update_value(key_column, key_val, numeric_column, new_val) is True
     assert table.get_float_value(key_column, key_val, numeric_column) == new_val
+
+
+def test_run_query():
+    query = f'SELECT * FROM {table.table_name}'
+    results = table.run_query(query)
+    assert len(results) >= 1
+
+
+def test_run_query_single_result():
+    pass

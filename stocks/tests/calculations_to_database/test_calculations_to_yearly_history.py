@@ -9,7 +9,7 @@ def test_update_all():
 
 @pytest.mark.skip()
 def test_update_end_of_year_price():
-    calculations_to_yearly_history.update_end_of_year_price()
+    calculations_to_yearly_history.update_end_price()
 
 
 @pytest.mark.skip()

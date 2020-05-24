@@ -25,3 +25,11 @@ class DailyHistoryTable(Table):
 
     def add_row(self, row):
         return postgres.insert_row_as_dict(self.cursor, self.table_name, row)
+
+    def get_history(self, ticker, year=None):
+        query = f"SELECT * FROM {self.table_name} WHERE ticker = '{ticker}'"
+        if year is not None:
+            query += f" AND date >= '{year}-01-01' AND date <= '{year}-12-31'"
+        query += ' ORDER BY DATE desc'
+        postgres.run_query(self.cursor, query)
+        return self.cursor.fetchall()

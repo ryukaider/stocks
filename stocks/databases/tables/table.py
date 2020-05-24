@@ -47,3 +47,10 @@ class Table:
             return False
         return postgres.update_value(
             self.cursor, self.table_name, key_column, key_value, update_column, update_value)
+
+    def run_query(self, query):
+        postgres.run_query(self.cursor, query)
+        results = self.cursor.fetchall()
+        if len(results) == 1:
+            return results[0]
+        return results
