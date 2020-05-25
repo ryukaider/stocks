@@ -2,6 +2,7 @@ from api_to_database_table import alpha_vantage_to_daily_history
 from api_to_database_table import datahub_to_tickers
 from api_to_database_table import iex_to_company_profile
 from calculation_to_database import calculations_to_yearly_history
+from databases.tables.api_progress_table import ApiProgressTable
 
 
 def main():
@@ -9,6 +10,7 @@ def main():
 
     # First, get the latest tickers using APIs
     datahub_to_tickers.update_tickers()
+    #ApiProgressTable().reset_all()
 
     # Get basic company info for all the tickers
     iex_to_company_profile.update_all_stocks()

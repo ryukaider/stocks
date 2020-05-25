@@ -1,6 +1,8 @@
+import pytest
 from web_apis import financial_modeling_prep
 
 
+@pytest.mark.skip()
 def test_get_company_profile():
     response = financial_modeling_prep.get_company_profile('MSFT')
     assert response is not None
@@ -27,6 +29,7 @@ def test_get_company_profile_invalid():
     assert response is None
 
 
+@pytest.mark.skip()
 def test_get_daily_price():
     historica_data = financial_modeling_prep.get_daily_price('MSFT')
     assert len(historica_data) > 0

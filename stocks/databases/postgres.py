@@ -1,3 +1,4 @@
+import datetime
 import psycopg2
 
 
@@ -106,9 +107,9 @@ def insert_row_as_dict(cursor, table, dictionary):
 
 
 def update_value(cursor, table, search_column, search_value, set_column, set_value):
-    if isinstance(search_value, str):
+    if isinstance(search_value, str) or isinstance(search_value, datetime.date):
         search_value = f"('{search_value}')"
-    if isinstance(set_value, str):
+    if isinstance(set_value, str) or isinstance(set_value, datetime.date):
         set_value = f"('{set_value}')"
     query = f'UPDATE {table} SET {set_column} = {set_value} WHERE {search_column} = {search_value}'
     success = run_query(cursor, query)

@@ -24,7 +24,7 @@ def test_reset_all():
 
 def test_add_stock():
     ticker = random_utilities.random_letters(12)
-    assert api_progress_table.add_stock(ticker)
+    assert api_progress_table.add_stock(ticker) is True
 
 
 def test_add_stock_duplicate():
@@ -38,53 +38,39 @@ def test_add_stock_no_ticker():
         api_progress_table.add_stock()
 
 
-def test_reset_monthly_progress():
+def test_update_daily_history_progress():
     api_progress_table.add_stock(test_ticker)
-    assert api_progress_table.reset_monthly_progress(test_ticker)
+    date = random_utilities.random_date()
+    assert api_progress_table.update_daily_history_progress(test_ticker, date) is True
+    retrieved_date = api_progress_table.get_value('ticker', test_ticker, 'daily_history')
+    assert retrieved_date == date
 
 
-def test_reset_monthly_progress_no_ticker():
-    with pytest.raises(Exception):
-        api_progress_table.reset_monthly_progress()
+def test_reset_daily_history_progress():
+    api_progress_table.add_stock(test_ticker)
+    date = random_utilities.random_date()
+    api_progress_table.update_daily_history_progress(test_ticker, date)
+    assert api_progress_table.reset_daily_history_progress(test_ticker) is True
+    retrieved_date = api_progress_table.get_value('ticker', test_ticker, 'daily_history')
+    assert retrieved_date is None
 
 
-def test_set_monthly_done_no_ticker():
-    assert api_progress_table.set_monthly_done(test_ticker)
+def test_get_daily_history_progress():
+    add_random_row()
+    results = api_progress_table.get_daily_history_progress()
+    assert len(results) > 0
+    for ticker in results:
+        assert isinstance(ticker, str)
 
 
-def test_set_monthly_done_no_ticker():
-    with pytest.raises(Exception):
-        api_progress_table.set_monthly_done()
+@pytest.mark.skip()
+def test_get_daily_history_progress_null():
+    pass
 
 
-def test_reset_eps_progress():
-    assert api_progress_table.reset_eps_progress(test_ticker)
-
-
-def test_reset_eps_progress_no_ticker():
-    with pytest.raises(Exception):
-        api_progress_table.reset_eps_progress()
-
-
-def test_set_eps_done():
-    assert api_progress_table.set_eps_done(test_ticker)
-
-
-def test_set_eps_done_no_ticker():
-    with pytest.raises(Exception):
-        api_progress_table.set_eps_done()
-
-
-def test_get_incomplete_stocks_monthly():
-    stocks = api_progress_table.get_incomplete_stocks('monthly')
-    assert len(stocks) > 0
-
-
-def test_get_incomplete_stocks_eps():
-    stocks = api_progress_table.get_incomplete_stocks('eps')
-    assert len(stocks) > 0
-
-
-def test_get_incomplete_stocks_invalid():
-    with pytest.raises(Exception):
-        api_progress_table.get_incomplete_stocks('invalid')
+def add_random_row():
+    row = {
+        'ticker': random_utilities.random_letters(),
+        'daily_history': random_utilities.random_date()
+    }
+    api_progress_table.insert_row(row)

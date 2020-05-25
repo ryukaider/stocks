@@ -11,13 +11,12 @@ tickers_table = TickersTable()
 
 
 def update_all_stocks():
-    # tickers = api_progress_table.get_incomplete_stocks('daily')
-    tickers = tickers_table.get_tickers()
+    tickers = api_progress_table.get_daily_history_progress(days_old=7)
     for ticker in tickers:
         status = update_stock(ticker)
         print(status)
         if status == Status.Success or status == Status.Invalid:
-            api_progress_table.set_monthly_done(ticker)
+            api_progress_table.update_daily_history_progress(ticker)
             time.sleep(15)  # API limits 5 calls per minute
             continue
         if status == Status.Failed:

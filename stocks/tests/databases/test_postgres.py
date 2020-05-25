@@ -59,7 +59,8 @@ def _get_connection_to_database():
 def _create_test_table(cursor):
     columns = {
         'id': 'varchar(10) PRIMARY KEY',
-        'numeric_col': 'numeric'
+        'numeric_col': 'numeric',
+        'date_col': 'date'
     }
     postgres.create_table(cursor, test_table_name, columns)
 
@@ -233,6 +234,11 @@ def test_update_row_string(cursor):
 def test_update_row_numeric(cursor):
     new_value = random_utilities.random_double()
     assert postgres.update_value(cursor, test_table_name, 'id', test_table_row_id, 'numeric_col', new_value) is True
+
+
+def test_update_row_date(cursor):
+    new_date = random_utilities.random_date()
+    assert postgres.update_value(cursor, test_table_name, 'id', test_table_row_id, 'date_col', new_date) is True
 
 
 def test_update_row_invalid(cursor):

@@ -1,8 +1,6 @@
-import os
+import datetime
 import string
 from utilities import random_utilities
-
-root_path = os.path.join(os.path.dirname(__file__), '..', '..')
 
 
 def test_random_string():
@@ -51,3 +49,9 @@ def test_random_letters_lowercase_length():
     length = 15
     random_letters = random_utilities.random_letters_lowercase(length)
     assert len(random_letters) == length
+
+
+def test_random_date():
+    date = random_utilities.random_date()
+    assert date is not None
+    assert isinstance(date, datetime.date)

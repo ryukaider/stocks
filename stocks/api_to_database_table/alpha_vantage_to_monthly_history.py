@@ -14,7 +14,7 @@ def update_all():
         status = add_monthly_data_to_database(ticker)
         print(status)
         if status == Status.Success or status == Status.Invalid:
-            api_progress_table.set_monthly_done(ticker)
+            api_progress_table.update_daily_history_progress(ticker)
             time.sleep(15)  # API limits 5 calls per minute
             continue
         if status == Status.Failed:
