@@ -20,16 +20,16 @@ class YearlyHistoryTable(Table):
         Table.__init__(self, table_name, database_name, self.columns)
 
     def update_end_price(self, ticker, year, price):
-        self.update_value(ticker, year, 'end_price', price)
+        return self.update_value(ticker, year, 'end_price', price)
 
     def update_average_price(self, ticker, year, price):
-        self.update_value(ticker, year, 'average_price', price)
+        return self.update_value(ticker, year, 'average_price', price)
 
     def update_dividend(self, ticker, year, dividend):
-        self.update_value(ticker, year, 'dividend', dividend)
+        return self.update_value(ticker, year, 'dividend', dividend)
 
     def update_dividend_yield(self, ticker, year, dividend_yield):
-        self.update_value(ticker, year, 'dividend_yield', dividend_yield)
+        return self.update_value(ticker, year, 'dividend_yield', dividend_yield)
 
     def get_average_price(self, ticker, year):
         return self.get_value(ticker, year, 'average_price')
@@ -51,6 +51,8 @@ class YearlyHistoryTable(Table):
         return data
 
     def update_value(self, ticker, year, column, value):
+        if value is None:
+            value = 'NULL'
         self.add_row(ticker, year)
         update_query = \
             f"UPDATE {self.table_name} " \
@@ -69,7 +71,7 @@ class YearlyHistoryTable(Table):
         postgres.insert_row_as_dict(self.cursor, self.table_name, row)
 
     def row_exists(self, ticker, year):
-        row = len(self.get_row(ticker, year))
+        row = self.get_row(ticker, year)
         return row is not None
 
     def get_row(self, ticker, year):

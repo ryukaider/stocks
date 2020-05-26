@@ -26,7 +26,9 @@ def calculate_end_of_year_price(ticker, year):
             f"ORDER BY date desc " \
             f"LIMIT 1"
     result = daily_history_table.run_query(query)
-    return result[0]
+    if len(result) == 0:
+        return None
+    return result[0]['adjusted_close']
 
 
 def calculate_average_prices(ticker, start_year=default_start_year):
@@ -34,7 +36,7 @@ def calculate_average_prices(ticker, start_year=default_start_year):
     current_year = datetime.datetime.now().year
     for year in range(start_year, current_year):
         price = calculate_average_price(ticker, year)
-        average_prices[year] = float(price)
+        average_prices[year] = price
     return average_prices
 
 
@@ -48,6 +50,8 @@ def calculate_average_price(ticker, year):
     rows = daily_history_table.run_query(query)
     row_count = len(rows)
     sum_price = 0
+    if row_count == 0:
+        return None
     for row in rows:
         sum_price += row['adjusted_close']
     average = sum_price / row_count

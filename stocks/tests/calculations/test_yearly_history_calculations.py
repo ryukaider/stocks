@@ -7,6 +7,11 @@ def test_calculate_end_of_year_price():
     assert price > 0
 
 
+def test_calculate_end_of_year_price_no_history():
+    price = yearly_history_calculations.calculate_end_of_year_price('AA', 2000)
+    assert price is None
+
+
 def test_calculate_end_of_year_prices():
     prices = yearly_history_calculations.calculate_end_of_year_prices('MSFT')
     assert len(prices) >= 20
@@ -18,6 +23,11 @@ def test_calculate_end_of_year_prices():
 def test_calculate_average_price():
     average_price = yearly_history_calculations.calculate_average_price('MSFT', 2019)
     assert average_price > 0
+
+
+def test_calculate_average_price_no_rows():
+    average_price = yearly_history_calculations.calculate_average_price('AA', 2000)
+    assert average_price is None
 
 
 def test_calculate_average_prices():

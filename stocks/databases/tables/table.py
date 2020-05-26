@@ -54,6 +54,6 @@ class Table:
             results = self.cursor.fetchall()
         except Exception:
             return success
-        if len(results) == 1:
-            return results[0]
+#        if len(results) == 1:
+#            return results[0]
         return results

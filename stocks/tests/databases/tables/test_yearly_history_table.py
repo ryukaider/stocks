@@ -21,7 +21,11 @@ def test_create():
 
 def test_update_end_price():
     end_price = random_utilities.random_double()
-    yearly_history_table.update_end_price(test_ticker, test_year, end_price)
+    assert yearly_history_table.update_end_price(test_ticker, test_year, end_price) is True
+
+
+def test_update_end_price_none_price():
+    assert yearly_history_table.update_end_price(test_ticker, test_year, None) is True
 
 
 def test_update_average_price():
@@ -51,3 +55,14 @@ def test_get_value():
 def test_get_data():
     data = yearly_history_table.get_data(test_ticker)
     assert data is not None
+
+
+@pytest.mark.skip
+def test_row_exists():
+    pass
+
+
+def test_row_exists_doesnt_exist():
+    ticker = random_utilities.random_letters()
+    year = random_utilities.random_date().year
+    assert yearly_history_table.row_exists(ticker, year) is False
