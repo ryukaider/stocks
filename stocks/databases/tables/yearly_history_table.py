@@ -29,7 +29,7 @@ class YearlyHistoryTable(Table):
         return self.update_value(ticker, year, 'dividend', dividend)
 
     def update_dividend_yield(self, ticker, year, dividend_yield):
-        return self.update_value(ticker, year, 'dividend_yield', dividend_yield)
+        return self.update_value(ticker, year, 'average_dividend_yield', dividend_yield)
 
     def get_average_price(self, ticker, year):
         return self.get_value(ticker, year, 'average_price')
