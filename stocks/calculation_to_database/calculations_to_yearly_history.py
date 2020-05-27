@@ -46,5 +46,4 @@ def update_average_dividend_yields():
 
 
 if __name__ == "__main__":
-    #update_all_stocks()
-    update_average_dividend_yields()
+    update_all_stocks()
