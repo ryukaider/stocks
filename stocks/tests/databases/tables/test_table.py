@@ -38,6 +38,13 @@ def test_insert_row():
     assert table.insert_row(row) is True
 
 
+def test_remove_row():
+    value = random_utilities.random_string()
+    row = {key_column: value}
+    table.insert_row(row)
+    assert table.remove_row(key_column, value) is True
+
+
 def test_get_value_string():
     key_val = random_utilities.random_string()
     text_val = random_utilities.random_string()

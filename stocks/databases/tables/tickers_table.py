@@ -1,13 +1,10 @@
 from config import database_config
-from databases import postgres
 from databases.tables.table import Table
 
 
 class TickersTable(Table):
     columns = {
-        'ticker': 'varchar PRIMARY KEY',
-        'exchange': 'varchar',
-        'name': 'varchar'
+        'ticker': 'varchar PRIMARY KEY'
     }
 
     def __init__(self,
@@ -22,8 +19,8 @@ class TickersTable(Table):
         return True
 
     def add_stock(self, stock):
-        stock_dict = {'ticker': stock.ticker, 'exchange': stock.exchange, 'name': stock.name}
-        return postgres.insert_row_as_dict(self.cursor, self.table_name, stock_dict)
+        stock_dict = {'ticker': stock.ticker}
+        return self.insert_row(stock_dict)
 
     def remove_stocks(self, stocks):
         for stock in stocks:
@@ -32,9 +29,12 @@ class TickersTable(Table):
         return True
 
     def remove_stock(self, stock):
-        return postgres.remove_row(self.cursor, self.table_name, 'ticker', stock.ticker)
+        return self.remove_row('ticker', stock.ticker)
 
     def get_tickers(self):
         query = f'SELECT ticker FROM {self.table_name} ORDER BY ticker ASC'
-        postgres.run_query(self.cursor, query)
-        return postgres.get_list_results(self.cursor)
+        rows = self.run_query(query)
+        tickers = []
+        for row in rows:
+            tickers.append(row['ticker'])
+        return tickers

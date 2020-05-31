@@ -28,6 +28,9 @@ class Table:
     def insert_row(self, dictionary):
         return postgres.insert_row_as_dict(self.cursor, self.table_name, dictionary)
 
+    def remove_row(self, column, value):
+        return postgres.remove_row(self.cursor, self.table_name, column, value)
+
     def get_value(self, key_column, key_value, value_column):
         if isinstance(key_value, str):
             key_value = f"('{key_value}')"

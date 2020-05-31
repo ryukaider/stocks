@@ -23,15 +23,20 @@ def test_add_remove_stock():
 
 
 def test_add_remove_stocks():
-    stocks = []
-    stocks.append(create_random_stock())
-    stocks.append(create_random_stock())
+    stocks = [create_random_stock(), create_random_stock()]
     assert tickers_table.add_stocks(stocks) is True
     assert tickers_table.remove_stocks(stocks) is True
 
 
 def test_get_tickers():
-    assert tickers_table.get_tickers() is not None
+    stock = create_random_stock()
+    tickers_table.add_stock(stock)
+    tickers = tickers_table.get_tickers()
+    assert tickers is not None
+    assert len(tickers) > 0
+    for ticker in tickers:
+        assert isinstance(ticker, str)
+        assert len(ticker) > 0
 
 
 def create_random_stock():
