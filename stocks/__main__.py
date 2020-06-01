@@ -3,13 +3,21 @@ from api_to_database_table import datahub_to_tickers
 from api_to_database_table import iex_to_company_profile
 from calculation_to_database import calculations_to_yearly_history
 from databases.tables.api_progress_table import ApiProgressTable
+from databases.tables.tickers_table import TickersTable
+from web_apis import nasdaq
+
+
+tickers_table = TickersTable()
 
 
 def main():
     print('*** Starting Stocks Data Collection ***')
 
     # First, get the latest tickers using APIs
-    #datahub_to_tickers.update_tickers()
+    tickers_table.delete_all_rows()
+    tickers = nasdaq.get_all_tickers()
+    tickers_table.add_tickers(tickers)
+
     #ApiProgressTable().reset_all()
 
     # Get basic company info for all the tickers

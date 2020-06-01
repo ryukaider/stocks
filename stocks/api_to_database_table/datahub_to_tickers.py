@@ -6,7 +6,7 @@ tickers_table = TickersTable()
 
 def update_tickers():
     stocks = datahub.get_all_stocks_ticker_name_exchange()
-    tickers_table.add_stocks(stocks)
+    tickers_table.add_tickers(stocks)
 
 
 if __name__ == "__main__":

@@ -12,24 +12,24 @@ class TickersTable(Table):
                  database_name=database_config.database):
         Table.__init__(self, name, database_name, self.columns)
 
-    def add_stocks(self, stocks):
-        for stock in stocks:
-            if self.add_stock(stock) is False:
+    def add_tickers(self, tickers):
+        for ticker in tickers:
+            if self.add_ticker(ticker) is False:
                 return False
         return True
 
-    def add_stock(self, stock):
-        stock_dict = {'ticker': stock.ticker}
-        return self.insert_row(stock_dict)
+    def add_ticker(self, ticker):
+        row = {'ticker': ticker}
+        return self.insert_row(row)
 
-    def remove_stocks(self, stocks):
-        for stock in stocks:
-            if self.remove_stock(stock) is False:
+    def remove_tickers(self, tickers):
+        for ticker in tickers:
+            if self.remove_ticker(ticker) is False:
                 return False
         return True
 
-    def remove_stock(self, stock):
-        return self.delete_row('ticker', stock.ticker)
+    def remove_ticker(self, ticker):
+        return self.delete_row('ticker', ticker)
 
     def get_tickers(self):
         query = f'SELECT ticker FROM {self.name} ORDER BY ticker ASC'
