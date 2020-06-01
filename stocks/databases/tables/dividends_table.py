@@ -16,13 +16,13 @@ class DividendsTable(Table):
     }
 
     def __init__(self,
-                 table_name='dividends',
+                 name='dividends',
                  database_name=database_config.database):
-        Table.__init__(self, table_name, database_name, self.columns)
+        Table.__init__(self, name, database_name, self.columns)
 
     def add_stock(self, ticker):
         structured_ticker = f"('{ticker}')"
-        return postgres.insert_row(self.cursor, self.table_name, '(ticker)', structured_ticker)
+        return postgres.insert_row(self.cursor, self.name, '(ticker)', structured_ticker)
 
     def update_last_dividend(self, ticker, last_dividend):
         return self._update_row(ticker, 'last_dividend', last_dividend)
@@ -49,7 +49,7 @@ class DividendsTable(Table):
         if value is None:
             return False
         return postgres.update_value(
-            self.cursor, self.table_name, 'ticker', ticker, column, value)
+            self.cursor, self.name, 'ticker', ticker, column, value)
 
     def get_last_dividend(self, ticker):
         return self._get_float_value(ticker, 'last_dividend')
@@ -79,7 +79,7 @@ class DividendsTable(Table):
             return None
 
     def _get_value(self, ticker, column):
-        query = f"SELECT {column} FROM {self.table_name} WHERE ticker = '{ticker}'"
+        query = f"SELECT {column} FROM {self.name} WHERE ticker = '{ticker}'"
         postgres.run_query(self.cursor, query)
         value = postgres.get_list_results(self.cursor)[0]
         return value

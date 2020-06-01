@@ -19,7 +19,7 @@ def calculate_end_of_year_prices(ticker, start_year=default_start_year):
 
 def calculate_end_of_year_price(ticker, year):
     query = f"SELECT adjusted_close " \
-            f"FROM {daily_history_table.table_name} " \
+            f"FROM {daily_history_table.name} " \
             f"WHERE ticker = '{ticker}' " \
             f"AND date >= '{year}-01-01' " \
             f"AND date <= '{year}-12-31' " \
@@ -42,7 +42,7 @@ def calculate_average_prices(ticker, start_year=default_start_year):
 
 def calculate_average_price(ticker, year):
     query = f"SELECT adjusted_close " \
-            f"FROM {daily_history_table.table_name} " \
+            f"FROM {daily_history_table.name} " \
             f"WHERE ticker = '{ticker}' " \
             f"AND date >= '{year}-01-01' " \
             f"AND date <= '{year}-12-31' " \
@@ -69,7 +69,7 @@ def calculate_dividends(ticker, start_year=default_start_year):
 
 def calculate_dividend(ticker, year):
     query = f"SELECT dividend " \
-            f"FROM {daily_history_table.table_name} " \
+            f"FROM {daily_history_table.name} " \
             f"WHERE ticker = '{ticker}' " \
             f"AND date >= '{year}-01-01' " \
             f"AND date <= '{year}-12-31' " \

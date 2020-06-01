@@ -8,9 +8,9 @@ class TickersTable(Table):
     }
 
     def __init__(self,
-                 table_name='tickers',
+                 name='tickers',
                  database_name=database_config.database):
-        Table.__init__(self, table_name, database_name, self.columns)
+        Table.__init__(self, name, database_name, self.columns)
 
     def add_stocks(self, stocks):
         for stock in stocks:
@@ -29,10 +29,10 @@ class TickersTable(Table):
         return True
 
     def remove_stock(self, stock):
-        return self.remove_row('ticker', stock.ticker)
+        return self.delete_row('ticker', stock.ticker)
 
     def get_tickers(self):
-        query = f'SELECT ticker FROM {self.table_name} ORDER BY ticker ASC'
+        query = f'SELECT ticker FROM {self.name} ORDER BY ticker ASC'
         rows = self.run_query(query)
         tickers = []
         for row in rows:

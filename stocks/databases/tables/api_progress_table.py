@@ -13,9 +13,9 @@ class ApiProgressTable(Table):
     }
 
     def __init__(self,
-                 table_name='api_progress',
+                 name='api_progress',
                  database_name=database_config.database):
-        Table.__init__(self, table_name, database_name, self.columns)
+        Table.__init__(self, name, database_name, self.columns)
 
     def reset_all(self):
         ticker_list = TickersTable().get_tickers()
@@ -31,13 +31,13 @@ class ApiProgressTable(Table):
         return self._update_progress(ticker, 'daily_history', date)
 
     def reset_daily_history_progress(self, ticker):
-        query = f"UPDATE {self.table_name} SET daily_history = NULL WHERE ticker = '{ticker}'"
+        query = f"UPDATE {self.name} SET daily_history = NULL WHERE ticker = '{ticker}'"
         return self.run_query(query)
 
     def get_daily_history_progress(self, days_old=1):
         date = (datetime.datetime.now() - datetime.timedelta(days=days_old)).date()
         query = f"SELECT ticker " \
-                f"FROM {self.table_name} " \
+                f"FROM {self.name} " \
                 f"WHERE daily_history <= '{date}' " \
                 f"OR daily_history IS NULL " \
                 f"ORDER BY daily_history DESC"
@@ -46,7 +46,7 @@ class ApiProgressTable(Table):
         return ticker_list
 
     def _update_progress(self, ticker, column, value):
-        return postgres.update_value(self.cursor, self.table_name, 'ticker', ticker, column, value)
+        return postgres.update_value(self.cursor, self.name, 'ticker', ticker, column, value)
 
     @staticmethod
     def _convert_results_to_tickers_list(results):

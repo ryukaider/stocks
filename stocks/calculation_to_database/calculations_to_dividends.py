@@ -121,7 +121,7 @@ def update_dividend_ttm():
 
 def calculate_dividend_ttm(ticker):
     start_date = (datetime.datetime.now() - datetime.timedelta(days=365)).date()
-    query = f"SELECT dividend FROM {daily_history_table.table_name} " \
+    query = f"SELECT dividend FROM {daily_history_table.name} " \
             f"WHERE ticker = '{ticker}' " \
             f"AND date >= '{start_date}' " \
             f"AND dividend != 0"

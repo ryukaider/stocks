@@ -30,13 +30,13 @@ class CurrentDataTable(Table):
     }
 
     def __init__(self,
-                 table_name='current_data',
+                 name='current_data',
                  database_name=database_config.database):
-        Table.__init__(self, table_name, database_name, self.columns)
+        Table.__init__(self, name, database_name, self.columns)
 
     def add_stock(self, ticker):
         structured_ticker = f"('{ticker}')"
-        return postgres.insert_row(self.cursor, self.table_name, '(ticker)', structured_ticker)
+        return postgres.insert_row(self.cursor, self.name, '(ticker)', structured_ticker)
 
     def update_name(self, ticker, name):
         return self._update_row(ticker, 'name', name)
@@ -105,7 +105,7 @@ class CurrentDataTable(Table):
         if value is None:
             return False
         return postgres.update_value(
-            self.cursor, self.table_name, 'ticker', ticker, column, value)
+            self.cursor, self.name, 'ticker', ticker, column, value)
 
     def get_name(self, ticker):
         return self._get_value(ticker, 'name')
@@ -177,7 +177,7 @@ class CurrentDataTable(Table):
             return None
 
     def _get_value(self, ticker, column):
-        query = f"SELECT {column} FROM {self.table_name} WHERE ticker = '{ticker}'"
+        query = f"SELECT {column} FROM {self.name} WHERE ticker = '{ticker}'"
         postgres.run_query(self.cursor, query)
         value = postgres.get_list_results(self.cursor)[0]
         return value

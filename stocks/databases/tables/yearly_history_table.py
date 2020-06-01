@@ -15,9 +15,9 @@ class YearlyHistoryTable(Table):
     }
 
     def __init__(self,
-                 table_name='yearly_history',
+                 name='yearly_history',
                  database_name=database_config.database):
-        Table.__init__(self, table_name, database_name, self.columns)
+        Table.__init__(self, name, database_name, self.columns)
 
     def update_end_price(self, ticker, year, price):
         return self.update_value(ticker, year, 'end_price', price)
@@ -45,7 +45,7 @@ class YearlyHistoryTable(Table):
             return None
 
     def get_data(self, ticker):
-        query = f"SELECT * FROM {self.table_name} WHERE ticker = '{ticker}' ORDER BY year DESC"
+        query = f"SELECT * FROM {self.name} WHERE ticker = '{ticker}' ORDER BY year DESC"
         postgres.run_query(self.cursor, query)
         data = self.cursor.fetchall()
         return data
@@ -55,7 +55,7 @@ class YearlyHistoryTable(Table):
             value = 'NULL'
         self.add_row(ticker, year)
         update_query = \
-            f"UPDATE {self.table_name} " \
+            f"UPDATE {self.name} " \
             f"SET {column} = {value} " \
             f"WHERE ticker = '{ticker}' " \
             f"AND year = {year}"
@@ -68,19 +68,19 @@ class YearlyHistoryTable(Table):
             'ticker': ticker,
             'year': year
         }
-        postgres.insert_row_as_dict(self.cursor, self.table_name, row)
+        postgres.insert_row_as_dict(self.cursor, self.name, row)
 
     def row_exists(self, ticker, year):
         row = self.get_row(ticker, year)
         return row is not None
 
     def get_row(self, ticker, year):
-        query = f"SELECT * FROM {self.table_name} WHERE ticker = '{ticker}' AND year = {year}"
+        query = f"SELECT * FROM {self.name} WHERE ticker = '{ticker}' AND year = {year}"
         postgres.run_query(self.cursor, query)
         rows = self.cursor.fetchall()
         row_count = len(rows)
         if row_count > 1:
-            raise Exception(f'{self.table_name} contains more than one row for {ticker} - {year}')
+            raise Exception(f'{self.name} contains more than one row for {ticker} - {year}')
         if row_count == 0:
             return None
         return rows[0]

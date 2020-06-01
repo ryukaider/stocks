@@ -19,15 +19,15 @@ class DailyHistoryTable(Table):
     }
 
     def __init__(self,
-                 table_name='daily_history',
+                 name='daily_history',
                  database_name=database_config.database):
-        Table.__init__(self, table_name, database_name, self.columns)
+        Table.__init__(self, name, database_name, self.columns)
 
     def add_row(self, row):
-        return postgres.insert_row_as_dict(self.cursor, self.table_name, row)
+        return postgres.insert_row_as_dict(self.cursor, self.name, row)
 
     def get_history(self, ticker, year=None):
-        query = f"SELECT * FROM {self.table_name} WHERE ticker = '{ticker}'"
+        query = f"SELECT * FROM {self.name} WHERE ticker = '{ticker}'"
         if year is not None:
             query += f" AND date >= '{year}-01-01' AND date <= '{year}-12-31'"
         query += ' ORDER BY DATE desc'

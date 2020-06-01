@@ -18,13 +18,13 @@ class CompanyProfileTable(Table):
     }
 
     def __init__(self,
-                 table_name='company_profile',
+                 name='company_profile',
                  database_name=database_config.database):
-        Table.__init__(self, table_name, database_name, self.columns)
+        Table.__init__(self, name, database_name, self.columns)
 
     def add_stock(self, ticker):
         row = {'ticker': ticker}
-        return postgres.insert_row_as_dict(self.cursor, self.table_name, row)
+        return postgres.insert_row_as_dict(self.cursor, self.name, row)
 
     def update_name(self, ticker, name):
         return self.update_value('ticker', ticker, 'name', name)

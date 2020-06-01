@@ -38,11 +38,24 @@ def test_insert_row():
     assert table.insert_row(row) is True
 
 
-def test_remove_row():
+def test_delete_row():
     value = random_utilities.random_string()
     row = {key_column: value}
     table.insert_row(row)
-    assert table.remove_row(key_column, value) is True
+    assert table.delete_row(key_column, value) is True
+
+
+def test_get_all_rows():
+    _insert_random_row()
+    rows = table.get_all_rows()
+    assert len(rows) > 0
+
+
+def test_delete_all_rows():
+    _insert_random_row()
+    assert table.delete_all_rows() is True
+    rows = table.get_all_rows()
+    assert len(rows) == 0
 
 
 def test_get_value_string():
@@ -81,10 +94,18 @@ def test_update_value():
 
 
 def test_run_query():
-    query = f'SELECT * FROM {table.table_name}'
+    query = f'SELECT * FROM {table.name}'
     results = table.run_query(query)
     assert len(results) >= 1
 
 
 def test_run_query_single_result():
     pass
+
+
+def _insert_random_row():
+    row = {
+        key_column: random_utilities.random_letters(),
+        numeric_column: random_utilities.random_int()
+    }
+    table.insert_row(row)
