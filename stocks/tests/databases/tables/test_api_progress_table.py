@@ -24,22 +24,22 @@ def test_reset_all():
 
 def test_add_stock():
     ticker = random_utilities.random_letters(12)
-    assert api_progress_table.add_stock(ticker) is True
+    assert api_progress_table.add_ticker(ticker) is True
 
 
 def test_add_stock_duplicate():
     ticker = 'duplicate'
-    api_progress_table.add_stock(ticker)
-    assert api_progress_table.add_stock(ticker) is False
+    api_progress_table.add_ticker(ticker)
+    assert api_progress_table.add_ticker(ticker) is False
 
 
 def test_add_stock_no_ticker():
     with pytest.raises(Exception):
-        api_progress_table.add_stock()
+        api_progress_table.add_ticker()
 
 
 def test_update_daily_history_progress():
-    api_progress_table.add_stock(test_ticker)
+    api_progress_table.add_ticker(test_ticker)
     date = random_utilities.random_date()
     assert api_progress_table.update_daily_history_progress(test_ticker, date) is True
     retrieved_date = api_progress_table.get_value('ticker', test_ticker, 'daily_history')
@@ -47,7 +47,7 @@ def test_update_daily_history_progress():
 
 
 def test_reset_daily_history_progress():
-    api_progress_table.add_stock(test_ticker)
+    api_progress_table.add_ticker(test_ticker)
     date = random_utilities.random_date()
     api_progress_table.update_daily_history_progress(test_ticker, date)
     assert api_progress_table.reset_daily_history_progress(test_ticker) is True

@@ -20,10 +20,14 @@ class ApiProgressTable(Table):
     def reset_all(self):
         ticker_list = TickersTable().get_tickers()
         for ticker in ticker_list:
-            if not self.add_stock(ticker):
+            if not self.add_ticker(ticker):
                 self.reset_daily_history_progress(ticker)
 
-    def add_stock(self, ticker):
+    def add_tickers(self, tickers):
+        for ticker in tickers:
+            self.add_ticker(ticker)
+
+    def add_ticker(self, ticker):
         row = {'ticker': ticker}
         return self.insert_row(row)
 

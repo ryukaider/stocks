@@ -7,6 +7,7 @@ from databases.tables.tickers_table import TickersTable
 from web_apis import nasdaq
 
 
+api_progress_table = ApiProgressTable()
 tickers_table = TickersTable()
 
 
@@ -18,7 +19,8 @@ def main():
     tickers = nasdaq.get_all_tickers()
     tickers_table.add_tickers(tickers)
 
-    #ApiProgressTable().reset_all()
+    # Add any missing tickers to the api_progress table
+    api_progress_table.add_tickers(tickers)
 
     # Get basic company info for all the tickers
     #iex_to_company_profile.update_all_stocks()
