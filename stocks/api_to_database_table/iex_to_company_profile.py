@@ -1,16 +1,19 @@
+from databases.tables.api_progress_table import ApiProgressTable
 from databases.tables.tickers_table import TickersTable
 from databases.tables.company_profile_table import CompanyProfileTable
 from web_apis import iex
 
 tickers_table = TickersTable()
+api_progress_table = ApiProgressTable()
 company_profile_table = CompanyProfileTable()
 
 
 def update_all_stocks():
-    tickers = tickers_table.get_tickers()
+    tickers = api_progress_table.get_company_profile_progress(days_old=30)
     for ticker in tickers:
         company_profile_table.add_stock(ticker)
         update_stock(ticker)
+        api_progress_table.update_company_profile_progress(ticker)
 
 
 def update_stock(ticker):

@@ -63,6 +63,31 @@ def test_get_daily_history_progress():
         assert isinstance(ticker, str)
 
 
+def test_update_company_profile_progress():
+    api_progress_table.add_ticker(test_ticker)
+    date = random_utilities.random_date()
+    assert api_progress_table.update_company_profile_progress(test_ticker, date) is True
+    retrieved_date = api_progress_table.get_value('ticker', test_ticker, 'company_profile')
+    assert retrieved_date == date
+
+
+def test_reset_company_profile_progress():
+    api_progress_table.add_ticker(test_ticker)
+    date = random_utilities.random_date()
+    api_progress_table.update_company_profile_progress(test_ticker, date)
+    assert api_progress_table.reset_company_profile_progress(test_ticker) is True
+    retrieved_date = api_progress_table.get_value('ticker', test_ticker, 'company_profile')
+    assert retrieved_date is None
+
+
+def test_get_company_profile_progress():
+    add_random_row()
+    results = api_progress_table.get_company_profile_progress()
+    assert len(results) > 0
+    for ticker in results:
+        assert isinstance(ticker, str)
+
+
 @pytest.mark.skip()
 def test_get_daily_history_progress_null():
     pass
@@ -71,6 +96,7 @@ def test_get_daily_history_progress_null():
 def add_random_row():
     row = {
         'ticker': random_utilities.random_letters(),
+        'company_profile': random_utilities.random_date(),
         'daily_history': random_utilities.random_date()
     }
     api_progress_table.insert_row(row)
