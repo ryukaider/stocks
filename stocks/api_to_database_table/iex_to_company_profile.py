@@ -1,9 +1,7 @@
 from databases.tables.api_progress_table import ApiProgressTable
-from databases.tables.tickers_table import TickersTable
 from databases.tables.company_profile_table import CompanyProfileTable
 from web_apis import iex
 
-tickers_table = TickersTable()
 api_progress_table = ApiProgressTable()
 company_profile_table = CompanyProfileTable()
 
