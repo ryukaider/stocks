@@ -93,6 +93,16 @@ def test_get_daily_history_progress_null():
     pass
 
 
+@pytest.mark.skip()
+def test_get_progress_asc():
+    pass
+
+
+@pytest.mark.skip()
+def test_get_progress_nulls_first():
+    pass
+
+
 def add_random_row():
     row = {
         'ticker': random_utilities.random_letters(),
