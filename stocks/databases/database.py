@@ -6,18 +6,18 @@ from databases import postgres
 
 class Database:
 
-    def __init__(self, database_name):
-        self.database_name = database_name
+    def __init__(self, name):
+        self.name = name
         self.create()
 
     def exists(self):
         cursor = self.get_cursor(with_database=False)
-        return postgres.database_exists(cursor, self.database_name)
+        return postgres.database_exists(cursor, self.name)
 
     def create(self):
         cursor = self.get_cursor(with_database=False)
         if not self.exists():
-            return postgres.create_database(cursor, self.database_name)
+            return postgres.create_database(cursor, self.name)
         return cursor is not None
 
     def get_cursor(self, with_database=True):
@@ -26,7 +26,7 @@ class Database:
         return cursor
 
     def get_connection(self, with_database=True):
-        database_name = self.database_name if with_database else None
+        database_name = self.name if with_database else None
         return postgres.connect(
             database_config.username,
             keys_config.database_password,
