@@ -6,7 +6,7 @@ class Table:
 
     def __init__(self, name, database_name, columns=None):
         self.database = Database(database_name)
-        self.cursor = self.database.get_cursor()
+        self.cursor = self.database.cursor()
         self.name = name
         self.columns = columns
         self.create()

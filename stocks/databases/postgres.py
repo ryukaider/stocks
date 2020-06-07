@@ -1,5 +1,6 @@
 import datetime
 import psycopg2
+import psycopg2.extras
 
 
 def connect(username, password, host, port, database=None):
@@ -12,8 +13,14 @@ def connect(username, password, host, port, database=None):
         connection.autocommit = True
         return connection
     except (Exception, psycopg2.Error) as error:
-        print("Error while connecting to Postgres SQL", error)
+        print('Error while connecting to Postgres SQL:', error)
     return None
+
+
+def cursor(username, password, host, port, database=None):
+    connection = connect(username, password, host, port, database)
+    dict_cursor = connection.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    return dict_cursor
 
 
 def close_connection(connection, cursor=None):

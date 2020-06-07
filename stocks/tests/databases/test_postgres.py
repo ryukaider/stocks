@@ -86,6 +86,17 @@ def test_connect_no_inputs():
     assert bad_connection is None
 
 
+def test_cursor():
+    cursor = postgres.cursor(
+        username=database_config.username,
+        password=keys_config.database_password,
+        host=database_config.host,
+        port=database_config.port,
+        database=database_config.test_database
+    )
+    assert cursor is not None
+
+
 def test_close_connection_valid_connection_and_cursor(connection, cursor):
     assert postgres.close_connection(connection, cursor)
 

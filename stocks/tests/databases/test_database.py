@@ -20,20 +20,10 @@ def test_create():
 
 
 def test_get_cursor_with_database():
-    cursor = database.get_cursor(True)
+    cursor = database.cursor(True)
     assert type(cursor) is psycopg2.extras.DictCursor
 
 
 def test_get_cursor_without_database():
-    cursor = database.get_cursor(False)
+    cursor = database.cursor(False)
     assert type(cursor) is psycopg2.extras.DictCursor
-
-
-def test_get_connection_with_database():
-    connnection = database.get_connection(True)
-    assert type(connnection) is psycopg2.extensions.connection
-
-
-def test_get_connection_without_database():
-    connnection = database.get_connection(False)
-    assert type(connnection) is psycopg2.extensions.connection
