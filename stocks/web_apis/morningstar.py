@@ -1,17 +1,11 @@
 import requests
-from config import database_config
-from databases.database import Database
-from databases.tables.current_data_table import CurrentDataTable
 
 base_url = 'https://www.morningstar.com/stocks/'
-
-db = Database(database_config.database)
-current_data_table = CurrentDataTable(db.cursor())
 
 
 def get_financial_data(ticker):
     function = 'financials'
-    exchange = current_data_table.get_exchange(ticker)
+    exchange = _get_exchange(ticker)
     exchange = _convert_exchange(exchange)
     ticker = ticker.lower()
     query = _get_query(exchange, ticker, function)
@@ -24,6 +18,10 @@ def get_financial_data(ticker):
     except Exception as error:
         print(error)
         return None
+
+
+def _get_exchange(ticker):
+    return 'nyse'
 
 
 def _get_query(exchange, ticker, function):
