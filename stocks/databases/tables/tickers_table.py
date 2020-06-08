@@ -1,4 +1,3 @@
-from config import database_config
 from databases.tables.table import Table
 
 
@@ -7,10 +6,8 @@ class TickersTable(Table):
         'ticker': 'varchar PRIMARY KEY'
     }
 
-    def __init__(self,
-                 name='tickers',
-                 database_name=database_config.database):
-        Table.__init__(self, name, database_name, self.columns)
+    def __init__(self, cursor, name='tickers'):
+        Table.__init__(self, cursor, name, self.columns)
 
     def add_tickers(self, tickers):
         for ticker in tickers:

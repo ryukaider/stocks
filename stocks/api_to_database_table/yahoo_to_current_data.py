@@ -1,9 +1,14 @@
 from databases.tables.api_progress_table import ApiProgressTable
 from databases.tables.current_data_table import CurrentDataTable
 from web_apis import yahoo
+from databases.database import Database
+from config import database_config
 
-api_progress_table = ApiProgressTable()
-current_data_table = CurrentDataTable()
+db = Database(database_config.database)
+cursor = db.cursor()
+
+api_progress_table = ApiProgressTable(cursor)
+current_data_table = CurrentDataTable(cursor)
 
 
 def add_all_eps_ttm():

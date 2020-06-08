@@ -1,9 +1,14 @@
 from web_apis import financial_modeling_prep as fmp
 from databases.tables.tickers_table import TickersTable
 from databases.tables.current_data_table import CurrentDataTable
+from databases.database import Database
+from config import database_config
 
-tickers_table = TickersTable()
-current_data_table = CurrentDataTable()
+db = Database(database_config.database)
+cursor = db.cursor()
+
+tickers_table = TickersTable(cursor)
+current_data_table = CurrentDataTable(cursor)
 
 
 def update_all_profiles():

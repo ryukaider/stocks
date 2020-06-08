@@ -3,9 +3,14 @@ from api_to_database_table.helpers.status import Status
 from databases.tables.api_progress_table import ApiProgressTable
 from databases.tables.monthly_history_table import MonthlyHistoryTable
 from web_apis import alpha_vantage
+from databases.database import Database
+from config import database_config
 
-monthly_history_table = MonthlyHistoryTable()
-api_progress_table = ApiProgressTable()
+db = Database(database_config.database)
+cursor = db.cursor()
+
+monthly_history_table = MonthlyHistoryTable(cursor)
+api_progress_table = ApiProgressTable(cursor)
 
 
 def update_all():

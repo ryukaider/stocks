@@ -1,12 +1,15 @@
 import pytest
 from config import database_config
+from databases.database import Database
 from databases.tables.company_profile_table import CompanyProfileTable
 from utilities import random_utilities
 
 database_name = database_config.test_database
 table_name = 'test_company_profile'
 test_ticker = 'TEST'
-company_profile_table = CompanyProfileTable(table_name, database_name)
+db = Database(database_name)
+cursor = db.cursor()
+company_profile_table = CompanyProfileTable(cursor, table_name)
 
 
 @pytest.fixture(autouse=True, scope="class")

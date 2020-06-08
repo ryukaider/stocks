@@ -1,9 +1,14 @@
 import datetime
 from databases.tables.daily_history_table import DailyHistoryTable
 from databases.tables.yearly_history_table import YearlyHistoryTable
+from databases.database import Database
+from config import database_config
 
-daily_history_table = DailyHistoryTable()
-yearly_history_table = YearlyHistoryTable()
+db = Database(database_config.database)
+cursor = db.cursor()
+
+daily_history_table = DailyHistoryTable(cursor)
+yearly_history_table = YearlyHistoryTable(cursor)
 
 default_start_year = 2000
 

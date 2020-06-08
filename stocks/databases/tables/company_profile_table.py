@@ -1,4 +1,3 @@
-from config import database_config
 from databases import postgres
 from databases.tables.table import Table
 
@@ -17,10 +16,8 @@ class CompanyProfileTable(Table):
         'country': 'text',
     }
 
-    def __init__(self,
-                 name='company_profile',
-                 database_name=database_config.database):
-        Table.__init__(self, name, database_name, self.columns)
+    def __init__(self, cursor, name='company_profile'):
+        Table.__init__(self, cursor, name, self.columns)
 
     def add_stock(self, ticker):
         row = {'ticker': ticker}

@@ -1,12 +1,15 @@
 import pytest
 from config import database_config
+from databases.database import Database
 from databases.tables.current_data_table import CurrentDataTable
 from utilities import random_utilities
 
 database_name = database_config.test_database
 table_name = 'test_current_data'
 test_ticker = 'TEST'
-current_data_table = CurrentDataTable(table_name, database_name)
+db = Database(database_name)
+cursor = db.cursor()
+current_data_table = CurrentDataTable(cursor, table_name)
 
 
 @pytest.fixture(autouse=True, scope="class")

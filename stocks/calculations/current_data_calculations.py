@@ -1,10 +1,15 @@
 from databases.tables.yearly_history_table import YearlyHistoryTable
 from databases.tables.monthly_history_table import MonthlyHistoryTable
 from databases.tables.current_data_table import CurrentDataTable
+from databases.database import Database
+from config import database_config
 
-yearly_history_table = YearlyHistoryTable()
-monthly_history_table = MonthlyHistoryTable()
-current_data_table = CurrentDataTable()
+db = Database(database_config.database)
+cursor = db.cursor()
+
+yearly_history_table = YearlyHistoryTable(cursor)
+monthly_history_table = MonthlyHistoryTable(cursor)
+current_data_table = CurrentDataTable(cursor)
 
 
 def calculate_dividend_ttm(ticker):

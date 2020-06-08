@@ -1,4 +1,3 @@
-from config import database_config
 from databases import postgres
 from databases.tables.table import Table
 
@@ -18,10 +17,8 @@ class DailyHistoryTable(Table):
         'UNIQUE': '(ticker, date)'
     }
 
-    def __init__(self,
-                 name='daily_history',
-                 database_name=database_config.database):
-        Table.__init__(self, name, database_name, self.columns)
+    def __init__(self, cursor, name='daily_history'):
+        Table.__init__(self, cursor, name, self.columns)
 
     def add_row(self, row):
         return postgres.insert_row_as_dict(self.cursor, self.name, row)

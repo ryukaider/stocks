@@ -1,11 +1,14 @@
 from config import database_config
+from databases.database import Database
 from databases.tables.daily_history_table import DailyHistoryTable
 from utilities import random_utilities
 
 database_name = database_config.test_database
 table_name = 'test_daily_history'
 test_ticker = 'TEST'
-daily_history_table = DailyHistoryTable(table_name, database_name)
+db = Database(database_name)
+cursor = db.cursor()
+daily_history_table = DailyHistoryTable(cursor, table_name)
 
 
 def test_exists():

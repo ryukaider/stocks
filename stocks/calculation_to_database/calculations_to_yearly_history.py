@@ -1,9 +1,14 @@
 from calculations import yearly_history_calculations
 from databases.tables.tickers_table import TickersTable
 from databases.tables.yearly_history_table import YearlyHistoryTable
+from databases.database import Database
+from config import database_config
 
-tickers_table = TickersTable()
-yearly_history_table = YearlyHistoryTable()
+db = Database(database_config.database)
+cursor = db.cursor()
+
+tickers_table = TickersTable(cursor)
+yearly_history_table = YearlyHistoryTable(cursor)
 
 
 def update_all_stocks():

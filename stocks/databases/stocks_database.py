@@ -7,5 +7,5 @@ class StocksDatabase(Database):
     def __init__(self, name):
         Database.__init__(self, name)
         self.name = name
-        self.tickers_table = TickersTable(database_name=name)
-        self.api_progress_table = ApiProgressTable(database_name=name)
+        self.tickers_table = TickersTable(self.cursor())
+        self.api_progress_table = ApiProgressTable(self.cursor())

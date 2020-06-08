@@ -1,4 +1,3 @@
-from config import database_config
 from databases import postgres
 from databases.tables.table import Table
 
@@ -15,10 +14,8 @@ class DividendsTable(Table):
         'payout_ratio_ttm': 'numeric(9,2)'
     }
 
-    def __init__(self,
-                 name='dividends',
-                 database_name=database_config.database):
-        Table.__init__(self, name, database_name, self.columns)
+    def __init__(self, cursor, name='dividends'):
+        Table.__init__(self, cursor, name, self.columns)
 
     def add_stock(self, ticker):
         structured_ticker = f"('{ticker}')"

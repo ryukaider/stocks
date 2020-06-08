@@ -1,8 +1,12 @@
 import requests
+from config import database_config
+from databases.database import Database
 from databases.tables.current_data_table import CurrentDataTable
 
 base_url = 'https://www.morningstar.com/stocks/'
-current_data_table = CurrentDataTable()
+
+db = Database(database_config.database)
+current_data_table = CurrentDataTable(db.cursor())
 
 
 def get_financial_data(ticker):

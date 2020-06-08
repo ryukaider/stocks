@@ -1,4 +1,5 @@
 from config import database_config
+from databases.database import Database
 from databases.tables.table import Table
 from utilities import random_utilities
 
@@ -12,7 +13,10 @@ columns = {
     text_column: 'text',
     numeric_column: 'numeric'
 }
-table = Table(table_name, database_name, columns)
+
+db = Database(database_name)
+cursor = db.cursor()
+table = Table(cursor, table_name, columns)
 
 
 def test_table():

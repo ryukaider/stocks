@@ -1,4 +1,3 @@
-from config import database_config
 from databases import postgres
 from databases.tables.table import Table
 
@@ -14,10 +13,8 @@ class YearlyHistoryTable(Table):
         'UNIQUE': '(ticker, year)'
     }
 
-    def __init__(self,
-                 name='yearly_history',
-                 database_name=database_config.database):
-        Table.__init__(self, name, database_name, self.columns)
+    def __init__(self, cursor, name='yearly_history'):
+        Table.__init__(self, cursor, name, self.columns)
 
     def update_end_price(self, ticker, year, price):
         return self.update_value(ticker, year, 'end_price', price)

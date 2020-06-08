@@ -1,9 +1,14 @@
 from databases.tables.api_progress_table import ApiProgressTable
 from databases.tables.company_profile_table import CompanyProfileTable
 from web_apis import iex
+from databases.database import Database
+from config import database_config
 
-api_progress_table = ApiProgressTable()
-company_profile_table = CompanyProfileTable()
+db = Database(database_config.database)
+cursor = db.cursor()
+
+api_progress_table = ApiProgressTable(cursor)
+company_profile_table = CompanyProfileTable(cursor)
 
 
 def update_all_stocks():

@@ -4,10 +4,15 @@ from databases.tables.api_progress_table import ApiProgressTable
 from databases.tables.daily_history_table import DailyHistoryTable
 from databases.tables.tickers_table import TickersTable
 from web_apis import alpha_vantage
+from databases.database import Database
+from config import database_config
 
-daily_history_table = DailyHistoryTable()
-api_progress_table = ApiProgressTable()
-tickers_table = TickersTable()
+db = Database(database_config.database)
+cursor = db.cursor()
+
+daily_history_table = DailyHistoryTable(cursor)
+api_progress_table = ApiProgressTable(cursor)
+tickers_table = TickersTable(cursor)
 
 
 def update_all_stocks():

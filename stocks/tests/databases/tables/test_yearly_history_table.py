@@ -1,5 +1,6 @@
 import pytest
 from config import database_config
+from databases.database import Database
 from databases.tables.yearly_history_table import YearlyHistoryTable
 from utilities import random_utilities
 
@@ -8,7 +9,9 @@ table_name = 'test_yearly_history'
 test_ticker = 'TEST'
 test_year = 2020
 
-yearly_history_table = YearlyHistoryTable(table_name, database_name)
+db = Database(database_name)
+cursor = db.cursor()
+yearly_history_table = YearlyHistoryTable(cursor, table_name)
 
 
 def test_exists():

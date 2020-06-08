@@ -1,12 +1,10 @@
 from databases import postgres
-from databases.database import Database
 
 
 class Table:
 
-    def __init__(self, name, database_name, columns=None):
-        self.database = Database(database_name)
-        self.cursor = self.database.cursor()
+    def __init__(self, cursor, name, columns=None):
+        self.cursor = cursor
         self.name = name
         self.columns = columns
         self.create()
@@ -65,6 +63,4 @@ class Table:
             results = self.cursor.fetchall()
         except Exception:
             return success
-#        if len(results) == 1:
-#            return results[0]
         return results
