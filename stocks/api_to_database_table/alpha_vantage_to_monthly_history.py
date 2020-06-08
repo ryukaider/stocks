@@ -1,25 +1,19 @@
 import time
 from api_to_database_table.helpers.status import Status
-from databases.tables.api_progress_table import ApiProgressTable
-from databases.tables.monthly_history_table import MonthlyHistoryTable
-from web_apis import alpha_vantage
-from databases.database import Database
 from config import database_config
+from databases.stocks_database import StocksDatabase
+from web_apis import alpha_vantage
 
-db = Database(database_config.database)
-cursor = db.cursor()
-
-monthly_history_table = MonthlyHistoryTable(cursor)
-api_progress_table = ApiProgressTable(cursor)
+db = StocksDatabase(database_config.database)
 
 
 def update_all():
-    tickers = api_progress_table.get_incomplete_stocks('monthly')
+    tickers = db.api_progress_table.get_incomplete_stocks('monthly')
     for ticker in tickers:
         status = add_monthly_data_to_database(ticker)
         print(status)
         if status == Status.Success or status == Status.Invalid:
-            api_progress_table.update_daily_history_progress(ticker)
+            db.api_progress_table.update_daily_history_progress(ticker)
             time.sleep(15)  # API limits 5 calls per minute
             continue
         if status == Status.Failed:
@@ -58,7 +52,7 @@ def add_monthly_data_to_database(ticker):
         }
         converted_data.append(row)
         print(row)
-    monthly_history_table.add_monthly_data(converted_data)
+    db.monthly_history_table.add_monthly_data(converted_data)
     return Status.Success
 
 

@@ -1,18 +1,8 @@
 import datetime
-from databases.tables.daily_history_table import DailyHistoryTable
-from databases.tables.dividends_table import DividendsTable
-from databases.tables.tickers_table import TickersTable
-from databases.tables.yearly_history_table import YearlyHistoryTable
-from databases.database import Database
 from config import database_config
+from databases.stocks_database import StocksDatabase
 
-db = Database(database_config.database)
-cursor = db.cursor()
-
-daily_history_table = DailyHistoryTable(cursor)
-dividends_table = DividendsTable(cursor)
-tickers_table = TickersTable(cursor)
-yearly_history_table = YearlyHistoryTable(cursor)
+db = StocksDatabase(database_config.database)
 
 
 def update_all_stocks():
@@ -24,15 +14,15 @@ def update_all_stocks():
 
 
 def update_dividend_years():
-    tickers = tickers_table.get_tickers()
+    tickers = db.tickers_table.get_tickers()
     for ticker in tickers:
-        dividends_table.add_stock(ticker)
+        db.dividends_table.add_stock(ticker)
         dividend_years = calculate_dividend_years(ticker)
-        dividends_table.update_dividend_years(ticker, dividend_years)
+        db.dividends_table.update_dividend_years(ticker, dividend_years)
 
 
 def calculate_dividend_years(ticker):
-    data = yearly_history_table.get_data(ticker)
+    data = db.yearly_history_table.get_data(ticker)
     years = 0
     for row in data:
         if row['dividend'] is None and years == 0:
@@ -47,15 +37,15 @@ def calculate_dividend_years(ticker):
 
 
 def update_dividend_years_stable():
-    tickers = tickers_table.get_tickers()
+    tickers = db.tickers_table.get_tickers()
     for ticker in tickers:
-        dividends_table.add_stock(ticker)
+        db.dividends_table.add_stock(ticker)
         dividend_years_stable = calculate_dividend_years_stable(ticker)
-        dividends_table.update_dividend_years_stable(ticker, dividend_years_stable)
+        db.dividends_table.update_dividend_years_stable(ticker, dividend_years_stable)
 
 
 def calculate_dividend_years_stable(ticker):
-    data = yearly_history_table.get_data(ticker)
+    data = db.yearly_history_table.get_data(ticker)
     years = 0
     previous_year_dividend = None
     for row in data:
@@ -72,15 +62,15 @@ def calculate_dividend_years_stable(ticker):
 
 
 def update_dividend_years_increasing():
-    tickers = tickers_table.get_tickers()
+    tickers = db.tickers_table.get_tickers()
     for ticker in tickers:
-        dividends_table.add_stock(ticker)
+        db.dividends_table.add_stock(ticker)
         dividend_years_increasing = calculate_years_of_dividends_increasing(ticker)
-        dividends_table.update_dividend_years_increasing(ticker, dividend_years_increasing)
+        db.dividends_table.update_dividend_years_increasing(ticker, dividend_years_increasing)
 
 
 def calculate_years_of_dividends_increasing(ticker):
-    data = yearly_history_table.get_data(ticker)
+    data = db.yearly_history_table.get_data(ticker)
     years = 0
     previous_year_dividend = None
     for row in data:
@@ -97,19 +87,19 @@ def calculate_years_of_dividends_increasing(ticker):
 
 
 def update_dividend_yield_ttm():
-    tickers = tickers_table.get_tickers()
+    tickers = db.tickers_table.get_tickers()
     for ticker in tickers:
-        dividends_table.add_stock(ticker)
+        db.dividends_table.add_stock(ticker)
         dividend_yield_ttm = calculate_dividend_yield_ttm(ticker)
-        dividends_table.update_dividend_yield_ttm(ticker, dividend_yield_ttm)
+        db.dividends_table.update_dividend_yield_ttm(ticker, dividend_yield_ttm)
 
 
 def calculate_dividend_yield_ttm(ticker):
-    history = daily_history_table.get_history(ticker)
+    history = db.daily_history_table.get_history(ticker)
     dividend_yield_ttm = 0
     try:
         latest_price = history[0]['adjusted_close']
-        dividend_ttm = dividends_table.get_dividend_ttm(ticker)
+        dividend_ttm = db.dividends_table.get_dividend_ttm(ticker)
         dividend_yield_ttm = (float(dividend_ttm) / float(latest_price)) * 100
     except Exception:
         pass
@@ -117,20 +107,20 @@ def calculate_dividend_yield_ttm(ticker):
 
 
 def update_dividend_ttm():
-    tickers = tickers_table.get_tickers()
+    tickers = db.tickers_table.get_tickers()
     for ticker in tickers:
-        dividends_table.add_stock(ticker)
+        db.dividends_table.add_stock(ticker)
         dividend_ttm = calculate_dividend_ttm(ticker)
-        dividends_table.update_dividend_ttm(ticker, dividend_ttm)
+        db.dividends_table.update_dividend_ttm(ticker, dividend_ttm)
 
 
 def calculate_dividend_ttm(ticker):
     start_date = (datetime.datetime.now() - datetime.timedelta(days=365)).date()
-    query = f"SELECT dividend FROM {daily_history_table.name} " \
+    query = f"SELECT dividend FROM {db.daily_history_table.name} " \
             f"WHERE ticker = '{ticker}' " \
             f"AND date >= '{start_date}' " \
             f"AND dividend != 0"
-    rows = daily_history_table.run_query(query)
+    rows = db.daily_history_table.run_query(query)
     dividend_ttm = 0
     for row in rows:
         dividend_ttm += row['dividend']

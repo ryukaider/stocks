@@ -1,14 +1,8 @@
 import datetime
-from databases.tables.daily_history_table import DailyHistoryTable
-from databases.tables.yearly_history_table import YearlyHistoryTable
-from databases.database import Database
 from config import database_config
+from databases.stocks_database import StocksDatabase
 
-db = Database(database_config.database)
-cursor = db.cursor()
-
-daily_history_table = DailyHistoryTable(cursor)
-yearly_history_table = YearlyHistoryTable(cursor)
+db = StocksDatabase(database_config.database)
 
 default_start_year = 2000
 
@@ -24,13 +18,13 @@ def calculate_end_of_year_prices(ticker, start_year=default_start_year):
 
 def calculate_end_of_year_price(ticker, year):
     query = f"SELECT adjusted_close " \
-            f"FROM {daily_history_table.name} " \
+            f"FROM {db.daily_history_table.name} " \
             f"WHERE ticker = '{ticker}' " \
             f"AND date >= '{year}-01-01' " \
             f"AND date <= '{year}-12-31' " \
             f"ORDER BY date desc " \
             f"LIMIT 1"
-    result = daily_history_table.run_query(query)
+    result = db.daily_history_table.run_query(query)
     if len(result) == 0:
         return None
     return result[0]['adjusted_close']
@@ -47,12 +41,12 @@ def calculate_average_prices(ticker, start_year=default_start_year):
 
 def calculate_average_price(ticker, year):
     query = f"SELECT adjusted_close " \
-            f"FROM {daily_history_table.name} " \
+            f"FROM {db.daily_history_table.name} " \
             f"WHERE ticker = '{ticker}' " \
             f"AND date >= '{year}-01-01' " \
             f"AND date <= '{year}-12-31' " \
             f"ORDER BY date desc"
-    rows = daily_history_table.run_query(query)
+    rows = db.daily_history_table.run_query(query)
     row_count = len(rows)
     sum_price = 0
     if row_count == 0:
@@ -74,13 +68,13 @@ def calculate_dividends(ticker, start_year=default_start_year):
 
 def calculate_dividend(ticker, year):
     query = f"SELECT dividend " \
-            f"FROM {daily_history_table.name} " \
+            f"FROM {db.daily_history_table.name} " \
             f"WHERE ticker = '{ticker}' " \
             f"AND date >= '{year}-01-01' " \
             f"AND date <= '{year}-12-31' " \
             f"AND dividend > 0 " \
             f"ORDER BY date desc"
-    rows = daily_history_table.run_query(query)
+    rows = db.daily_history_table.run_query(query)
     dividend = 0
     for row in rows:
         dividend += row['dividend']
@@ -91,8 +85,8 @@ def calculate_average_dividend_yields(ticker, start_year=default_start_year):
     dividend_yields = {}
     current_year = datetime.datetime.now().year
     for year in range(start_year, current_year):
-        dividend = yearly_history_table.get_dividend(ticker, year)
-        average_price = yearly_history_table.get_average_price(ticker, year)
+        dividend = db.yearly_history_table.get_dividend(ticker, year)
+        average_price = db.yearly_history_table.get_average_price(ticker, year)
         try:
             average_dividend_yield = (dividend / average_price) * 100
         except Exception:

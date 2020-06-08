@@ -1,27 +1,19 @@
 import time
 from api_to_database_table.helpers.status import Status
-from databases.tables.api_progress_table import ApiProgressTable
-from databases.tables.daily_history_table import DailyHistoryTable
-from databases.tables.tickers_table import TickersTable
-from web_apis import alpha_vantage
-from databases.database import Database
 from config import database_config
+from databases.stocks_database import StocksDatabase
+from web_apis import alpha_vantage
 
-db = Database(database_config.database)
-cursor = db.cursor()
-
-daily_history_table = DailyHistoryTable(cursor)
-api_progress_table = ApiProgressTable(cursor)
-tickers_table = TickersTable(cursor)
+db = StocksDatabase(database_config.database)
 
 
 def update_all_stocks():
-    tickers = api_progress_table.get_daily_history_progress(days_old=7)
+    tickers = db.api_progress_table.get_daily_history_progress(days_old=7)
     for ticker in tickers:
         status = update_stock(ticker)
         print(status)
         if status == Status.Success or status == Status.Invalid:
-            api_progress_table.update_daily_history_progress(ticker)
+            db.api_progress_table.update_daily_history_progress(ticker)
             time.sleep(15)  # API limits 5 calls per minute
             continue
         if status == Status.Failed:
