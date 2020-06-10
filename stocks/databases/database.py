@@ -5,7 +5,7 @@ from databases import postgres
 
 class Database:
 
-    def __init__(self, name):
+    def __init__(self, name=database_config.database):
         self.name = name
         self.create()
 

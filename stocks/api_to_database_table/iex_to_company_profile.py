@@ -1,8 +1,7 @@
-from config import database_config
 from databases.stocks_database import StocksDatabase
 from web_apis import iex
 
-db = StocksDatabase(database_config.database)
+db = StocksDatabase()
 
 
 def update_all_stocks():

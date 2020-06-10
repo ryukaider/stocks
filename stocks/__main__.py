@@ -12,14 +12,14 @@ def main():
     print('*** Starting Stocks Data Collection ***')
 
     # First, get the latest tickers using APIs
-    db.tickers_table.delete_all_rows()
     tickers = nasdaq.get_all_tickers()
+    db.tickers_table.delete_all_rows()
     db.tickers_table.add_tickers(tickers)
 
     # Add any missing tickers to the api_progress table
     db.api_progress_table.add_tickers(tickers)
 
-    # Get basic company info for all the tickers
+    # Update basic company info for all the tickers
     iex_to_company_profile.update_all_stocks()
 
     # Get the latest daily history using APIs

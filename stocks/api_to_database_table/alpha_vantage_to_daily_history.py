@@ -1,10 +1,9 @@
 import time
 from api_to_database_table.helpers.status import Status
-from config import database_config
 from databases.stocks_database import StocksDatabase
 from web_apis import alpha_vantage
 
-db = StocksDatabase(database_config.database)
+db = StocksDatabase()
 
 
 def update_all_stocks():
@@ -31,7 +30,7 @@ def update_stock(ticker):
         for day in daily_history:
             day_data = daily_history[day]
             row = _format_data(ticker, day, day_data)
-            daily_history_table.add_row(row)
+            db.daily_history_table.add_row(row)
     return status
 
 

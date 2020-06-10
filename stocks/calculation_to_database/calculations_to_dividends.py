@@ -1,8 +1,7 @@
 import datetime
-from config import database_config
 from databases.stocks_database import StocksDatabase
 
-db = StocksDatabase(database_config.database)
+db = StocksDatabase()
 
 
 def update_all_stocks():

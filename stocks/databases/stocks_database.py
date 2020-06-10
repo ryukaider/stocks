@@ -8,10 +8,11 @@ from databases.tables.yearly_history_table import YearlyHistoryTable
 
 
 class StocksDatabase(Database):
-    def __init__(self, name):
-        Database.__init__(self, name)
-
-        self.name = name
+    def __init__(self, name=None):
+        if name is not None:
+            Database.__init__(self, name)
+        else:
+            Database.__init__(self)
 
         self.tickers_table = TickersTable(self.cursor())
         self.api_progress_table = ApiProgressTable(self.cursor())
