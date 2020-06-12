@@ -26,12 +26,15 @@ def update_stock(ticker):
     raw_data = alpha_vantage.get_daily_history(ticker)
     status = _get_response_status(raw_data)
     if status == Status.Success:
-        daily_history = raw_data['Time Series (Daily)']
-        for day in daily_history:
-            day_data = daily_history[day]
-            row = _format_data(ticker, day, day_data)
-            db.daily_history_table.add_row(row)
-    return status
+        try:
+            daily_history = raw_data['Time Series (Daily)']
+            for day in daily_history:
+                day_data = daily_history[day]
+                row = _format_data(ticker, day, day_data)
+                db.daily_history_table.add_row(row)
+            return status
+        except Exception:
+            return Status.Failed
 
 
 def _get_response_status(response_json):

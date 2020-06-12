@@ -1,11 +1,12 @@
 from api_to_database_table import alpha_vantage_to_daily_history
 from api_to_database_table import iex_to_company_profile
+from calculation_to_database import calculations_to_dividends
 from calculation_to_database import calculations_to_yearly_history
 from databases.stocks_database import StocksDatabase
 from web_apis import nasdaq
 
 
-db = StocksDatabase('stocks')
+db = StocksDatabase()
 
 
 def main():
@@ -27,6 +28,9 @@ def main():
 
     # Using the collected daily history, calculate the yearly history
     calculations_to_yearly_history.update_all_stocks()
+
+    # Next, update dividend information with the yearly history data
+    calculations_to_dividends.update_all_stocks()
 
 
 if __name__ == '__main__':
