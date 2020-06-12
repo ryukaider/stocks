@@ -1,4 +1,4 @@
-from calculations import yearly_history_calculations
+from database_updaters.calculations import yearly_history_calculations
 from databases.stocks_database import StocksDatabase
 
 db = StocksDatabase()

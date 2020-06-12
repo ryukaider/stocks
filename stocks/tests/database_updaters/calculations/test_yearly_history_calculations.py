@@ -1,5 +1,5 @@
 import pytest
-from calculations import yearly_history_calculations
+from database_updaters.calculations import yearly_history_calculations
 
 
 def test_calculate_end_of_year_price():

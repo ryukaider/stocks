@@ -1,5 +1,5 @@
 import pytest
-from api_to_database_table import yahoo_to_current_data
+from database_updaters.api_to_database_table import yahoo_to_current_data
 
 
 @pytest.mark.skip()

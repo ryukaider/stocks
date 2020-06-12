@@ -1,7 +1,7 @@
 from databases.tables.tickers_table import TickersTable
 from databases.tables.current_data_table import CurrentDataTable
 from databases.tables.monthly_history_table import MonthlyHistoryTable
-from calculations import current_data_calculations
+from database_updaters.calculations import current_data_calculations
 from databases.database import Database
 from config import database_config
 

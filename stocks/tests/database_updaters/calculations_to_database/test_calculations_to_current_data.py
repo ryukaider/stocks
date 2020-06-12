@@ -1,5 +1,5 @@
 import pytest
-from calculation_to_database import calculations_to_current_data
+from database_updaters.calculation_to_database import calculations_to_current_data
 
 
 @pytest.mark.skip()

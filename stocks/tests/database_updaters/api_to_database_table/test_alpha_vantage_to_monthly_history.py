@@ -1,5 +1,5 @@
 import pytest
-from api_to_database_table import alpha_vantage_to_monthly_history
+from database_updaters.api_to_database_table import alpha_vantage_to_monthly_history
 
 
 @pytest.mark.skip()

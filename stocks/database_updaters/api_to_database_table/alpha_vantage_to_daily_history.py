@@ -1,5 +1,5 @@
 import time
-from api_to_database_table.helpers.status import Status
+from database_updaters.api_to_database_table.helpers.status import Status
 from databases.stocks_database import StocksDatabase
 from web_apis import alpha_vantage
 
