@@ -3,10 +3,9 @@ from databases.database import Database
 from databases.tables.tickers_table import TickersTable
 from utilities import random_utilities
 
-database_name = database_config.test_database
-table_name = 'test_tickers'
-db = Database(database_name)
+db = Database(database_config.test_database)
 cursor = db.cursor()
+table_name = 'test_tickers'
 tickers_table = TickersTable(cursor, table_name)
 
 
@@ -16,6 +15,22 @@ def test_exists():
 
 def test_create():
     assert tickers_table.create() is True
+
+
+def test_add_tickers():
+    tickers = []
+    for _ in range(1, 3):
+        tickers.append(random_utilities.random_letters())
+    assert tickers_table.add_tickers(tickers) is True
+
+
+def test_add_tickers_one_duplicate():
+    new_ticker = random_utilities.random_letters()
+    tickers_table.add_ticker('test')
+    tickers = ['test', new_ticker]
+    assert tickers_table.add_tickers(tickers) is True
+    retrieved_tickers = tickers_table.get_tickers()
+    assert new_ticker in retrieved_tickers
 
 
 def test_add_remove_ticker():

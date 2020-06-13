@@ -10,10 +10,12 @@ class TickersTable(Table):
         Table.__init__(self, cursor, name, self.columns)
 
     def add_tickers(self, tickers):
+        values = ''
         for ticker in tickers:
-            if self.add_ticker(ticker) is False:
-                return False
-        return True
+            values += f"('{ticker}'),"
+        values = values.strip(',')
+        query = f'INSERT INTO {self.name} (ticker) VALUES {values} ON CONFLICT DO NOTHING;'
+        return self.run_query(query)
 
     def add_ticker(self, ticker):
         row = {'ticker': ticker}
