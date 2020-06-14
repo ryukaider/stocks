@@ -1,4 +1,3 @@
-from database_updaters.api_to_database_table import alpha_vantage_to_daily_history
 from database_updaters.calculation_to_database import calculations_to_dividends, calculations_to_yearly_history
 from database_updaters.database_updater import DatabaseUpdater
 from databases.stocks_database import StocksDatabase

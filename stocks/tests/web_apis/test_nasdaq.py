@@ -1,4 +1,17 @@
+import pytest
 from web_apis import nasdaq
+
+
+@pytest.mark.skip
+def test_get_nasdaq_tickers():
+    tickers = nasdaq.get_nasdaq_tickers()
+    assert len(tickers) > 0
+
+
+@pytest.mark.skip
+def test_get_nyse_tickers():
+    tickers = nasdaq.get_nyse_tickers()
+    assert len(tickers) > 0
 
 
 def test_get_all_tickers():

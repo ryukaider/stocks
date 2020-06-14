@@ -30,3 +30,7 @@ def _get_response(function, ticker, query_filter=None):
 
 def _get_query(function, ticker, query_filter=None):
     return f'{base_url}function={function}&symbol={ticker}&apikey={api_key}{query_filter}'
+
+
+if __name__ == '__main__':
+    get_daily_history('ABR-A')
