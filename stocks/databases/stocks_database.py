@@ -1,10 +1,10 @@
-from databases.database import Database
-from databases.tables.api_progress_table import ApiProgressTable
-from databases.tables.company_profile_table import CompanyProfileTable
-from databases.tables.daily_history_table import DailyHistoryTable
-from databases.tables.dividends_table import DividendsTable
-from databases.tables.tickers_table import TickersTable
-from databases.tables.yearly_history_table import YearlyHistoryTable
+from .database import Database
+from .tables.api_progress_table import ApiProgressTable
+from .tables.company_profile_table import CompanyProfileTable
+from .tables.daily_history_table import DailyHistoryTable
+from .tables.dividends_table import DividendsTable
+from .tables.tickers_table import TickersTable
+from .tables.yearly_history_table import YearlyHistoryTable
 
 
 class StocksDatabase(Database):

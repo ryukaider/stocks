@@ -1,4 +1,4 @@
-from databases.tables.table import Table
+from .table import Table
 
 
 class TickersTable(Table):

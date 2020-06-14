@@ -1,6 +1,6 @@
 import datetime
 from databases import postgres
-from databases.tables.table import Table
+from .table import Table
 
 
 class ApiProgressTable(Table):
