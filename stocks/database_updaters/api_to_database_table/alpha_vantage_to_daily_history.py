@@ -33,9 +33,9 @@ class AlphaVantageToDailyHistory:
                     day_data = daily_history[day]
                     row = self._format_data(ticker, day, day_data)
                     self.db.daily_history_table.add_row(row)
-                return status
             except Exception:
                 return Status.Failed
+        return status
 
     @staticmethod
     def _get_response_status(response_json):

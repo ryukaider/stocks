@@ -15,4 +15,4 @@ def get_company_profile(ticker):
 
 
 if __name__ == '__main__':
-    get_company_profile('ACEL+')
+    get_company_profile('CHX')

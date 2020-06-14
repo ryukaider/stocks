@@ -10,8 +10,11 @@ class IexToCompanyProfile:
         tickers = self.db.api_progress_table.get_company_profile_progress(days_old)
         for ticker in tickers:
             self.db.company_profile_table.add_stock(ticker)
-            self.update_stock(ticker)
-            self.db.api_progress_table.update_company_profile_progress(ticker)
+            success = self.update_stock(ticker)
+            if success:
+                self.db.api_progress_table.update_company_profile_progress(ticker)
+            else:
+                self.db.api_progress_table.reset_company_profile_progress(ticker)
 
     def update_stock(self, ticker):
         profile = iex.get_company_profile(ticker)

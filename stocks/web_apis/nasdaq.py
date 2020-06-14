@@ -48,6 +48,7 @@ def _get_text_from_ftp(filename):
 def _deserialize_nasdaqlisted(text):
     splitdata = text.splitlines()
     splitdata.pop(0)  # Remove header row
+    splitdata.pop(-1)  # Remove file creation row
     stocks = []
     for line in splitdata:
         splitline = line.split('|')
@@ -68,6 +69,7 @@ def _deserialize_nasdaqlisted(text):
 def _deserialize_otherlisted(text):
     splitdata = text.splitlines()
     splitdata.pop(0)  # Remove header row
+    splitdata.pop(-1)  # Remove file creation row
     stocks = []
     for line in splitdata:
         try:
@@ -94,7 +96,7 @@ def _filter_stocks(stocks):
         if stock['test issue'] == 'Y' or stock['etf'] == 'Y':
             continue
         try:
-            if stock['exchange'] == 'Z' or stock['exchange'] == 'V':
+            if stock['exchange'] == 'Z' or stock['exchange'] == 'V' or stock['exchange'] == 'P':
                 continue
         except KeyError:
             pass
