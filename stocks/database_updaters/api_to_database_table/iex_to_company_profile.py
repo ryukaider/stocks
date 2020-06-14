@@ -32,5 +32,4 @@ class IexToCompanyProfile:
 
 if __name__ == "__main__":
     db = StocksDatabase()
-    iex_to_company_profile = IexToCompanyProfile(db)
-    iex_to_company_profile.update_all_stocks()
+    IexToCompanyProfile(db).update_all_stocks()

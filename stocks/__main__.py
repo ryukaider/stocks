@@ -21,7 +21,7 @@ def main():
     db_updater.iex_to_company_profile.update_all_stocks(days_old=30)
 
     # Get the latest daily history using APIs
-    alpha_vantage_to_daily_history.update_all_stocks()
+    db_updater.alpha_vantage_to_daily_history.update_all_stocks(days_old=7)
 
     # Using the collected daily history, calculate the yearly history
     calculations_to_yearly_history.update_all_stocks()
