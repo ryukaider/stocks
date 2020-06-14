@@ -15,8 +15,7 @@ def main():
     db_updater.nasdaq_to_tickers.update_all_tickers()
 
     # Add any missing tickers to the api_progress table
-    tickers = db.tickers_table.get_tickers()
-    db.api_progress_table.add_tickers(tickers)
+    db_updater.calculations_to_api_progress.update_all_tickers()
 
     # Update basic company info for all the tickers
     iex_to_company_profile.update_all_stocks()

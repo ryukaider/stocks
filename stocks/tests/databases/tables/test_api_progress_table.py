@@ -4,12 +4,13 @@ from databases.database import Database
 from databases.tables.api_progress_table import ApiProgressTable
 from utilities import random_utilities
 
-database_name = database_config.test_database
-table_name = 'test_api_progress'
-test_ticker = 'TEST'
-db = Database(database_name)
+db = Database(database_config.test_database)
 cursor = db.cursor()
+
+table_name = 'test_api_progress'
 api_progress_table = ApiProgressTable(cursor, table_name)
+
+test_ticker = 'TEST'
 
 
 def test_exists():
@@ -20,9 +21,18 @@ def test_create():
     assert api_progress_table.create()
 
 
-@pytest.mark.skip('slow test')
-def test_reset_all():
-    api_progress_table.reset_all()
+def test_add_tickers():
+    tickers = []
+    for _ in range(1, 3):
+        tickers.append(random_utilities.random_letters())
+    assert api_progress_table.add_tickers(tickers) is True
+
+
+def test_add_tickers_one_duplicate():
+    new_ticker = random_utilities.random_letters()
+    api_progress_table.add_ticker('test')
+    tickers = ['test', new_ticker]
+    assert api_progress_table.add_tickers(tickers) is True
 
 
 def test_add_stock():

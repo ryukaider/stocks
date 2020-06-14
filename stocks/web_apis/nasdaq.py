@@ -5,6 +5,8 @@ def get_all_tickers():
     tickers = []
     tickers.extend(get_nasdaq_tickers())
     tickers.extend(get_nyse_tickers())
+    if tickers is None or len(tickers) == 0:
+        raise Exception('Failed to retrieve tickers from Nasdaq FTP site')
     return tickers
 
 

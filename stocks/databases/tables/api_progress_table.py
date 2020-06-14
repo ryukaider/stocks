@@ -1,7 +1,6 @@
 import datetime
 from databases import postgres
 from databases.tables.table import Table
-from databases.tables.tickers_table import TickersTable
 
 
 class ApiProgressTable(Table):
@@ -15,15 +14,15 @@ class ApiProgressTable(Table):
     def __init__(self, cursor, name='api_progress'):
         Table.__init__(self, cursor, name, self.columns)
 
-    def reset_all(self):
-        ticker_list = TickersTable().get_tickers()
-        for ticker in ticker_list:
-            if not self.add_ticker(ticker):
-                self.reset_daily_history_progress(ticker)
-
     def add_tickers(self, tickers):
+        values = ''
         for ticker in tickers:
-            self.add_ticker(ticker)
+            values += f"('{ticker}', NULL, NULL),"
+        values = values.strip(',')
+        query = f'INSERT INTO {self.name} (ticker, company_profile, daily_history) ' \
+                f'VALUES {values} ' \
+                f'ON CONFLICT DO NOTHING;'
+        return self.run_query(query)
 
     def add_ticker(self, ticker):
         row = {'ticker': ticker}
