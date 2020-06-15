@@ -11,13 +11,13 @@ def main():
     print('*** Starting Stocks Data Collection ***')
 
     # First, get the latest tickers from the Nasdaq ftp site
-    db_updater.nasdaq_to_tickers.update_all_tickers()
+    db_updater.nasdaq_to_tickers.update_all_tickers(days_old=1)
 
     # Add any missing tickers to the api_progress table, and remove delisted tickers
     db_updater.calculations_to_api_progress.update_all_tickers()
 
     # Update basic company info for all tickers last updated more than 30 days ago
-    db_updater.iex_to_company_profile.update_all_stocks(days_old=0)
+    db_updater.iex_to_company_profile.update_all_stocks(days_old=30)
 
     # Get the latest daily history using APIs
     db_updater.alpha_vantage_to_daily_history.update_all_stocks(days_old=7)

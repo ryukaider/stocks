@@ -3,6 +3,7 @@ from .tables.api_progress_table import ApiProgressTable
 from .tables.company_profile_table import CompanyProfileTable
 from .tables.daily_history_table import DailyHistoryTable
 from .tables.dividends_table import DividendsTable
+from .tables.table_progress_table import TableProgressTable
 from .tables.tickers_table import TickersTable
 from .tables.yearly_history_table import YearlyHistoryTable
 
@@ -15,6 +16,7 @@ class StocksDatabase(Database):
             Database.__init__(self)
 
         self.tickers_table = TickersTable(self.cursor())
+        self.table_progress_table = TableProgressTable(self.cursor())
         self.api_progress_table = ApiProgressTable(self.cursor())
         self.company_profile_table = CompanyProfileTable(self.cursor())
         self.daily_history_table = DailyHistoryTable(self.cursor())
