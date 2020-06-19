@@ -19,6 +19,15 @@ def test_create():
     assert daily_history_table.create()
 
 
+def test_add_rows():
+    rows = [_random_row(), _random_row()]
+    assert daily_history_table.add_rows(rows) is True
+    retrieved_row1 = daily_history_table.get_history(rows[0]['ticker'], rows[0]['date'].year)
+    assert len(retrieved_row1) == 1
+    retrieved_row2 = daily_history_table.get_history(rows[1]['ticker'], rows[1]['date'].year)
+    assert len(retrieved_row2) == 1
+
+
 def test_add_row():
     row = {
         'ticker': random_utilities.random_string(),
@@ -52,3 +61,18 @@ def test_get_history_invalid():
 
 def test_get_history_by_year():
     pass
+
+
+def _random_row():
+    return {
+        'ticker': random_utilities.random_letters(),
+        'date': random_utilities.random_date(),
+        'open': random_utilities.random_double(),
+        'high': random_utilities.random_double(),
+        'low': random_utilities.random_double(),
+        'close': random_utilities.random_double(),
+        'adjusted_close': random_utilities.random_double(),
+        'volume': random_utilities.random_int(0, 10000000),
+        'dividend': random_utilities.random_double(),
+        'split_coefficient': 1.000
+    }

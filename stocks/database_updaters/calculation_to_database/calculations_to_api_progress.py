@@ -33,5 +33,4 @@ class CalculationsToApiProgress:
 
 if __name__ == '__main__':
     db = StocksDatabase()
-    calculations_to_api_progress = CalculationsToApiProgress(db)
-    calculations_to_api_progress.update_all_tickers()
+    CalculationsToApiProgress(db).update_all_tickers()

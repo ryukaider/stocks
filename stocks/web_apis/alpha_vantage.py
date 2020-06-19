@@ -33,4 +33,4 @@ def _get_query(function, ticker, query_filter=None):
 
 
 if __name__ == '__main__':
-    get_daily_history('ABR-A')
+    get_daily_history('KO')

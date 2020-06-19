@@ -29,10 +29,12 @@ class AlphaVantageToDailyHistory:
         if status == Status.Success:
             try:
                 daily_history = raw_data['Time Series (Daily)']
+                rows = []
                 for day in daily_history:
                     day_data = daily_history[day]
                     row = self._format_data(ticker, day, day_data)
-                    self.db.daily_history_table.add_row(row)
+                    rows.append(row)
+                self.db.daily_history_table.add_rows(rows)
             except Exception:
                 return Status.Failed
         return status
