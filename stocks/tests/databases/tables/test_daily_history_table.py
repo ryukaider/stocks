@@ -28,6 +28,37 @@ def test_add_rows():
     assert len(retrieved_row2) == 1
 
 
+def test_update_row():
+    row = _random_row()
+    daily_history_table.add_rows([row])
+
+    updated_row = row
+    dividend = random_utilities.random_double()
+    updated_row['dividend'] = dividend
+    assert daily_history_table.update_row(row) is True
+
+    retrieved_rows = daily_history_table.get_history(row['ticker'], row['date'].year)
+    retrieved_row = retrieved_rows[0]
+    assert float(retrieved_row['dividend']) == dividend
+    assert float(retrieved_row['adjusted_close']) == row['adjusted_close']
+
+
+def test_upsert_row():
+    row = _random_row()
+
+    retrieved_rows = daily_history_table.get_history(row['ticker'])
+    assert len(retrieved_rows) == 0
+
+    assert daily_history_table.upsert_row(row) is True
+    retrieved_row = daily_history_table.get_history(row['ticker'])[0]
+    assert float(retrieved_row['dividend']) == row['dividend']
+
+    row['dividend'] = random_utilities.random_double()
+    assert daily_history_table.upsert_row(row) is True
+    retrieved_row = daily_history_table.get_history(row['ticker'])[0]
+    assert float(retrieved_row['dividend']) == row['dividend']
+
+
 def test_get_history():
     rows = [_random_row(test_ticker)]
     daily_history_table.add_rows(rows)

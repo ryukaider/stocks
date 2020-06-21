@@ -44,6 +44,41 @@ class DailyHistoryTable(Table):
                f"{row['dividend']}, " \
                f"{row['split_coefficient']}),"
 
+    def upsert_rows(self, rows: list):
+        for row in rows:
+            if row == rows[-1]:
+                pass
+            self.upsert_row(row)
+
+    def upsert_row(self, row: dict):
+        columns = ''
+        values = ''
+        for (column, value) in row.items():
+            columns += f'{column},'
+            values += f"'{value}',"
+        columns = columns.strip(',')
+        values = values.strip(',')
+
+        query = f'INSERT INTO {self.name} ' \
+                f'({columns}) ' \
+                f'VALUES ({values}) ' \
+                f'ON CONFLICT (ticker, date) DO UPDATE {self._get_update_row_query(row)};'
+        return self.run_query(query)
+
+    def update_row(self, row: dict):
+        query = f'UPDATE {self.name} {self._get_update_row_query(row)}'
+        return self.run_query(query)
+
+    def _get_update_row_query(self, row: dict):
+        query = f'SET '
+        for (key, value) in row.items():
+            if key == 'ticker' or key == 'date':
+                continue
+            query += f"{key} = '{value}',"
+        query = query.strip(',')
+        query += f" WHERE {self.name}.ticker = \'{row['ticker']}\' AND {self.name}.date = \'{row['date']}\';"
+        return query
+
     def get_history(self, ticker, year=None, orderby='DATE DESC'):
         query = f"SELECT * FROM {self.name} WHERE ticker = '{ticker}'"
         if year is not None:

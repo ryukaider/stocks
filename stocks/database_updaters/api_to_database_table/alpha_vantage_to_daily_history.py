@@ -34,7 +34,7 @@ class AlphaVantageToDailyHistory:
                     day_data = daily_history[day]
                     row = self._format_data(ticker, day, day_data)
                     rows.append(row)
-                self.db.daily_history_table.add_rows(rows)
+                self.db.daily_history_table.upsert_rows(rows)
             except Exception:
                 return Status.Failed
         return status
@@ -70,5 +70,4 @@ class AlphaVantageToDailyHistory:
 
 
 if __name__ == "__main__":
-    db = StocksDatabase()
-    AlphaVantageToDailyHistory(db).update_all_stocks()
+    AlphaVantageToDailyHistory(StocksDatabase()).update_stock('KO')
