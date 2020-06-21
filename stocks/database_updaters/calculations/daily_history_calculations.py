@@ -1,21 +1,15 @@
-from databases.stocks_database import StocksDatabase
-
-db = StocksDatabase()
-
-
-def calculate_adjusted_dividends(ticker: str):
+def calculate_adjusted_dividends(daily_history_rows):
     """
     The adjusted dividend is the dividend adjusted for stock splits
     """
 
-    daily_history_data = db.daily_history_table.get_history(ticker)
-    if not _any_splits(daily_history_data) or not _any_dividends(daily_history_data):
+    if not _any_splits(daily_history_rows) or not _any_dividends(daily_history_rows):
         return None
 
     adjusted_dividend_rows = []
     cumulative_coefficient = 1
 
-    for row in daily_history_data:
+    for row in daily_history_rows:
         cumulative_coefficient *= row['split_coefficient']
         adjusted_dividend = row['dividend'] / cumulative_coefficient
         adjusted_dividend_row = {

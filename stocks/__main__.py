@@ -21,6 +21,7 @@ def main():
 
     # Get the latest daily history using APIs
     db_updater.alpha_vantage_to_daily_history.update_all_stocks(days_old=7)
+    db_updater.calculations_to_daily_history.update_all_adjusted_dividends()
 
     # Using the collected daily history, calculate the yearly history
     calculations_to_yearly_history.update_all_stocks()

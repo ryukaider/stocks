@@ -46,9 +46,9 @@ class DailyHistoryTable(Table):
                f"{row['split_coefficient']}),"
 
     def upsert_rows(self, rows: list):
+        if rows is None:
+            return
         for row in rows:
-            if row == rows[-1]:
-                pass
             self.upsert_row(row)
 
     def upsert_row(self, row: dict):
