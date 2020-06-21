@@ -28,24 +28,9 @@ def test_add_rows():
     assert len(retrieved_row2) == 1
 
 
-def test_add_row():
-    row = {
-        'ticker': random_utilities.random_string(),
-        'date': '2020-04-25',
-        'close': random_utilities.random_double(),
-        'dividend': random_utilities.random_double()
-    }
-    assert daily_history_table.add_row(row) is True
-
-
 def test_get_history():
-    row = {
-        'ticker': test_ticker,
-        'date': '2020-04-25',
-        'close': random_utilities.random_double(),
-        'dividend': random_utilities.random_double()
-    }
-    daily_history_table.add_row(row)
+    rows = [_random_row(test_ticker)]
+    daily_history_table.add_rows(rows)
     history = daily_history_table.get_history(test_ticker)
     assert history is not None
     assert len(history) >= 0
@@ -63,9 +48,11 @@ def test_get_history_by_year():
     pass
 
 
-def _random_row():
+def _random_row(ticker=None):
+    if ticker is None:
+        ticker = random_utilities.random_letters()
     return {
-        'ticker': random_utilities.random_letters(),
+        'ticker': ticker,
         'date': random_utilities.random_date(),
         'open': random_utilities.random_double(),
         'high': random_utilities.random_double(),
