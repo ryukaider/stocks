@@ -6,16 +6,22 @@ class Table:
     def __init__(self, cursor, name, columns=None):
         self.cursor = cursor
         self.name = name
-        self.columns = columns
+        self.columns: dict = columns
         self.create()
 
     def exists(self):
         return postgres.table_exists(self.cursor, self.name)
 
     def create(self):
-        if not self.exists():
+        if self.exists():
+            return self.add_missing_columns()
+        else:
             return postgres.create_table(self.cursor, self.name, self.columns)
-        return self.exists()
+
+    def add_missing_columns(self):
+        for (column_name, column_type) in self.columns.items():
+            self.add_column(column_name, column_type)
+        return True
 
     def add_column(self, column_name, column_type='varchar'):
         return postgres.add_column(self.cursor, self.name, column_name, column_type)

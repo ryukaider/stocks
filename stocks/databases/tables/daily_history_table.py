@@ -12,6 +12,7 @@ class DailyHistoryTable(Table):
         'adjusted_close': 'numeric (10, 4)',
         'volume': 'integer',
         'dividend': 'numeric (10, 4)',
+        'adjusted_dividend': 'numeric (10, 4)',
         'split_coefficient': 'numeric (10, 4)',
         'UNIQUE': '(ticker, date)'
     }
