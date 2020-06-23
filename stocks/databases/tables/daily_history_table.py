@@ -20,64 +20,60 @@ class DailyHistoryTable(Table):
     def __init__(self, cursor, name='daily_history'):
         Table.__init__(self, cursor, name, self.columns)
 
-    def add_rows(self, rows):
-        values = ''
-        for row in rows:
-            values += self._append_row_to_values(values, row)
-        values = values.strip(',')
+    def upsert_rows(self, rows: list):
+        """
+        Assumes all rows have the same set of keys (columns).
+        """
+
+        if rows is None:
+            return False
+
+        columns_list = self._get_column_list(rows)
+        columns_text = self._get_column_text(columns_list)
+        values_text = self._get_values_text(rows, columns_list)
+        on_conflict_query = self._get_conflict_update_query(columns_list)
+
         query = f'INSERT INTO {self.name} ' \
-                f'(ticker, date, open, high, low, close, adjusted_close, volume, dividend, split_coefficient) ' \
-                f'VALUES {values} ' \
-                f'ON CONFLICT DO NOTHING;'
+                f'({columns_text}) ' \
+                f'VALUES {values_text} ' \
+                f'ON CONFLICT (ticker, date) DO UPDATE {on_conflict_query};'
         return self.run_query(query)
 
     @staticmethod
-    def _append_row_to_values(values, row):
-        return values + \
-               f"('{row['ticker']}', " \
-               f"'{row['date']}', " \
-               f"{row['open']}, " \
-               f"{row['high']}, " \
-               f"{row['low']}, " \
-               f"{row['close']}, " \
-               f"{row['adjusted_close']}, " \
-               f"{row['volume']}, " \
-               f"{row['dividend']}, " \
-               f"{row['split_coefficient']}),"
+    def _get_column_list(rows):
+        columns_list = []
+        for (column, value) in rows[0].items():
+            columns_list.append(column)
+        return columns_list
 
-    def upsert_rows(self, rows: list):
-        if rows is None:
-            return
-        for row in rows:
-            self.upsert_row(row)
+    @staticmethod
+    def _get_column_text(columns_list):
+        columns_text = ''
+        for column in columns_list:
+            columns_text += f'{column},'
+        columns_text = columns_text.strip(',')
+        return columns_text
 
-    def upsert_row(self, row: dict):
-        columns = ''
+    @staticmethod
+    def _get_values_text(rows, columns_list):
         values = ''
-        for (column, value) in row.items():
-            columns += f'{column},'
-            values += f"'{value}',"
-        columns = columns.strip(',')
+        for row in rows:
+            values += '('
+            for column in columns_list:
+                values += f"'{row[column]}',"
+            values = values.strip(',')
+            values += '),'
         values = values.strip(',')
+        return values
 
-        query = f'INSERT INTO {self.name} ' \
-                f'({columns}) ' \
-                f'VALUES ({values}) ' \
-                f'ON CONFLICT (ticker, date) DO UPDATE {self._get_update_row_query(row)};'
-        return self.run_query(query)
-
-    def update_row(self, row: dict):
-        query = f'UPDATE {self.name} {self._get_update_row_query(row)}'
-        return self.run_query(query)
-
-    def _get_update_row_query(self, row: dict):
+    def _get_conflict_update_query(self, columns: list):
         query = f'SET '
-        for (key, value) in row.items():
-            if key == 'ticker' or key == 'date':
+        for column in columns:
+            if column == 'ticker' or column == 'date':
                 continue
-            query += f"{key} = '{value}',"
+            query += f'{column} = EXCLUDED.{column},'
         query = query.strip(',')
-        query += f" WHERE {self.name}.ticker = \'{row['ticker']}\' AND {self.name}.date = \'{row['date']}\';"
+        query += f' WHERE {self.name}.ticker = EXCLUDED.ticker AND {self.name}.date = EXCLUDED.date'
         return query
 
     def get_history(self, ticker, year=None, orderby='DATE DESC'):

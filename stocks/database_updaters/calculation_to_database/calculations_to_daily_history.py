@@ -15,3 +15,7 @@ class CalculationsToDailyHistory:
         daily_history_rows = self.db.daily_history_table.get_history(ticker)
         adjusted_dividend_rows = daily_history_calculations.calculate_adjusted_dividends(daily_history_rows)
         return self.db.daily_history_table.upsert_rows(adjusted_dividend_rows)
+
+
+if __name__ == '__main__':
+    CalculationsToDailyHistory(StocksDatabase()).update_adjusted_dividend('A')
