@@ -1,7 +1,7 @@
 from web_apis import financial_modeling_prep as fmp
-from databases.tables.tickers_table import TickersTable
-from databases.tables.current_data_table import CurrentDataTable
-from databases.database import Database
+from database.tables.tickers_table import TickersTable
+from database.tables.current_data_table import CurrentDataTable
+from database.database import Database
 from config import database_config
 
 db = Database(database_config.database)

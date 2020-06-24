@@ -1,4 +1,4 @@
-from databases.stocks_database import StocksDatabase
+from database.stocks_database import StocksDatabase
 
 
 class CalculationsToApiProgress:

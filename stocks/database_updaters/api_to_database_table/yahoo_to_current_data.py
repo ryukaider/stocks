@@ -1,7 +1,7 @@
-from databases.tables.api_progress_table import ApiProgressTable
-from databases.tables.current_data_table import CurrentDataTable
+from database.tables.api_progress_table import ApiProgressTable
+from database.tables.current_data_table import CurrentDataTable
 from web_apis import yahoo
-from databases.database import Database
+from database.database import Database
 from config import database_config
 
 db = Database(database_config.database)

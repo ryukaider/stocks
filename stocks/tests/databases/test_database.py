@@ -1,5 +1,5 @@
 import psycopg2.extras
-from databases.database import Database
+from database.database import Database
 from config import database_config
 
 

@@ -1,7 +1,7 @@
 import pytest
 from config import database_config
-from databases.database import Database
-from databases.tables.current_data_table import CurrentDataTable
+from database.database import Database
+from database.tables.current_data_table import CurrentDataTable
 from utilities import random_utilities
 
 database_name = database_config.test_database

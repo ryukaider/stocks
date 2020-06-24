@@ -1,4 +1,4 @@
-from databases.stocks_database import StocksDatabase
+from database.stocks_database import StocksDatabase
 from .api_to_database_table.alpha_vantage_to_daily_history import AlphaVantageToDailyHistory
 from .api_to_database_table.iex_to_company_profile import IexToCompanyProfile
 from .api_to_database_table.nasdaq_to_tickers import NasdaqToTickers

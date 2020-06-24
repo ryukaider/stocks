@@ -1,4 +1,4 @@
-from databases import postgres
+from database import postgres
 from .table import Table
 
 

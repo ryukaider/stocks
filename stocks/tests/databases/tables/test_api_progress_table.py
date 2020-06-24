@@ -1,7 +1,7 @@
 import pytest
 from config import database_config
-from databases.database import Database
-from databases.tables.api_progress_table import ApiProgressTable
+from database.database import Database
+from database.tables.api_progress_table import ApiProgressTable
 from utilities import random_utilities
 
 db = Database(database_config.test_database)

@@ -1,6 +1,6 @@
 from config import database_config
-from databases.database import Database
-from databases.tables.daily_history_table import DailyHistoryTable
+from database.database import Database
+from database.tables.daily_history_table import DailyHistoryTable
 from utilities import random_utilities
 
 database_name = database_config.test_database

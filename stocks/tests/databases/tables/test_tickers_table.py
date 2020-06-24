@@ -1,6 +1,6 @@
 from config import database_config
-from databases.database import Database
-from databases.tables.tickers_table import TickersTable
+from database.database import Database
+from database.tables.tickers_table import TickersTable
 from utilities import random_utilities
 
 db = Database(database_config.test_database)

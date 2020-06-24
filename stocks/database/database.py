@@ -1,6 +1,6 @@
 from config import database_config
 from config import keys_config
-from databases import postgres
+from database import postgres
 
 
 class Database:

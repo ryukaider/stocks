@@ -1,8 +1,8 @@
-from databases.tables.tickers_table import TickersTable
-from databases.tables.current_data_table import CurrentDataTable
-from databases.tables.monthly_history_table import MonthlyHistoryTable
+from database.tables.tickers_table import TickersTable
+from database.tables.current_data_table import CurrentDataTable
+from database.tables.monthly_history_table import MonthlyHistoryTable
 from database_updaters.calculations import current_data_calculations
-from databases.database import Database
+from database.database import Database
 from config import database_config
 
 db = Database(database_config.database)
