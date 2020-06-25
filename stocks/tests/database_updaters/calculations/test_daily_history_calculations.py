@@ -1,4 +1,4 @@
-from database_updaters.calculations import daily_history_calculations
+from database_updaters.daily_history import daily_history_calculations
 from database.stocks_database import StocksDatabase
 
 # Note: Relies on existing real data
