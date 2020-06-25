@@ -19,7 +19,7 @@ class DailyHistoryUpdater:
             if status == Status.Success or status == Status.Invalid:
                 self.db.api_progress_table.update_daily_history_progress(ticker)
                 self._update_adjusted_dividends(ticker)
-                time.sleep(15)  # API limits 5 calls per minute
+                time.sleep(12)  # API limits 5 calls per minute
                 continue
             if status == Status.Failed:
                 continue
