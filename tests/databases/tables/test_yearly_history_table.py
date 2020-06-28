@@ -58,6 +58,7 @@ def test_get_value():
 def test_get_data():
     data = yearly_history_table.get_data(test_ticker)
     assert data is not None
+    assert len(data) > 0
 
 
 @pytest.mark.skip

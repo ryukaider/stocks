@@ -1,4 +1,3 @@
-from database import postgres
 from .table import Table
 
 
@@ -43,9 +42,8 @@ class YearlyHistoryTable(Table):
 
     def get_data(self, ticker):
         query = f"SELECT * FROM {self.name} WHERE ticker = '{ticker}' ORDER BY year DESC"
-        postgres.run_query(self.cursor, query)
-        data = self.cursor.fetchall()
-        return data
+        rows = self.run_query(query)
+        return rows
 
     def update_value(self, ticker, year, column, value):
         if value is None:
@@ -56,7 +54,7 @@ class YearlyHistoryTable(Table):
             f"SET {column} = {value} " \
             f"WHERE ticker = '{ticker}' " \
             f"AND year = {year}"
-        return postgres.run_query(self.cursor, update_query)
+        return self.run_query(update_query)
 
     def add_row(self, ticker, year):
         if self.row_exists(ticker, year):
@@ -65,7 +63,7 @@ class YearlyHistoryTable(Table):
             'ticker': ticker,
             'year': year
         }
-        postgres.insert_row_as_dict(self.cursor, self.name, row)
+        return self.insert_row(row)
 
     def row_exists(self, ticker, year):
         row = self.get_row(ticker, year)
@@ -73,8 +71,7 @@ class YearlyHistoryTable(Table):
 
     def get_row(self, ticker, year):
         query = f"SELECT * FROM {self.name} WHERE ticker = '{ticker}' AND year = {year}"
-        postgres.run_query(self.cursor, query)
-        rows = self.cursor.fetchall()
+        rows = self.run_query(query)
         row_count = len(rows)
         if row_count > 1:
             raise Exception(f'{self.name} contains more than one row for {ticker} - {year}')

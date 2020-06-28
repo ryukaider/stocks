@@ -1,5 +1,4 @@
 import datetime
-from database import postgres
 from .table import Table
 
 
@@ -47,7 +46,7 @@ class ApiProgressTable(Table):
         return self._get_progress('company_profile', days_old)
 
     def _update_progress(self, ticker, column, value):
-        return postgres.update_value(self.cursor, self.name, 'ticker', ticker, column, value)
+        return self.update_value('ticker', ticker, column, value)
 
     def _reset_progress(self, ticker, column):
         query = f"UPDATE {self.name} SET {column} = NULL WHERE ticker = '{ticker}'"

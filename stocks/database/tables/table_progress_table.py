@@ -1,5 +1,4 @@
 import datetime
-from database import postgres
 from .table import Table
 
 
@@ -18,7 +17,7 @@ class TableProgressTable(Table):
         return self.insert_row(row)
 
     def update_progress(self, table_name, date=datetime.datetime.now().date()):
-        return postgres.update_value(self.cursor, self.name, 'table_name', table_name, 'last_updated', date)
+        return self.update_value('table_name', table_name, 'last_updated', date)
 
     def reset_progress(self, table_name):
         query = f"UPDATE {self.name} SET 'last_updated' = NULL WHERE table_name = '{table_name}'"

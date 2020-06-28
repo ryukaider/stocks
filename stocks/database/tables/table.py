@@ -70,3 +70,6 @@ class Table:
         except Exception:
             return success
         return results
+
+    def get_list_results(self):
+        return postgres.get_list_results(self.cursor)

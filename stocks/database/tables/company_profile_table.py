@@ -1,4 +1,3 @@
-from database import postgres
 from .table import Table
 
 
@@ -21,7 +20,7 @@ class CompanyProfileTable(Table):
 
     def add_stock(self, ticker):
         row = {'ticker': ticker}
-        return postgres.insert_row_as_dict(self.cursor, self.name, row)
+        return self.insert_row(row)
 
     def update_name(self, ticker, name):
         return self.update_value('ticker', ticker, 'name', name)
