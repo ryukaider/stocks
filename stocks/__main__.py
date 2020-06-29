@@ -1,4 +1,4 @@
-from database_updaters.calculation_to_database import calculations_to_dividends, calculations_to_yearly_history
+from database_updaters.calculation_to_database import calculations_to_dividends
 from database_updaters.database_updater import DatabaseUpdater
 from database.stocks_database import StocksDatabase
 
@@ -23,7 +23,7 @@ def main():
     db_updater.daily_history.update_all(days_old=1)
 
     # Using the collected daily history, calculate the yearly history
-    calculations_to_yearly_history.update_all_stocks()
+    db_updater.yearly_history.update_all()
 
     # Next, update dividend information with the yearly history data
     calculations_to_dividends.update_all_stocks()
