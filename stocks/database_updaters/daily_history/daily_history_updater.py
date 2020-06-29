@@ -1,5 +1,5 @@
 import time
-from ..api_to_database_table.helpers.status import Status
+from database_updaters.daily_history.helpers.status import Status
 from .alpha_vantage_to_daily_history import AlphaVantageToDailyHistory
 from .adjusted_dividends_calculator import AdjustedDividendsCalculator
 from database.stocks_database import StocksDatabase
