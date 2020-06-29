@@ -1,11 +1,16 @@
 from database.stocks_database import StocksDatabase
 
 
-class CalculationsToApiProgress:
+class ApiProgressUpdater:
     def __init__(self, database: StocksDatabase):
         self.db = database
 
     def update_all_tickers(self, remove_delisted_rows=True):
+        """
+        Updates the api_progress table with the latest tickers from the tickers table,
+        as well as removing any delisted tickers.
+        """
+
         fresh_tickers = self._get_fresh_tickers()
         if remove_delisted_rows:
             self._remove_delisted_tickers(fresh_tickers)
@@ -29,8 +34,3 @@ class CalculationsToApiProgress:
         for row in api_progress_rows:
             stale_tickers.append(row['ticker'])
         return stale_tickers
-
-
-if __name__ == '__main__':
-    db = StocksDatabase()
-    CalculationsToApiProgress(db).update_all_tickers()

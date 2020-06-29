@@ -7,7 +7,7 @@ class TickersUpdater:
     def __init__(self, database: StocksDatabase):
         self.db = database
 
-    def update_all(self, remove_existing_rows=True, days_old=1):
+    def update_all_tickers(self, remove_existing_rows=True, days_old=1):
         """
         Updates tickers table with the latest tickers from the Nasdaq ftp site.
         """
