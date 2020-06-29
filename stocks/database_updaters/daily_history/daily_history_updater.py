@@ -11,7 +11,11 @@ class DailyHistoryUpdater:
         self.alpha_vantage_to_daily_history = AlphaVantageToDailyHistory(self.db)
         self.adjusted_dividends_calculator = AdjustedDividendsCalculator()
 
-    def update_all_stocks(self, days_old=7):
+    def update_all(self, days_old=7):
+        """
+        Updates daily history data for all stocks, using Alpha Vantage APIs + calculations.
+        """
+
         tickers = self.db.api_progress_table.get_daily_history_progress(days_old)
         for ticker in tickers:
             status = self.alpha_vantage_to_daily_history.update_stock(ticker)
