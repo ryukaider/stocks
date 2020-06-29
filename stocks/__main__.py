@@ -17,7 +17,7 @@ def main():
     db_updater.api_progress.update_all_tickers()
 
     # Update basic company info for all tickers last updated more than 30 days ago
-    db_updater.iex_to_company_profile.update_all_tickers(days_old=30)
+    db_updater.company_profile.update_all(days_old=30)
 
     # Get the latest daily history using APIs
     db_updater.daily_history.update_all(days_old=1)

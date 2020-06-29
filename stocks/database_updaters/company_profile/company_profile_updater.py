@@ -2,11 +2,15 @@ from database.stocks_database import StocksDatabase
 from web_apis import iex
 
 
-class IexToCompanyProfile:
+class CompanyProfileUpdater:
     def __init__(self, database: StocksDatabase):
         self.db = database
 
-    def update_all_stocks(self, days_old=30):
+    def update_all(self, days_old=30):
+        """
+        Updates company profile table for all stocks, using the IEX API.
+        """
+
         tickers = self.db.api_progress_table.get_company_profile_progress(days_old)
         for ticker in tickers:
             self.db.company_profile_table.add_stock(ticker)
@@ -31,8 +35,3 @@ class IexToCompanyProfile:
         self.db.company_profile_table.update_website(ticker, profile['website'])
         self.db.company_profile_table.update_country(ticker, profile['country'])
         return True
-
-
-if __name__ == "__main__":
-    db = StocksDatabase()
-    IexToCompanyProfile(db).update_all_stocks()
