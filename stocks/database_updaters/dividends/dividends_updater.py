@@ -11,18 +11,21 @@ class DividendsUpdater:
         Updates all dividend data for all stocks, using calculations
         """
 
-        self.update_dividend_years()
-        self.update_dividend_years_stable()
-        self.update_dividend_years_increasing()
-        self.update_dividend_ttm()
-        self.update_dividend_yield_ttm()
-
-    def update_dividend_years(self):
         tickers = self.db.tickers_table.get_tickers()
         for ticker in tickers:
-            self.db.dividends_table.add_stock(ticker)
-            dividend_years = self.calculate_dividend_years(ticker)
-            self.db.dividends_table.update_dividend_years(ticker, dividend_years)
+            self.update(ticker)
+
+    def update(self, ticker):
+        self.update_dividend_years(ticker)
+        self.update_dividend_years_stable(ticker)
+        self.update_dividend_years_increasing(ticker)
+        self.update_dividend_ttm(ticker)
+        self.update_dividend_yield_ttm(ticker)
+
+    def update_dividend_years(self, ticker):
+        self.db.dividends_table.add_stock(ticker)
+        dividend_years = self.calculate_dividend_years(ticker)
+        self.db.dividends_table.update_dividend_years(ticker, dividend_years)
 
     def calculate_dividend_years(self, ticker):
         data = self.db.yearly_history_table.get_data(ticker)
@@ -38,12 +41,10 @@ class DividendsUpdater:
                 break
         return years
 
-    def update_dividend_years_stable(self):
-        tickers = self.db.tickers_table.get_tickers()
-        for ticker in tickers:
-            self.db.dividends_table.add_stock(ticker)
-            dividend_years_stable = self.calculate_dividend_years_stable(ticker)
-            self.db.dividends_table.update_dividend_years_stable(ticker, dividend_years_stable)
+    def update_dividend_years_stable(self, ticker):
+        self.db.dividends_table.add_stock(ticker)
+        dividend_years_stable = self.calculate_dividend_years_stable(ticker)
+        self.db.dividends_table.update_dividend_years_stable(ticker, dividend_years_stable)
 
     def calculate_dividend_years_stable(self, ticker):
         data = self.db.yearly_history_table.get_data(ticker)
@@ -61,12 +62,10 @@ class DividendsUpdater:
                 break
         return years
 
-    def update_dividend_years_increasing(self):
-        tickers = self.db.tickers_table.get_tickers()
-        for ticker in tickers:
-            self.db.dividends_table.add_stock(ticker)
-            dividend_years_increasing = self.calculate_years_of_dividends_increasing(ticker)
-            self.db.dividends_table.update_dividend_years_increasing(ticker, dividend_years_increasing)
+    def update_dividend_years_increasing(self, ticker):
+        self.db.dividends_table.add_stock(ticker)
+        dividend_years_increasing = self.calculate_years_of_dividends_increasing(ticker)
+        self.db.dividends_table.update_dividend_years_increasing(ticker, dividend_years_increasing)
 
     def calculate_years_of_dividends_increasing(self, ticker):
         data = self.db.yearly_history_table.get_data(ticker)
@@ -84,12 +83,10 @@ class DividendsUpdater:
                 break
         return years
 
-    def update_dividend_yield_ttm(self):
-        tickers = self.db.tickers_table.get_tickers()
-        for ticker in tickers:
-            self.db.dividends_table.add_stock(ticker)
-            dividend_yield_ttm = self.calculate_dividend_yield_ttm(ticker)
-            self.db.dividends_table.update_dividend_yield_ttm(ticker, dividend_yield_ttm)
+    def update_dividend_yield_ttm(self, ticker):
+        self.db.dividends_table.add_stock(ticker)
+        dividend_yield_ttm = self.calculate_dividend_yield_ttm(ticker)
+        self.db.dividends_table.update_dividend_yield_ttm(ticker, dividend_yield_ttm)
 
     def calculate_dividend_yield_ttm(self, ticker):
         history = self.db.daily_history_table.get_history(ticker)
@@ -102,12 +99,10 @@ class DividendsUpdater:
             pass
         return dividend_yield_ttm
 
-    def update_dividend_ttm(self):
-        tickers = self.db.tickers_table.get_tickers()
-        for ticker in tickers:
-            self.db.dividends_table.add_stock(ticker)
-            dividend_ttm = self.calculate_dividend_ttm(ticker)
-            self.db.dividends_table.update_dividend_ttm(ticker, dividend_ttm)
+    def update_dividend_ttm(self, ticker):
+        self.db.dividends_table.add_stock(ticker)
+        dividend_ttm = self.calculate_dividend_ttm(ticker)
+        self.db.dividends_table.update_dividend_ttm(ticker, dividend_ttm)
 
     def calculate_dividend_ttm(self, ticker):
         start_date = (datetime.datetime.now() - datetime.timedelta(days=365)).date()

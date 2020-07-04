@@ -64,7 +64,8 @@ class YearlyHistoryCalculator:
         return dividends
 
     def calculate_dividend(self, ticker, year):
-        query = f"SELECT dividend " \
+        column = 'adjusted_dividend'
+        query = f"SELECT {column} " \
                 f"FROM {self.db.daily_history_table.name} " \
                 f"WHERE ticker = '{ticker}' " \
                 f"AND date >= '{year}-01-01' " \
@@ -74,7 +75,7 @@ class YearlyHistoryCalculator:
         rows = self.db.daily_history_table.run_query(query)
         dividend = 0
         for row in rows:
-            dividend += row['dividend']
+            dividend += row[column]
         return float(dividend)
 
     def calculate_average_dividend_yields(self, ticker, start_year=default_start_year):

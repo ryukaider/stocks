@@ -19,7 +19,7 @@ def main():
     db_updater.company_profile.update_all(days_old=30)
 
     # Get the latest daily history using APIs
-    db_updater.daily_history.update_all(days_old=1)
+    db_updater.daily_history.update_all(days_old=7)
 
     # Using the collected daily history, calculate the yearly history
     db_updater.yearly_history.update_all()

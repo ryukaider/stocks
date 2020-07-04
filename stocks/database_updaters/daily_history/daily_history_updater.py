@@ -31,6 +31,13 @@ class DailyHistoryUpdater:
                 print('Stopping due to reaching APi limit')
                 break
 
+    def update(self, ticker):
+        status = self.alpha_vantage_to_daily_history.update_stock(ticker)
+        print(status)
+        if status == Status.Success or status == Status.Invalid:
+            self.db.api_progress_table.update_daily_history_progress(ticker)
+            self._update_adjusted_dividends(ticker)
+
     def _update_adjusted_dividends(self, ticker):
         daily_history_rows = self.db.daily_history_table.get_history(ticker)
         adjusted_dividend_rows = self.adjusted_dividends_calculator.calculate(daily_history_rows)
