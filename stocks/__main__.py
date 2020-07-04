@@ -1,32 +1,9 @@
 from database.stocks_database import StocksDatabase
 from database_updaters.database_updater import DatabaseUpdater
 
+print('*** Starting Stocks Data Collection ***')
 
 db = StocksDatabase()
 db_updater = DatabaseUpdater(db)
 
-
-def main():
-    print('*** Starting Stocks Data Collection ***')
-
-    # First, get the latest tickers from the Nasdaq ftp site
-    db_updater.tickers.update_all_tickers(days_old=1)
-
-    # Add any missing tickers to the api_progress table, and remove delisted tickers
-    db_updater.api_progress.update_all_tickers()
-
-    # Update basic company info for all tickers last updated more than 30 days ago
-    db_updater.company_profile.update_all(days_old=30)
-
-    # Get the latest daily history using APIs
-    db_updater.daily_history.update_all(days_old=7)
-
-    # Using the collected daily history, calculate the yearly history
-    db_updater.yearly_history.update_all()
-
-    # Next, update dividend information with the yearly history data
-    db_updater.dividends.update_all()
-
-
-if __name__ == '__main__':
-    main()
+db_updater.update_all()
