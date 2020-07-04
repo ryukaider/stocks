@@ -73,10 +73,12 @@ class YearlyHistoryCalculator:
                 f"AND dividend > 0 " \
                 f"ORDER BY date desc"
         rows = self.db.daily_history_table.run_query(query)
-        dividend = 0
+        yearly_dividend = 0
         for row in rows:
-            dividend += row[column]
-        return float(dividend)
+            dividend = row[column]
+            if dividend is not None:
+                yearly_dividend += row[column]
+        return float(yearly_dividend)
 
     def calculate_average_dividend_yields(self, ticker, start_year=default_start_year):
         dividend_yields = {}

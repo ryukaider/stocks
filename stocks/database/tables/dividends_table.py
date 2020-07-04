@@ -75,6 +75,5 @@ class DividendsTable(Table):
 
     def _get_value(self, ticker, column):
         query = f"SELECT {column} FROM {self.name} WHERE ticker = '{ticker}'"
-        self.run_query(query)
-        value = self.get_list_results()[0]
+        value = self.run_query(query)[0][column]
         return value
