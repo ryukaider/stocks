@@ -4,9 +4,7 @@ from database.tables.tickers_table import TickersTable
 from utilities import random_utilities
 
 db = Database(database_config.test_database)
-cursor = db.cursor()
-table_name = 'test_tickers'
-tickers_table = TickersTable(cursor, table_name)
+tickers_table = TickersTable(db.cursor())
 
 
 def test_exists():

@@ -19,10 +19,6 @@ class TableProgressTable(Table):
     def update_progress(self, table_name, date=datetime.datetime.now().date()):
         return self.update_value('table_name', table_name, 'last_updated', date)
 
-    def reset_progress(self, table_name):
-        query = f"UPDATE {self.name} SET 'last_updated' = NULL WHERE table_name = '{table_name}'"
-        return self.run_query(query)
-
     def get_last_updated(self, table_name):
         query = f"SELECT last_updated " \
                 f"FROM {self.name} " \
