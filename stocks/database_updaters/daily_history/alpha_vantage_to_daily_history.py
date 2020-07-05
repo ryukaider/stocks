@@ -37,7 +37,7 @@ class AlphaVantageToDailyHistory:
             day_data = daily_history[day]
             row = self._format_data(ticker, day, day_data)
             rows.append(row)
-        self.db.daily_history_table.upsert_rows(rows)
+        self.db.daily_history_table._upsert_rows(rows)
 
     def _format_data(self, ticker, day, day_data):
         return {

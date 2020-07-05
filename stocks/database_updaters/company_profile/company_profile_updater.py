@@ -1,10 +1,11 @@
+from .iex_company_profile_converter import IexCompanyProfileConverter
 from database.stocks_database import StocksDatabase
-from web_apis import iex
 
 
 class CompanyProfileUpdater:
     def __init__(self, database: StocksDatabase):
         self.db = database
+        self.iex = IexCompanyProfileConverter()
 
     def update_all(self, days_old=30):
         """
@@ -13,25 +14,21 @@ class CompanyProfileUpdater:
 
         tickers = self.db.api_progress_table.get_company_profile_progress(days_old)
         for ticker in tickers:
-            self.db.company_profile_table.add_stock(ticker)
-            success = self.update_stock(ticker)
-            if success:
-                self.db.api_progress_table.update_company_profile_progress(ticker)
-            else:
-                self.db.api_progress_table.reset_company_profile_progress(ticker)
+            self.update(ticker)
 
-    def update_stock(self, ticker):
-        profile = iex.get_company_profile(ticker)
-        if profile is None:
+    def update(self, ticker):
+        company_profile = self.iex.get_company_profile(ticker)
+
+        if company_profile is None:
             return False
 
-        self.db.company_profile_table.update_name(ticker, profile['companyName'])
-        self.db.company_profile_table.update_exchange(ticker, profile['exchange'])
-        self.db.company_profile_table.update_sector(ticker, profile['sector'])
-        self.db.company_profile_table.update_industry(ticker, profile['industry'])
-        self.db.company_profile_table.update_description(ticker, profile['description'])
-        self.db.company_profile_table.update_ceo(ticker, profile['CEO'])
-        self.db.company_profile_table.update_employees(ticker, profile['employees'])
-        self.db.company_profile_table.update_website(ticker, profile['website'])
-        self.db.company_profile_table.update_country(ticker, profile['country'])
-        return True
+        company_profile_dict = vars(company_profile)
+        company_profile_rows = [company_profile_dict]
+
+        success = self.db.company_profile_table.upsert(company_profile_rows)
+
+        if success:
+            self.db.api_progress_table.update_company_profile_progress(ticker)
+        else:
+            self.db.api_progress_table.reset_company_profile_progress(ticker)
+        return success

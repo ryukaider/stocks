@@ -1,3 +1,4 @@
+from .helpers.upsert import Upsert
 from database import postgres
 
 
@@ -31,6 +32,9 @@ class Table:
 
     def insert_row(self, dictionary):
         return postgres.insert_row_as_dict(self.cursor, self.name, dictionary)
+
+    def _upsert_rows(self, rows: list, primary_keys: list):
+        return Upsert(self).upsert_rows(rows, primary_keys)
 
     def delete_row(self, column, value):
         return postgres.remove_row(self.cursor, self.name, column, value)

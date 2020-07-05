@@ -18,6 +18,12 @@ class CompanyProfileTable(Table):
     def __init__(self, cursor, name='company_profile'):
         Table.__init__(self, cursor, name, self.columns)
 
+    def upsert(self, rows):
+        primary_keys = ['ticker']
+        return self._upsert_rows(rows, primary_keys)
+
+    # Remove unneeded functions below
+
     def add_stock(self, ticker):
         row = {'ticker': ticker}
         return self.insert_row(row)

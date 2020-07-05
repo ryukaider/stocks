@@ -42,6 +42,10 @@ def test_insert_row():
     assert table.insert_row(row) is True
 
 
+def test_upsert_rows():
+    pass
+
+
 def test_delete_row():
     value = random_utilities.random_string()
     row = {key_column: value}

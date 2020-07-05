@@ -41,4 +41,4 @@ class DailyHistoryUpdater:
     def _update_adjusted_dividends(self, ticker):
         daily_history_rows = self.db.daily_history_table.get_history(ticker)
         adjusted_dividend_rows = self.adjusted_dividends_calculator.calculate(daily_history_rows)
-        return self.db.daily_history_table.upsert_rows(adjusted_dividend_rows)
+        return self.db.daily_history_table._upsert_rows(adjusted_dividend_rows)

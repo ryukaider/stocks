@@ -1,3 +1,4 @@
+import pytest
 from config import database_config
 from database.database import Database
 from database.tables.daily_history_table import DailyHistoryTable
@@ -25,32 +26,36 @@ def test_upsert_1row():
     retrieved_rows = daily_history_table.get_history(rows[0]['ticker'])
     assert len(retrieved_rows) == 0
 
-    assert daily_history_table.upsert_rows(rows) is True
+    assert daily_history_table.upsert(rows) is True
     retrieved_row = daily_history_table.get_history(rows[0]['ticker'])[0]
     assert float(retrieved_row['dividend']) == rows[0]['dividend']
 
     rows[0]['dividend'] = random_utilities.random_double()
-    assert daily_history_table.upsert_rows(rows) is True
+    assert daily_history_table.upsert(rows) is True
     retrieved_row = daily_history_table.get_history(rows[0]['ticker'])[0]
     assert float(retrieved_row['dividend']) == rows[0]['dividend']
 
 
 def test_upsert_rows_none():
-    assert daily_history_table.upsert_rows(None) is False
+    assert daily_history_table.upsert(None) is False
 
 
+@pytest.mark.skip
 def test_upsert_2rows():
     pass
 
 
+@pytest.mark.skip
 def test_get_history_desc():
     pass
 
 
+@pytest.mark.skip
 def test_get_history_invalid():
     pass
 
 
+@pytest.mark.skip
 def test_get_history_by_year():
     pass
 
