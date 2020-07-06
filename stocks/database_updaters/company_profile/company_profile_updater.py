@@ -1,15 +1,15 @@
-from .iex_company_profile_converter import IexCompanyProfileConverter
+from .yahoo_company_profile_converter import YahooCompanyProfileConverter
 from database.stocks_database import StocksDatabase
 
 
 class CompanyProfileUpdater:
     def __init__(self, database: StocksDatabase):
         self.db = database
-        self.iex = IexCompanyProfileConverter()
+        self.yahoo = YahooCompanyProfileConverter()
 
     def update_all(self, days_old=30):
         """
-        Updates company profile table for all stocks, using the IEX API.
+        Updates company profile table for all stocks.
         """
 
         tickers = self.db.api_progress_table.get_company_profile_progress(days_old)
@@ -17,7 +17,7 @@ class CompanyProfileUpdater:
             self.update(ticker)
 
     def update(self, ticker):
-        company_profile = self.iex.get_company_profile(ticker)
+        company_profile = self.yahoo.get_company_profile(ticker)
 
         if company_profile is None:
             return False
@@ -29,6 +29,4 @@ class CompanyProfileUpdater:
 
         if success:
             self.db.api_progress_table.update_company_profile_progress(ticker)
-        else:
-            self.db.api_progress_table.reset_company_profile_progress(ticker)
         return success

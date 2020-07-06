@@ -1,11 +1,9 @@
 # https://github.com/ranaroussi/yfinance
 import yfinance as yf
 
-ko = yf.Ticker('KO')
+ticker = yf.Ticker('MSFT')
 
-#info = ko.get_info()
+info = ticker.get_info()
 
-dividends = ko.dividends.to_dict()
-
-for (key, value) in dividends.items():
+for (key, value) in info.items():
     print(key, value)

@@ -20,7 +20,16 @@ class CompanyProfileTable(Table):
 
     def upsert(self, rows):
         primary_keys = ['ticker']
-        return self._upsert_rows(rows, primary_keys)
+        noramlized_rows = self._normalize_rows(rows)
+        return self._upsert_rows(noramlized_rows, primary_keys)
+
+    def _normalize_rows(self, rows):
+        normalized_rows = []
+        for row in rows:
+            row['exchange'] = self._normalize_exchange(row['exchange'])
+            row['sector'] = self._normalize_sector(row['sector'])
+            normalized_rows.append(row)
+        return normalized_rows
 
     # Remove unneeded functions below
 
@@ -45,8 +54,14 @@ class CompanyProfileTable(Table):
             return {
                 None: None,
                 'NYSE': 'NYSE',
+                'NYQ': 'NYSE',
+                'NYS': 'NYSE',
+                'ASE': 'NYSE',
                 'NEW YORK STOCK EXCHANGE': 'NYSE',
-                'NASDAQ': 'NASDAQ'
+                'NASDAQ': 'NASDAQ',
+                'NMS': 'NASDAQ',
+                'NCM': 'NASDAQ',
+                'NGM': 'NASDAQ'
             }[exchange]
         except Exception:
             return exchange

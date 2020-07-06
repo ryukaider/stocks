@@ -1,4 +1,4 @@
-class CompanyProfile():
+class CompanyProfile:
     def __init__(self,
                  ticker=None,
                  name=None,

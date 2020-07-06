@@ -48,7 +48,12 @@ class Upsert:
         for row in rows:
             values += '('
             for column in columns_list:
-                values += f"'{row[column]}',"
+                value = row[column]
+                if value is None:
+                    values += 'NULL,'
+                else:
+                    escaped_value = self._escape_chars(value)
+                    values += f"'{escaped_value}',"
             values = values.strip(',')
             values += '),'
         values = values.strip(',')
@@ -66,3 +71,8 @@ class Upsert:
             query += f' {self.table.name}.{primary_key} = EXCLUDED.{primary_key} AND'
         query = query.strip(' AND')
         return query
+
+    def _escape_chars(self, value):
+        if value is not None and isinstance(value, str):
+            return value.replace("'", "''")
+        return value

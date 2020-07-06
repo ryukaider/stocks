@@ -14,3 +14,7 @@ def test_update():
 def test_update_invalid_ticker():
     ticker = random_utilities.random_letters()
     assert company_profile_updater.update(ticker) is False
+
+
+def test_update_apostrophe():
+    assert company_profile_updater.update('ASMB') is True

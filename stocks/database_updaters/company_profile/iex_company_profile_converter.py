@@ -4,14 +4,6 @@ from web_apis import iex
 
 class IexCompanyProfileConverter:
 
-    def get_company_profiles(self, tickers) -> list:
-        company_profiles = []
-        for ticker in tickers:
-            company_profile = self.get_company_profile(ticker)
-            if company_profile is not None:
-                company_profiles.append(company_profile)
-        return company_profiles
-
     def get_company_profile(self, ticker) -> CompanyProfile:
         profile = iex.get_company_profile(ticker)
 
