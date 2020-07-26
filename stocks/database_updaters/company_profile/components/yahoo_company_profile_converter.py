@@ -1,4 +1,4 @@
-from .company_profile import CompanyProfile
+from ..model.company_profile import CompanyProfile
 import yfinance as yf
 
 

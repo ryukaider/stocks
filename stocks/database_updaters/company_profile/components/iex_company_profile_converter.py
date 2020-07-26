@@ -1,4 +1,4 @@
-from .company_profile import CompanyProfile
+from ..model.company_profile import CompanyProfile
 from web_apis import iex
 
 

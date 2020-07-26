@@ -1,5 +1,5 @@
 import datetime
-from .table import Table
+from .table.table import Table
 
 
 class TableProgressTable(Table):

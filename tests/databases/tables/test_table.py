@@ -1,6 +1,6 @@
 from config import database_config
 from database.database import Database
-from database.tables.table import Table
+from database.tables.table.table import Table
 from utilities import random_utilities
 
 database_name = database_config.test_database

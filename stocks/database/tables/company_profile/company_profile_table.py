@@ -1,4 +1,5 @@
-from .table import Table
+from .helpers import normalizer
+from ..table.table import Table
 
 
 class CompanyProfileTable(Table):
@@ -20,85 +21,22 @@ class CompanyProfileTable(Table):
 
     def upsert(self, rows):
         primary_keys = ['ticker']
-        noramlized_rows = self._normalize_rows(rows)
+        noramlized_rows = normalizer.normalize_rows(rows)
         return self._upsert_rows(noramlized_rows, primary_keys)
-
-    def _normalize_rows(self, rows):
-        normalized_rows = []
-        for row in rows:
-            row['exchange'] = self._normalize_exchange(row['exchange'])
-            row['sector'] = self._normalize_sector(row['sector'])
-            normalized_rows.append(row)
-        return normalized_rows
-
-    # Remove unneeded functions below
-
-    def add_stock(self, ticker):
-        row = {'ticker': ticker}
-        return self.insert_row(row)
 
     def update_name(self, ticker, name):
         return self.update_value('ticker', ticker, 'name', name)
 
     def update_exchange(self, ticker, exchange):
-        exchange = self._normalize_exchange(exchange)
+        exchange = normalizer.normalize_exchange(exchange)
         return self.update_value('ticker', ticker, 'exchange', exchange)
-
-    @staticmethod
-    def _normalize_exchange(exchange):
-        try:
-            exchange = exchange.upper()
-        except Exception:
-            pass
-        try:
-            return {
-                None: None,
-                'NYSE': 'NYSE',
-                'NYQ': 'NYSE',
-                'NYS': 'NYSE',
-                'ASE': 'NYSE',
-                'NEW YORK STOCK EXCHANGE': 'NYSE',
-                'NASDAQ': 'NASDAQ',
-                'NMS': 'NASDAQ',
-                'NCM': 'NASDAQ',
-                'NGM': 'NASDAQ'
-            }[exchange]
-        except Exception:
-            return exchange
 
     def update_description(self, ticker, description):
         return self.update_value('ticker', ticker, 'description', description)
 
     def update_sector(self, ticker, sector):
-        sector = self._normalize_sector(sector)
+        sector = normalizer.normalize_sector(sector)
         return self.update_value('ticker', ticker, 'sector', sector)
-
-    @staticmethod
-    def _normalize_sector(sector):
-        #industry broadcasting = Communication Services
-        try:
-            return {
-                'Communications': 'Communication Services',
-                'Consumer Services': 'Consumer Discretionary',
-                'Retail Trade': 'Consumer Discretionary',
-                'Consumer Durables': 'Consumer Discretionary',
-                'Consumer Non-Durables': 'Consumer Staples',
-                'Energy Minerals': 'Energy',
-                'Health Technology': 'Health Care',
-                'Health Services': 'Health Care',
-                'Transportation': 'Industrials',
-                'Producer Manufacturing': 'Industrials',
-                'Industrial Services': 'Industrials',
-                #'Commercial Services': 'Industrials', or health care
-                'Non-Energy Minerals': 'Materials',
-                #'Process Industries': 'Materials', or Consumer Staples
-                'Finance': 'Financial Services',
-                'Electronic Technology': 'Technology',
-                'Technology Services': 'Technology',
-                #'Distribution Services': 'Technology' or health care
-            }[sector]
-        except Exception:
-            return sector
 
     def update_industry(self, ticker, industry):
         return self.update_value('ticker', ticker, 'industry', industry)

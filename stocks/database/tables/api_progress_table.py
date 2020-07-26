@@ -1,5 +1,5 @@
 import datetime
-from .table import Table
+from .table.table import Table
 
 
 class ApiProgressTable(Table):
@@ -58,7 +58,7 @@ class ApiProgressTable(Table):
                 f"FROM {self.name} " \
                 f"WHERE {column} <= '{date}' " \
                 f"OR {column} IS NULL " \
-                f"ORDER BY daily_history ASC NULLS FIRST"
+                f"ORDER BY {column} ASC NULLS FIRST"
         results = self.run_query(query)
         ticker_list = self._convert_results_to_tickers_list(results)
         return ticker_list

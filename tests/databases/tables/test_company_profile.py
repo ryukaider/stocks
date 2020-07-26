@@ -1,7 +1,7 @@
 import pytest
 from config import database_config
 from database.database import Database
-from database.tables.company_profile_table import CompanyProfileTable
+from database.tables.company_profile.company_profile_table import CompanyProfileTable
 from utilities import random_utilities
 
 database_name = database_config.test_database
@@ -14,7 +14,8 @@ company_profile_table = CompanyProfileTable(cursor, table_name)
 
 @pytest.fixture(autouse=True, scope="class")
 def setup_once_per_class():
-    company_profile_table.add_stock(test_ticker)
+    rows = [{'ticker': test_ticker}]
+    company_profile_table.upsert(rows)
 
 
 def test_exists():
@@ -23,11 +24,6 @@ def test_exists():
 
 def test_create():
     assert company_profile_table.create()
-
-
-def test_add_stock():
-    ticker = random_utilities.random_letters(12)
-    assert company_profile_table.add_stock(ticker)
 
 
 def test_name():

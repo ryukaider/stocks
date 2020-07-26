@@ -1,4 +1,4 @@
-from .yahoo_company_profile_converter import YahooCompanyProfileConverter
+from .components.yahoo_company_profile_converter import YahooCompanyProfileConverter
 from database.stocks_database import StocksDatabase
 
 

@@ -1,6 +1,6 @@
 from .database import Database
 from .tables.api_progress_table import ApiProgressTable
-from .tables.company_profile_table import CompanyProfileTable
+from database.tables.company_profile.company_profile_table import CompanyProfileTable
 from .tables.daily_history_table import DailyHistoryTable
 from .tables.dividends_table import DividendsTable
 from .tables.table_progress_table import TableProgressTable
